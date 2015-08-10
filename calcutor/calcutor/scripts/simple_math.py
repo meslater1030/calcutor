@@ -1,4 +1,6 @@
 import ast
+# solution inspired by
+# http://stackoverflow.com/questions/2371436/evaluating-a-mathematical-expression-in-a-string
 
 
 class Visitor(ast.NodeVisitor):
