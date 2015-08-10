@@ -10,12 +10,12 @@ from scripts import simple_math
 def my_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
-        input = input.replace('\u02c9', '-')
+        for unic, byte in [('\u02c9', '-'), ('\u00B2', '**2'), ('^', '**')]:
+            input = input.replace(unic, byte)
         try:
             output = simple_math.evaluate(input)
             output = unicode(output).encode('utf-8')
         except ValueError:
-            error_msg = b"That isn't a valid calculator input."
-            return {'output': error_msg}
+            output = b"That isn't a valid calculator input."
         return {'output': output}
     return {}
