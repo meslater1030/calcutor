@@ -9,7 +9,7 @@ from scripts import simple_math
 @view_config(route_name='home', renderer='templates/index.jinja2')
 def my_view(request):
     if request.method == 'POST':
-        input = request.params.get('input').decode('utf-8')
+        input = request.params.get('input')
         try:
             output = simple_math.evaluate(input)
             output = unicode(output).encode('utf-8')
