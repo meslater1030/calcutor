@@ -2,29 +2,33 @@
 <html>
   <head>
     <title>calcutor</title>
-    <script type="text/javascript" href="/static/calc.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../static/calc.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/style.css"></link>
   </head>
   <body>
-    <div id="screen"></div>
+    <div id="screen">
+      <p class="input"></p>
+      <p class="output"></p>
+    </div>
     <div id="buttons">
       <button type="button" id="7">7</button>
       <button type="button" id="8">8</button>
       <button type="button" id="9">9</button>
-      <button type="button" id="/">/</button> <br>
+      <button type="button" id="/">/</button></br>
       <button type="button" id="4">4</button>
       <button type="button" id="5">5</button>
       <button type="button" id="6">6</button>
-      <button type="button" id="*">*</button> <br>
+      <button type="button" id="*">*</button></br>
       <button type="button" id="1">1</button>
       <button type="button" id="2">2</button>
       <button type="button" id="3">3</button>
-      <button type="button" id="-">-</button><br>
+      <button type="button" id="-">-</button></br>
       <button type="button" id="0">0</button>
       <button type="button" id=".">.</button>
-      <button type="button" id="-">(-)</button>
-      <button type="button" id="+">+</button><br>
-      <button type="button" id="ENTER">ENTER</button>
+      <button type="button" id="NEG">(-)</button>
+      <button type="button" id="+">+</button></br>
     </div>
+    <button type="button" id="ENTER">ENTER</button>
   </body>
 </html>

@@ -1,7 +1,23 @@
 #screen {
-    width:200px;
-    height:200px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    font-family: "Consolas", "Arial";
+    font-size: 12;
+    width:250px;
+    height:250px;
     border: 2px solid;
+}
+
+#screen .input {
+    width: 100%;
+    margin: 1px;
+    float: left;
+}
+
+#screen .output {
+    height: 1em;
+    margin: 1px;
+    float: right;
 }
 
 #buttons button {
