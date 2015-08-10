@@ -1,0 +1,11 @@
+#screen {
+    width:200px;
+    height:200px;
+    border: 2px solid;
+}
+
+#buttons button {
+    display: inline-block;
+    padding: 5px;
+    margin: 10px;
+}
