@@ -6,6 +6,7 @@ import ast
 class Visitor(ast.NodeVisitor):
     def visit(self, node):
         if not isinstance(node, self.whitelist):
+            import pdb; pdb.set_trace()
             raise ValueError(node)
         return super(Visitor, self).visit(node)
 
