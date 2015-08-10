@@ -11,6 +11,5 @@ def my_view(request):
         except ValueError:
             error_msg = "That isn't a valid calculator input."
             return {'output': error_msg}
-        import pdb; pdb.set_trace()
         return {'output': output}
     return {}
