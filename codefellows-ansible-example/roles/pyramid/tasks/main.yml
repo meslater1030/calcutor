@@ -22,3 +22,9 @@
   pip:
     state: present
     requirements: "{{ calcutor_home }}/requirements.txt"
+
+- name: Develop App
+  sudo: yes
+  shell: python setup.py develop
+  args:
+    chdir: "{{ calcutor_home }}"
