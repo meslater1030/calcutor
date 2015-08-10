@@ -23,6 +23,8 @@
     state: present
     requirements: "{{ calcutor_home }}/requirements.txt"
 
-- name: Develop Pyramid App
+- name: Develop App
   sudo: yes
-  exec: python setup.py develop
+  shell: python setup.py develop
+  args:
+    chdir: "{{ calcutor_home }}"

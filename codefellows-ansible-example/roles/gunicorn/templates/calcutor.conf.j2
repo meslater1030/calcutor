@@ -9,4 +9,4 @@ setgid nogroup
 chdir {{ calcutor_home }}
 
 
-exec gunicorn -b 127.0.0.1:8000 -w 4 calcutor.wsgi --error-logfile /tmp/gunicorn-error.log
+exec gunicorn --paste production.ini
