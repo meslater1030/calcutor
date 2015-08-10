@@ -3,8 +3,8 @@
     overflow-x: hidden;
     font-family: "Consolas", "Arial";
     font-size: 12;
-    width:250px;
-    height:250px;
+    width: 30em;
+    height: 20em;
     border: 2px solid;
 }
 
@@ -22,6 +22,60 @@
 
 #buttons button {
     display: inline-block;
-    padding: 5px;
-    margin: 10px;
+    width: 6em;
+    height: 3em;
+    font: 1em;
+    margin: 0.3em;
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+}
+
+#top-row button {
+    height: 2em;
+}
+
+#buttons {
+    padding-left: 0.6em;
+}
+
+#calcutor {
+    margin-right: auto;
+    margin-left: auto;
+    width: 30em;
+    margin: 2px solid black;
+}
+
+.blue {
+    background-color: #3B4990;
+    color: white;
+}
+
+.yellow {
+    background-color: #FFD700;
+}
+
+.green {
+    background-color: #37BC61;
+}
+
+.black {
+    background-color: black;
+    color: white;
+}
+
+.white {
+    background-color: #C2C2C2;
+}
+
+#navigation {
+    float: left;
+}
+
+#navigation button {
+    padding:10px;
+    -webkit-border-radius:40px;
+    -moz-border-radius:40px;
+    border-radius:40px;
+    width: 2em;
 }

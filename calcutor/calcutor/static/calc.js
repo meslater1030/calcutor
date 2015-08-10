@@ -14,7 +14,7 @@ $(function(){
         }).done(function(response){
             $("#screen .output:last").text(response.output);
             $("#screen").append("<p class='input'></p>");
-            $("#screen").append("<p class='output'>{{ output }}</p>");
+            $("#screen").append("<p class='output'></p>");
             input = "";
             $("#screen").scrollTop($("#screen")[0].scrollHeight);
         }).fail(function(){
