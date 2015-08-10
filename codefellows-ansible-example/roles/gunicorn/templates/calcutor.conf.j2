@@ -6,7 +6,7 @@ stop on runlevel [016]
 respawn
 setuid nobody
 setgid nogroup
-chdir {{ pyramid_home }}
+chdir {{ calcutor_home }}
 
 
 exec gunicorn -b 127.0.0.1:8000 -w 4 calcutor.wsgi --error-logfile /tmp/gunicorn-error.log

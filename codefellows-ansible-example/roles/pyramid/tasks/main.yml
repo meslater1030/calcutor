@@ -22,3 +22,7 @@
   pip:
     state: present
     requirements: "{{ calcutor_home }}/requirements.txt"
+
+- name: Develop Pyramid App
+  sudo: yes
+  exec: python setup.py develop
