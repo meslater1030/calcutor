@@ -10,6 +10,7 @@ from scripts import simple_math
 def my_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
+        input = input.replace('\u02c9', '-')
         try:
             output = simple_math.evaluate(input)
             output = unicode(output).encode('utf-8')
