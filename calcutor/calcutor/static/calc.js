@@ -7,8 +7,8 @@ $(function(){
 
     $("#ENTER").click(function(event){
         $.ajax({
-            type: "GET",
-            url: "",
+            type: "POST",
+            url: "/",
             data: {input: input}
         }).done(function(response){
             $("#screen .output:last").text(response.output);
