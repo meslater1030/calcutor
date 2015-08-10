@@ -1,6 +1,7 @@
 $(function(){
     var input = "";
-    $("#buttons button").click(function(event){
+
+    $("#buttons button:not(.special)").click(function(event){
         input = input.concat( $(this).attr( "id" ) );
         $("#screen .input:last").text(input);
     });
