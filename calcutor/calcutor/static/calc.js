@@ -6,13 +6,13 @@ $(function(){
     var idx = 0;
     var $cursor = $("<p>", {
         id: "cursor",
-        text: "\u2588",
+        text: "|",
         css:{
             margin: '1px',
             position: "absolute",
             float: 'left',
             width: '100%',
-            font: '12px',
+            font: '1.5em Droid Sans Mono',
             'white-space': 'pre'
         }
     });
@@ -83,12 +83,14 @@ $(function(){
             $("#screen").append("<p class='output'></p>");
             input = "";
             idx = 0;
+            update_cursor();
         }).fail(function(){
             $("#screen .output:last").text("Something Went Wrong");
             $("#screen").append("<p class='input'></p>");
             $("#screen").append("<p class='output'></p>");
             input = "";
             idx = 0;
+            update_cursor();
         });
     });
 
@@ -97,13 +99,19 @@ $(function(){
            -update cursor
            -update scroll
     */
-    $("#buttons").click(function(event){
-        $cursor.text(new Array(idx+1).join(' ') + "\u2588");
+    var update_cursor = function(){
+        $cursor.text(new Array(idx+1).join(' ') + "|");
         $cursor.css("top", $("#screen .input:last").position().top);
         $cursor.css("left", $("#screen .input:last").position().left);
+    };
+
+    var update_scroller = function(){
         $("#screen").scrollTop($("#screen")[0].scrollHeight);
+    };
+
+    $("#buttons").click(function(event){
+        update_cursor();
+        update_scroller();
     });
-    setInterval(function(){
-        $cursor.toggle();
-    }, 500);
+
 });
