@@ -5,7 +5,6 @@ Pygments==2.0.2
 WebOb==1.4.1
 argparse==1.2.1
 boto==2.38.0
-calcutor==0.0
 gunicorn==19.3.0
 pyramid==1.5.7
 pyramid-chameleon==0.3
