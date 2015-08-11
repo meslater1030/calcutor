@@ -99,6 +99,7 @@ fn = {"sin": math.sin,
       "tan": math.tan,
       "abs": abs,
       "sqrt": math.sqrt,
+      "log": math.log,
       "trunc": lambda a: int(a),
       "round": round,
       "sgn": lambda a: abs(a) > epsilon and cmp(a, 0) or 0}
@@ -116,6 +117,8 @@ def evaluateStack():
         return math.pi  # 3.1415926535
     elif op == "E":
         return math.e  # 2.718281828
+    elif op == "ln":
+        return math.log(evaluateStack(), math.e)
     elif op in fn:
         return fn[op](evaluateStack())
     elif op[0].isalpha():
