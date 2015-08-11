@@ -17,8 +17,17 @@ $(function(){
             'white-space': 'pre'
         }
     });
+
     $(".home").append($cursor);
     var menu = "home";
+
+    /* Functionality related to the 2nd key/yellow inputs
+    */
+    $(".second").hide()
+    $("#second_mode").click(function(event){
+        $(".first").toggle()
+        $(".second").toggle()
+    })
 
     /* ---- BASIC MATH ----
        0-9, + - * / ( ) and negative character

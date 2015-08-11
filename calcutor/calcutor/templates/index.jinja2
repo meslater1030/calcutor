@@ -50,9 +50,11 @@
           <div class="yellow">&#9728; <div class="green">&#8607;</div></div>
           <div class="yellow"></div>
         </div>
-        <button class="yellow-button" type="button" id="second">2nd</button>
-        <button class="black-button" type="button" id="mode">MODE</button>
-        <button class="black-button" type="button" id="delete">DEL</button>
+        <button class="yellow-button" type="button" id="second_mode">2nd</button>
+        <button class="black-button second" type="button" id="quit">MODE</button>
+        <button class="black-button first" type="button" id="mode">MODE</button>
+        <button class="black-button second" type="button" id="ins">DEL</button>
+        <button class="black-button first" type="button" id="delete">DEL</button>
         <button class="blue-button" type="button" id="up">&#9650;</button>
         <button class="blue-button" type="button" id="right">&#9658;</button>
         </br>
@@ -63,9 +65,12 @@
           <div class="yellow">&#9728; <div class="green">&#8609;</div></div>
           <div class="yellow"></div>
         </div>
-        <button class="green-button" type="button" id="alpha">ALPHA</button>
-        <button class="black-button" type="button" id="xton">X,T,&empty;,<i>n</i></button>
-        <button class="black-button" type="button" id="stat">STAT</button>
+        <button class="green-button second" type="button" id="a_lock">ALPHA</button>
+        <button class="green-button first" type="button" id="alpha">ALPHA</button>
+        <button class="black-button second" type="button" id="link">X,T,&empty;,<i>n</i></button>
+        <button class="black-button first" type="button" id="xton">X,T,&empty;,<i>n</i></button>
+        <button class="black-button second" type="button" id="list">STAT</button>
+        <button class="black-button first" type="button" id="stat">STAT</button>
         <button class="blue-button" type="button" id="down">&#9660;</button>
         <button class="blue-button" type="button" id="left">&#9668;</button>
         </br>
@@ -76,10 +81,14 @@
           <div class="yellow">DISTR</div>
           <div class="yellow"></div>
         </div>
-        <button class="black-button" type="button" id="math">MATH</button>
-        <button class="black-button" type="button" id="variables">VARS</button>
-        <button class="blue-button" type="button" id="apps">APPS</button>
-        <button class="black-button" type="button" id="program">PRGM</button>
+        <button class="black-button second" type="button" id="test">MATH</button>
+        <button class="black-button first" type="button" id="math">MATH</button>
+        <button class="blue-button second" type="button" id="angle">APPS</button>
+        <button class="blue-button first" type="button" id="apps">APPS</button>
+        <button class="black-button second" type="button" id="draw">PRGM</button>
+        <button class="black-button first" type="button" id="program">PRGM</button>
+        <button class="black-button second" type="button" id="distr">VARS</button>
+        <button class="black-button first" type="button" id="variables">VARS</button>
         <button class="black-button" type="button" id="clear">CLEAR</button>
         </br>
         <div class="submenues">
@@ -89,11 +98,16 @@
           <div class="yellow">TAN<sup>-1</sup> <div class="green">G</div></div>
           <div class="yellow">&pi; <div class="green">H</div></div>
         </div>
-        <button class="operator black-button" type="button" id="^-1">x<sup>-1</sup></button>
-        <button class="operator_four black-button" type="button" id="sin(">SIN</button>
-        <button class="operator_four black-button" type="button" id="cos(">COS</button>
-        <button class="operator_four black-button" type="button" id="tan(">TAN</button>
-        <button class="operator black-button" type="button" id="^">&and;</button>
+        <button class="operator black-button second" type="button" id="matrix">x<sup>-1</sup></button>
+        <button class="operator black-button first" type="button" id="^-1">x<sup>-1</sup></button>
+        <button class="operator black-button second" type="button" id="sin<sup>-1</sup>(">SIN</button>
+        <button class="operator_four black-button first" type="button" id="sin(">SIN</button>
+        <button class="operator black-button second" type="button" id="cos<sup>-1</sup>(">COS</button>
+        <button class="operator_four black-button first" type="button" id="cos(">COS</button>
+        <button class="operator black-button second" type="button" id="tan<sup>-1</sup>(">TAN</button>
+        <button class="operator_four black-button first" type="button" id="tan(">TAN</button>
+        <button class="operator black-button second" type="button" id=&pi;>&and;</button>
+        <button class="operator black-button first" type="button" id="^">&and;</button>
         </br>
         <div class="submenues">
           <div class="yellow">&radic; <div class="green">I</div></div>
@@ -102,11 +116,16 @@
           <div class="yellow">} <div class="green">L</div></div>
           <div class="yellow">e <div class="green">M</div></div>
         </div>
-        <button class="operator black-button" type="button" id=&#178>x<sup>2</sup></button>
-        <button class="operator black-button" type="button" id=",">,</button>
-        <button class="operator black-button" type="button" id="(">(</button>
-        <button class="operator black-button" type="button" id=")">)</button>
-        <button class="operator blue-button" type="button" id="/">&#247;</button>
+        <button class="black-button operator second" type="button" id=&radic;(>x<sup>2</sup></button>
+        <button class="operator black-button first" type="button" id=&#178>x<sup>2</sup></button>
+        <button class="black-button second" type="button" id="EE">,</button>
+        <button class="operator black-button first" type="button" id=",">,</button>
+        <button class="operator black-button second" type="button" id="{">(</button>
+        <button class="operator black-button first" type="button" id="(">(</button>
+        <button class="operator black-button second" type="button" id="}">)</button>
+        <button class="operator black-button first" type="button" id=")">)</button>
+        <button class="operator blue-button second" type="button" id="e">&#247;</button>
+        <button class="operator blue-button first" type="button" id="/">&#247;</button>
         </br>
         <div class="submenues">
           <div class="yellow">10<sup>x</sup> <div class="green">N</div></div>
@@ -115,11 +134,16 @@
           <div class="yellow">w <div class="green">Q</div></div>
           <div class="yellow">[ <div class="green">R</div></div>
         </div>
-        <button class="black-button operator_four" type="button" id="log(">LOG</button>
-        <button class="num white-button" type="button" id="7">7</button>
-        <button class="num white-button" type="button" id="8">8</button>
-        <button class="num white-button" type="button" id="9">9</button>
-        <button class="operator blue-button" type="button" id="*">*</button>
+        <button class="black-button operator_four second" type="button" id="10<sup>x</sup>(">LOG</button>
+        <button class="black-button operator_four first" type="button" id="log(">LOG</button>
+        <button class="white-button second" type="button" id="u">7</button>
+        <button class="num white-button first" type="button" id="7">7</button>
+        <button class="white-button second" type="button" id="v">8</button>
+        <button class="num white-button first" type="button" id="8">8</button>
+        <button class="white-button second" type="button" id="w">9</button>
+        <button class="num white-button first" type="button" id="9">9</button>
+        <button class="operator blue-button second" type="button" id="[">*</button>
+        <button class="operator blue-button first" type="button" id="*">*</button>
         </br>
         <div class="submenues">
           <div class="yellow">e<sup>x</sup> <div class="green">S</div></div>
@@ -128,11 +152,16 @@
           <div class="yellow">L6 <div class="green">V</div></div>
           <div class="yellow">] <div class="green">W</div></div>
         </div>
-        <button class="black-button operator_three" type="button" id="ln(">LN</button>
-        <button class="num white-button" type="button" id="4">4</button>
-        <button class="num white-button" type="button" id="5">5</button>
-        <button class="num white-button" type="button" id="6">6</button>
-        <button class="operator blue-button" type="button" id="-">-</button>
+        <button class="black-button operator_three second" type="button" id="e^(">LN</button>
+        <button class="black-button operator_three first" type="button" id="ln(">LN</button>
+        <button class="white-button second" type="button" id="L4">4</button>
+        <button class="num white-button first" type="button" id="4">4</button>
+        <button class="white-button second" type="button" id="L5">5</button>
+        <button class="num white-button first" type="button" id="5">5</button>
+        <button class="white-button second" type="button" id="L6">6</button>
+        <button class="num white-button first" type="button" id="6">6</button>
+        <button class="operator blue-button second" type="button" id="]">-</button>
+        <button class="operator blue-button first" type="button" id="-">-</button>
         </br>
         <div class="submenues">
           <div class="yellow">RCL <div class="green">X</div></div>
@@ -141,11 +170,16 @@
           <div class="yellow">L3 <div class="green">&empty;</div></div>
           <div class="yellow">L4 <div class="green">"</div></div>
         </div>
-        <button class="black-button" type="button" id="storage">STO-></button>
-        <button class="num white-button" type="button" id="1">1</button>
-        <button class="num white-button" type="button" id="2">2</button>
-        <button class="num white-button" type="button" id="3">3</button>
-        <button class="operator blue-button" type="button" id="+">+</button>
+        <button class="black-button second" type="button" id="rcl">STO-></button>
+        <button class="black-button first" type="button" id="storage">STO-></button>
+        <button class="white-button second" type="button" id="L1">1</button>
+        <button class="num white-button first" type="button" id="1">1</button>
+        <button class="white-button second" type="button" id="L2">2</button>
+        <button class="num white-button first" type="button" id="2">2</button>
+        <button class="white-button second" type="button" id="L3">2</button>
+        <button class="num white-button first" type="button" id="3">3</button>
+        <button class="blue-button second" type="button" id="MEM">+</button>
+        <button class="operator blue-button first" type="button" id="+">+</button>
         </br>
         <div class="submenues">
           <div class="yellow"></div>
@@ -155,10 +189,14 @@
           <div class="yellow">ENTRY <div class="green">SLVE</div></div>
         </div>
         <button class="num black-button" type="button" id="NO ONE EXPECTS THE SPANISH INQUISITION!">:)</button>
-        <button class="num white-button" type="button" id="0">0</button>
-        <button class="num white-button" type="button" id=".">.</button>
-        <button class="num white-button" type="button" id=&#713>(-)</button>
-        <button class="blue-button" type="button" id="ENTER">ENTER</button>
+        <button class="white-button second" type="button" id="catalog">0</button>
+        <button class="num white-button first" type="button" id="0">0</button>
+        <button class="white-button second" type="button" id="i">.</button>
+        <button class="num white-button first" type="button" id=".">.</button>
+        <button class="white-button second" type="button" id="ans">(-)</button>
+        <button class="num white-button first" type="button" id=&#713>(-)</button>
+        <button class="blue-button second" type="button" id="entry">ENTER</button>
+        <button class="blue-button first" type="button" id="ENTER">ENTER</button>
         </br>
       </div>
       </br>
