@@ -12,7 +12,7 @@ $(function(){
             position: "absolute",
             float: 'left',
             width: '100%',
-            font: '1.5em Droid Sans Mono',
+            font: '1em Droid Sans Mono',
             'white-space': 'pre'
         }
     });
