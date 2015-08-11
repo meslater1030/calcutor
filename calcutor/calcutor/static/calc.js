@@ -25,8 +25,14 @@ $(function(){
     */
     $(".second").hide()
     $("#second_mode").click(function(event){
-        $(".first").toggle()
-        $(".second").toggle()
+        $(".default").toggle();
+        $(".second").toggle();
+    })
+
+    $(".alpha").hide()
+    $("#alpha_mode").click(function(event){
+        $(".default").toggle();
+        $(".alpha").toggle();
     })
 
     /* ---- BASIC MATH ----
