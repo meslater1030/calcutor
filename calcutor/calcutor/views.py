@@ -19,7 +19,10 @@ def home_view(request):
             return {'output': ERROR_MSG}
         try:
             fourFn.BNF().parseString(input)
-            output = fourFn.evaluateStack()
+            try:
+                output = fourFn.evaluateStack()
+            except ValueError:
+                return {'output': b"ERR: DOMAIN"}
         except ParseException:
             return {'output': ERROR_MSG}
         if float.is_integer(output):
@@ -34,6 +37,8 @@ def home_view(request):
 def graph_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
-        for unic, byte in [('\u02c9', '-'), ('\u00B2', '^2')]:
-            input = input.replace(unic, byte)
+        try:
+            input = fourFn.clean_string(input)
+        except SyntaxError:
+            return {'output': ERROR_MSG}
         graph_parse.graph_parse(input)

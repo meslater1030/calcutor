@@ -98,6 +98,11 @@ fn = {"sin": math.sin,
       "cos": math.cos,
       "tan": math.tan,
       "abs": abs,
+      "sqrt": math.sqrt,
+      "log": math.log,
+      "acos": math.acos,
+      "asin": math.asin,
+      "atan": math.atan,
       "trunc": lambda a: int(a),
       "round": round,
       "sgn": lambda a: abs(a) > epsilon and cmp(a, 0) or 0}
@@ -115,6 +120,8 @@ def evaluateStack():
         return math.pi  # 3.1415926535
     elif op == "E":
         return math.e  # 2.718281828
+    elif op == "ln":
+        return math.log(evaluateStack(), math.e)
     elif op in fn:
         return fn[op](evaluateStack())
     elif op[0].isalpha():
@@ -137,7 +144,12 @@ def checkParens(input):
 def clean_string(input):
     if re.search(r'[+\-*/=]{2,}', input):
         raise SyntaxError
-    for unic, byte in [('\u02c9', '-'), ('\u00B2', '^2')]:
+    for unic, byte in [('\u02c9', '-'),
+                       ('\u00B2', '^2'),
+                       (u'\u221a', 'sqrt'),
+                       (u'sin^-1', 'asin'),
+                       (u'cos^-1', 'acos'),
+                       (u'tan^-1', 'atan')]:
         input = input.replace(unic, byte)
     for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
         input = re.sub(reg_ex, r'\1 * \2', input)
@@ -146,7 +158,7 @@ def clean_string(input):
 
 
 def sci_notation(output):
-    if output >= 10000000000 and output.isalpha == False:
+    if output >= 10000000000 and output.isalpha() is False:
         return '%e' % output
     else:
         return output
