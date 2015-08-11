@@ -14,6 +14,11 @@ def my_view(request):
         for unic, byte in [('\u02c9', '-'), ('\u00B2', '^2')]:
             input = input.replace(unic, byte)
         try:
+            fourFn.checkParens(input)
+        except SyntaxError:
+            error_msg = b"ERR: SYNTAX"
+            return {'output': error_msg}
+        try:
             fourFn.BNF().parseString(input)
             output = fourFn.evaluateStack()
         except ParseException:
