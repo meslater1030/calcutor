@@ -4,6 +4,7 @@ $(function(){
     var input = "";
     var operators = ["/", "*", "+", "-", "\u00B2"];
     var idx = 0;
+    var idy = 0;
     var $cursor = $("<p>", {
         id: "cursor",
         text: "|",
@@ -17,19 +18,40 @@ $(function(){
         }
     });
     $("#screen").append($cursor);
+    var menu = "home";
 
     /* ---- BASIC MATH ----
        0-9, + - * / ( ) and negative character
     */
     $("#buttons .num, #buttons .operator").click(function(event){
-        if (operators.indexOf($(this).attr( "id" )) > -1 && input == ""){
-            input = "Ans";
-            idx += 3;
+        if (menu == "home"){
+            if (operators.indexOf($(this).attr( "id" )) > -1 && input == ""){
+                input = "Ans";
+                idx += 3;
+            };
+            input = input.slice(0, idx) +  $(this).attr( "id" ) + input.slice(idx);
+            $("#screen .input:last").text(input);
+            idx += 1;
+        } else if (menu == "y="){
+
         };
-        input = input.slice(0, idx) +  $(this).attr( "id" ) + input.slice(idx);
-        $("#screen .input:last").text(input);
-        idx += 1;
     });
+
+    /* ---- SUBMENUS ----
+       y=
+       navigation
+    */
+    $("#y_equals").click(function(event){
+        $(".home").hide();
+        $(".graph_set").show();
+        var menu = "y=";
+    });
+    $("#buttons #up").click(function(event){
+        if (menu != "home") {
+            idy -= 1;
+        };
+    });
+
 
     /* ---- INPUT MODIFICATION ----
        left/right indexing, clear/del
@@ -52,9 +74,13 @@ $(function(){
     });
 
     $("#buttons #clear").click(function(event){
+        $(".home").empty();
+        $(".home").append("<p class='input'></p>");
+        $(".home").append("<p class='output'></p>");
         input = "";
         idx = 0;
-        $("#screen .input:last").text(input);
+        $(".home").append($cursor);
+        update_cursor()
     });
 
 
@@ -100,19 +126,28 @@ $(function(){
            -update scroll
     */
     var update_cursor = function(){
-        $cursor.text(new Array(idx+1).join(' ') + "|");
-        $cursor.css("top", $("#screen .input:last").position().top);
-        $cursor.css("left", $("#screen .input:last").position().left);
+        if (menu == "home") {
+            $cursor.text(new Array(idx+1).join(' ') + "|");
+            $cursor.css("top", $("#screen .input:last").position().top);
+            $cursor.css("left", $("#screen .input:last").position().left);
+        } else if (menu == "y=") {
+            $cursor.text(new Array(idx+1).join(' ') + "|");
+            $cursor.css("top", $("#screen .y_func")[idy].position().top);
+            $cursor.css("left", $("#screen .y_func").position().left);
+        };
     };
 
     var update_scroller = function(){
-        $("#screen").scrollTop($("#screen")[0].scrollHeight);
+        if (menu == "home") {
+            $("#screen").scrollTop($("#screen")[0].scrollHeight);
+        } else if (menu == "y=") {
+            $("#screen").scrollTop($("#screen .y_func")[idy].scrollHeight);
+        };
     };
 
     $("#buttons").click(function(event){
         update_scroller();
         update_cursor();
-        console.log('here');
     });
 
 });

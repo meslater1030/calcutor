@@ -15,7 +15,7 @@
     word-wrap: break-word;
 }
 
-#screen .input {
+#screen .input, #screen .y_func {
     width: 100%;
     margin: 1px;
     float: left;
@@ -88,3 +88,6 @@
     background-color: #C2C2C2;
 }
 
+.hide{
+    display: none;
+}
