@@ -25,7 +25,6 @@ def home_view(request):
         if float.is_integer(output):
             output = int(output)
         output = fourFn.sci_notation(output)
-        import pdb; pdb.set_trace()
         output = unicode(output).encode('utf-8')
         return {'output': output}
     return {}

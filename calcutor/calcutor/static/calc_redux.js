@@ -2,7 +2,18 @@ $(function(){
     var last_input = "";
     var input = "";
     var output = "";
-    $(".second").hide();
+
+    setInterval(function(){
+        if ($(".home .input:last .cursor").text() == ""){
+            $(".home .input:last .cursor").text(" ")
+        }
+        if ($(".home .input:last .cursor").css("background-color") == "transparent"){
+            $(".home .input:last .cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
+        } else {
+            $(".home .input:last .cursor").css("background-color", "rgba(0, 0, 0, 0)");
+        };
+
+    }, 500);
 
     var update_scroller = function() {
         $("#screen").scrollTop($("#screen")[0].scrollHeight);
@@ -11,7 +22,10 @@ $(function(){
         var curr = $(".home .input:last .cursor");
         curr.text(token);
         curr.removeClass('cursor');
-        curr.after("<ins class='cursor'></ins>");
+        if (curr.next().length == 0){
+            curr.after("<ins></ins>")
+        }
+        curr.next().addClass('cursor');
         input += token;
     };
     var send_it = function(string){
@@ -25,12 +39,14 @@ $(function(){
         }).fail(function(){
             $(".home .output:last").text("Something Went Wrong");
         }).always(function(){
+            $(".cursor").removeClass("cursor");
             $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
             $(".home").append("<p class='output'></p>");
         });
     };
 
     $("#buttons button").click(function(event) {
+        $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
         switch ($(this).attr('id')) {
             case '0':
             case '1':
@@ -45,6 +61,7 @@ $(function(){
                 {
                     write_it(this.id);
                 }
+                break;
             case '+':
             case '-':
             case '/':
@@ -56,6 +73,30 @@ $(function(){
                     };
                     write_it(this.id);
                 }
+                break;
+            case 'right':
+                {
+                    if ($(".cursor").next().length == 0){
+                        break;
+                    }
+                    var cur = $(".cursor");
+                    cur.removeClass("cursor");
+                    cur.next().addClass("cursor");
+                }
+                break;
+            case 'left':
+                {
+                    if ($(".cursor").prev().length == 0){
+                        break;
+                    }
+                    var cur = $(".cursor");
+                    cur.removeClass("cursor");
+                    cur.prev().addClass("cursor");
+                }
+                break;
+            case 'up':
+                break;
+            case 'down':
                 break;
             case 'clear':
                 {
@@ -78,5 +119,6 @@ $(function(){
                 break;
             default: break;
         };
+        update_scroller();
     });
 });

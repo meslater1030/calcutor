@@ -25,6 +25,7 @@
 }
 #screen .input ins, #screen .y_func ins {
     text-decoration: none;
+    white-space: pre;
 }
 
 #screen .output {
@@ -121,6 +122,6 @@
     padding-right: 0.5em;
 }
 
-.hide {
+.hide, #buttons .second, #buttons .alpha {
     display: none;
 }
