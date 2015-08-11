@@ -4,8 +4,8 @@ $(function(){
     var output = "";
 
     setInterval(function(){
-        if ($(".cursor").text() == ""){
-            $(".cursor").text(" ")
+        if ($(".home .input:last .cursor").text() == ""){
+            $(".home .input:last .cursor").text(" ")
         }
         if ($(".cursor").css("background-color") == "transparent"){
             $(".cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
@@ -200,6 +200,11 @@ $(function(){
                     $(".alpha").toggle();
                 }
                 break;
+            case 'y=':
+                {
+                    $(".home").toggle();
+                    $(".yequals").toggle();
+                }
             case 'ENTER':
                 {
                     if (input == ""){
