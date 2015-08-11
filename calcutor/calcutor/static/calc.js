@@ -101,13 +101,14 @@ $(function(){
 
 
     $("#buttons #graph").click(function(event){
+        menu = "graph";
         $.ajax({
             type: "POST",
             url: "/graph/",
             data: {input: "2X + 1"}
         }).done(function(response){
             output = response.output;
-            $(".graph").html('<img src="data:image/png;base64,' + output + '" />');
+            $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
             $(".home").hide();
             $(".graph").show();
             input = "";
