@@ -12,7 +12,6 @@
     box-shadow: inset 0 0 10px black;
     padding: 1em;
     padding-bottom: 2em;
-    word-wrap: break-word;
     background: linear-gradient(to bottom, rgba(127,154,101,0.7) 0%,rgba(127,154,101,0.7) 100%), url(https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Icon_robot.svg/1280px-Icon_robot.svg.png) repeat 0 0;
     background-size: 100%;
 }
@@ -26,6 +25,7 @@
 #screen .input ins, #screen .y_func ins {
     text-decoration: none;
     white-space: pre;
+    float: left;
 }
 
 #screen .output {
