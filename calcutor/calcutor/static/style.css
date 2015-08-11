@@ -121,3 +121,16 @@
 .hide {
     display: none;
 }
+
+.menu ul {
+    list-style-type: none;
+    display: inline;
+}
+
+.menu ul li {
+    display: inline;
+}
+
+.menu p {
+    margin: 0;
+}

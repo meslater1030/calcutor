@@ -202,4 +202,16 @@ $(function(){
         update_cursor();
     });
 
+    /* MENU FUNCTIONALITY
+    Shows and hides menus on the appropriate button push
+    */
+
+    $("#math_menu").hide();
+    $("#math").click(function(event){
+        $("#math_menu").toggle();
+        $cursor.toggle();
+    });
+
 });
+
+

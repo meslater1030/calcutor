@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from pyramid.view import view_config
-from scripts import fourFn, graph_parse
+from scripts import simple_math, graph_parse
 from pyparsing import ParseException
 
 ERROR_MSG = b"ERR: SYNTAX"
@@ -14,20 +14,20 @@ def home_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
         try:
-            input = fourFn.clean_string(input)
+            input = simple_math.clean_string(input)
         except SyntaxError:
             return {'output': ERROR_MSG}
         try:
-            fourFn.BNF().parseString(input)
+            simple_math.BNF().parseString(input)
             try:
-                output = fourFn.evaluateStack()
+                output = simple_math.evaluateStack()
             except ValueError:
                 return {'output': b"ERR: DOMAIN"}
         except ParseException:
             return {'output': ERROR_MSG}
         if float.is_integer(output):
             output = int(output)
-        output = fourFn.sci_notation(output)
+        output = simple_math.sci_notation(output)
         output = unicode(output).encode('utf-8')
         return {'output': output}
     return {}
@@ -38,7 +38,7 @@ def graph_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
         try:
-            input = fourFn.clean_string(input)
+            input = simple_math.clean_string(input)
         except SyntaxError:
             return {'output': ERROR_MSG}
         graph_parse.graph_parse(input)
