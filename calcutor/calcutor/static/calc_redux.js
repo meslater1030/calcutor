@@ -2,6 +2,7 @@ $(function(){
     var last_input = "";
     var input = "";
     var output = "";
+    var menu = ".home";
 
     setInterval(function(){
         if ($(".home .input:last .cursor").text() == ""){
@@ -19,13 +20,13 @@ $(function(){
         $("#screen").scrollTop($("#screen")[0].scrollHeight);
     };
     var write_it = function(token){
-        var curr = $(".home .input:last .cursor");
-        curr.text(token);
-        curr.removeClass('cursor');
-        if (curr.next().length == 0){
-            curr.after("<ins></ins>")
+        var cur = $(menu + " .cursor");
+        cur.text(token);
+        cur.removeClass('cursor');
+        if (cur.next().length == 0){
+            cur.after("<ins></ins>")
         }
-        curr.next().addClass('cursor');
+        cur.next().addClass('cursor');
         input += token;
     };
     var send_it = function(string){
@@ -180,6 +181,7 @@ $(function(){
                 break;
             case 'clear':
                 {
+                    $(".yequals").hide();
                     $(".graph").hide();
                     $(".home").show();
                     $(".home").empty();
@@ -200,11 +202,13 @@ $(function(){
                     $(".alpha").toggle();
                 }
                 break;
-            case 'y=':
+            case 'y_equals':
                 {
+                    menu = ".yequals";
                     $(".home").toggle();
                     $(".yequals").toggle();
                 }
+                break;
             case 'ENTER':
                 {
                     if (input == ""){
