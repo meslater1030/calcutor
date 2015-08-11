@@ -2,7 +2,7 @@ $(function(){
     var output = "";
     var last_input = "";
     var input = "";
-    var operators = ["/", "*", "+", "-"];
+    var operators = ["/", "*", "+", "-", "\u00B2"];
     var idx = 0;
     var $cursor = $("<p>", {
         id: "cursor",
@@ -110,8 +110,9 @@ $(function(){
     };
 
     $("#buttons").click(function(event){
-        update_cursor();
         update_scroller();
+        update_cursor();
+        console.log('here');
     });
 
 });

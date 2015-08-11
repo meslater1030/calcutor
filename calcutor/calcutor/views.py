@@ -11,7 +11,8 @@ from pyparsing import ParseException
 def my_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
-        input = input.replace('\u02c9', '-')
+        for unic, byte in [('\u02c9', '-'), ('\u00B2', '^2')]:
+            input = input.replace(unic, byte)
         try:
             fourFn.BNF().parseString(input)
             output = fourFn.evaluateStack()
