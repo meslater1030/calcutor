@@ -24,13 +24,12 @@ $(function(){
     /* Functionality related to the 2nd key/yellow inputs
     */
     $(".second").hide()
-    $("#second_mode").click(function(event){
+    $("#second_mode, .second").click(function(event){
         $(".default").toggle();
         $(".second").toggle();
     })
-
     $(".alpha").hide()
-    $("#alpha_mode").click(function(event){
+    $("#alpha_mode, .alpha").click(function(event){
         $(".default").toggle();
         $(".alpha").toggle();
     })

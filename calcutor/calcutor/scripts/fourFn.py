@@ -98,6 +98,7 @@ fn = {"sin": math.sin,
       "cos": math.cos,
       "tan": math.tan,
       "abs": abs,
+      "sqrt": math.sqrt,
       "trunc": lambda a: int(a),
       "round": round,
       "sgn": lambda a: abs(a) > epsilon and cmp(a, 0) or 0}
@@ -137,7 +138,9 @@ def checkParens(input):
 def clean_string(input):
     if re.search(r'[+\-*/=]{2,}', input):
         raise SyntaxError
-    for unic, byte in [('\u02c9', '-'), ('\u00B2', '^2')]:
+    for unic, byte in [('\u02c9', '-'),
+                       ('\u00B2', '^2'),
+                       (u'\u221a', 'sqrt')]:
         input = input.replace(unic, byte)
     for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
         input = re.sub(reg_ex, r'\1 * \2', input)
@@ -146,7 +149,7 @@ def clean_string(input):
 
 
 def sci_notation(output):
-    if output >= 10000000000 and output.isalpha == False:
+    if output >= 10000000000 and output.isalpha() is False:
         return '%e' % output
     else:
         return output

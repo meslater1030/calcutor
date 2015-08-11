@@ -18,6 +18,7 @@ def home_view(request):
         except SyntaxError:
             return {'output': ERROR_MSG}
         try:
+            import pdb; pdb.set_trace()
             fourFn.BNF().parseString(input)
             output = fourFn.evaluateStack()
         except ParseException:
@@ -25,7 +26,6 @@ def home_view(request):
         if float.is_integer(output):
             output = int(output)
         output = fourFn.sci_notation(output)
-        import pdb; pdb.set_trace()
         output = unicode(output).encode('utf-8')
         return {'output': output}
     return {}
@@ -35,6 +35,8 @@ def home_view(request):
 def graph_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
-        for unic, byte in [('\u02c9', '-'), ('\u00B2', '^2')]:
+        for unic, byte in [('\u02c9', '-'),
+                           ('\u00B2', '^2'),
+                           ('\u221a', 'sqrt')]:
             input = input.replace(unic, byte)
         graph_parse.graph_parse(input)
