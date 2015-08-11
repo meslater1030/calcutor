@@ -100,6 +100,9 @@ fn = {"sin": math.sin,
       "abs": abs,
       "sqrt": math.sqrt,
       "log": math.log,
+      "acos": math.acos,
+      "asin": math.asin,
+      "atan": math.atan,
       "trunc": lambda a: int(a),
       "round": round,
       "sgn": lambda a: abs(a) > epsilon and cmp(a, 0) or 0}
@@ -143,7 +146,10 @@ def clean_string(input):
         raise SyntaxError
     for unic, byte in [('\u02c9', '-'),
                        ('\u00B2', '^2'),
-                       (u'\u221a', 'sqrt')]:
+                       (u'\u221a', 'sqrt'),
+                       (u'sin^-1', 'asin'),
+                       (u'cos^-1', 'acos'),
+                       (u'tan^-1', 'atan')]:
         input = input.replace(unic, byte)
     for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
         input = re.sub(reg_ex, r'\1 * \2', input)
