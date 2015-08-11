@@ -4,13 +4,13 @@ $(function(){
     var output = "";
 
     setInterval(function(){
-        if ($(".home .input:last .cursor").text() == ""){
-            $(".home .input:last .cursor").text(" ")
+        if ($(".cursor").text() == ""){
+            $(".cursor").text(" ")
         }
-        if ($(".home .input:last .cursor").css("background-color") == "transparent"){
-            $(".home .input:last .cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
+        if ($(".cursor").css("background-color") == "transparent"){
+            $(".cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
         } else {
-            $(".home .input:last .cursor").css("background-color", "rgba(0, 0, 0, 0)");
+            $(".cursor").css("background-color", "rgba(0, 0, 0, 0)");
         };
 
     }, 500);
