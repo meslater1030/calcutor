@@ -42,3 +42,5 @@ def graph_view(request):
         except SyntaxError:
             return {'output': ERROR_MSG}
         graph_parse.graph_parse(input)
+        output = graph_parse.graph_parse(input)
+        return {'output': output}

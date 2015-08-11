@@ -59,7 +59,35 @@ $(function(){
                         write_it('Ans');
                     };
                 }
+            case 'A':
+            case 'B':
+            case 'C':
+            case 'D':
+            case 'E':
+            case 'F':
+            case 'G':
+            case 'H':
+            case 'I':
+            case 'J':
+            case 'K':
+            case 'L':
+            case 'M':
+            case 'N':
+            case 'O':
+            case 'P':
+            case 'Q':
+            case 'R':
+            case 'S':
+            case 'T':
+            case 'U':
+            case 'V':
+            case 'W':
+            case 'X':
+            case 'Y':
+            case 'Z':
             case '0':
+            case '?':
+            case ':':
             case '1':
             case '2':
             case '3':
@@ -69,6 +97,15 @@ $(function(){
             case '7':
             case '8':
             case '9':
+            case "\u03C0":
+            case "\u02C9":
+            case "\u2148":
+            case "\u0022":
+            case "\u2423":
+            case "\u221A(":
+            case 'ln(':
+            case 'e^(':
+            case 'e':
             case '10^(':
             case 'log(':
             case 'sin(':
@@ -82,7 +119,10 @@ $(function(){
             case ')':
             case '{':
             case '}':
+            case '[':
+            case ']':
             case ',':
+            case 'Ans':
                 {
                     write_it(this.id);
                 }
@@ -140,10 +180,24 @@ $(function(){
                 break;
             case 'clear':
                 {
+                    $(".graph").hide();
+                    $(".home").show();
                     $(".home").empty();
                     $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
                     $(".home").append("<p class='output'></p>");
                     input = "";
+                }
+                break;
+            case 'second_mode':
+                {
+                    $(".default").toggle();
+                    $(".second").toggle();
+                }
+                break;
+            case 'alpha_mode':
+                {
+                    $(".default").toggle();
+                    $(".alpha").toggle();
                 }
                 break;
             case 'ENTER':
@@ -157,6 +211,24 @@ $(function(){
                     input = "";
                 }
                 break;
+            case 'graph':
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: "/graph/",
+                        data: {input: "2X + 1"}
+                    }).done(function(response){
+                        output = response.output;
+                        $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
+                        $(".home").hide();
+                        $(".graph").show();
+                        input = "";
+                        idx = 0;
+                        update_cursor();
+                    }).fail(function(){
+                        $(".home .output:last").text("Something Went Wrong");
+                    });
+                }
             default: break;
         };
         update_scroller();

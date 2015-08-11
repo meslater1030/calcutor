@@ -126,6 +126,18 @@
     display: none;
 }
 
+.graph {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+#graphimg {
+    height: 15em;
+    margin-top: -1em;
+    display: inline-block;
+}
+
 .menu ul {
     list-style-type: none;
     display: inline;
@@ -153,3 +165,4 @@
         padding-right: 0.2em;
     }
 }
+
