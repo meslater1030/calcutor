@@ -140,6 +140,8 @@ $(function(){
                 break;
             case 'clear':
                 {
+                    $(".graph").hide();
+                    $(".home").show();
                     $(".home").empty();
                     $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
                     $(".home").append("<p class='output'></p>");
@@ -157,6 +159,24 @@ $(function(){
                     input = "";
                 }
                 break;
+            case 'graph':
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: "/graph/",
+                        data: {input: "2X + 1"}
+                    }).done(function(response){
+                        output = response.output;
+                        $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
+                        $(".home").hide();
+                        $(".graph").show();
+                        input = "";
+                        idx = 0;
+                        update_cursor();
+                    }).fail(function(){
+                        $(".home .output:last").text("Something Went Wrong");
+                    });
+                }
             default: break;
         };
         update_scroller();
