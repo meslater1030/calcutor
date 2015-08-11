@@ -101,7 +101,7 @@ $(function(){
                     if($(cur.prevAll()[35]).length == 0){
                         $(".input:last ins:first").addClass("cursor");
                         break;
-                    }
+                    };
                     $(cur.prevAll()[35]).addClass("cursor");
                 }
                 break;
@@ -112,16 +112,17 @@ $(function(){
                     if($(cur.nextAll()[35]).length == 0){
                         $(".input:last ins:last").addClass("cursor");
                         break;
-                    }
+                    };
                     $(cur.nextAll()[35]).addClass("cursor");
                 }
-
                 break;
             case 'delete':
                 {
                     var cur = $(".cursor");
-                    cur.next().addClass('cursor');
-                    cur.remove()
+                    if (cur.next().length != 0){
+                        cur.next().addClass('cursor');
+                        cur.remove()
+                    };
                 }
                 break;
             case 'clear':
