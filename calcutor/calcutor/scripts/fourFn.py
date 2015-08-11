@@ -146,7 +146,7 @@ def clean_string(input):
 
 
 def sci_notation(output):
-    if output >= 10000000000:
+    if output >= 10000000000 and output.isalpha == False:
         return '%e' % output
     else:
         return output
