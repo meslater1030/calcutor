@@ -133,6 +133,7 @@ $(function(){
                         break;
                     }
                     var cur = $(".cursor");
+                    cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
                     cur.next().addClass("cursor");
                 }
@@ -143,6 +144,7 @@ $(function(){
                         break;
                     }
                     var cur = $(".cursor");
+                    cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
                     cur.prev().addClass("cursor");
                 }
@@ -223,6 +225,16 @@ $(function(){
                     $(".prb_submenu").hide();
                     $(".input").hide();
                     $(".output").hide();
+                }
+                break;
+            case 'quit':
+                {
+                    var cur = $(".cursor");
+                    cur.removeClass("cursor");
+                    $("#math_menu").hide();
+                    $(".input").show();
+                    $(".output").show();
+                    $(".input").append("<ins class='cursor'></ins>");
                 }
                 break;
             case 'graph':
