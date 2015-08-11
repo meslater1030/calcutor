@@ -157,8 +157,23 @@ $(function(){
                     input = "";
                 }
                 break;
+            case 'math':
+                {
+                    var cur = $(".cursor");
+                    cur.removeClass("cursor");
+                    var $math_submenu = $("#math_submenu");
+                    $math_submenu.addClass("cursor");
+                    $("#math_menu").show();
+                    $(".num_submenu").hide();
+                    $(".cpx_submenu").hide();
+                    $(".prb_submenu").hide();
+                    $(".input").hide();
+                    $(".output").hide();
+                }
+                break;
             default: break;
         };
         update_scroller();
     });
+    $("#math_menu").hide();
 });
