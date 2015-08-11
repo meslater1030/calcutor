@@ -17,8 +17,23 @@ $(function(){
             'white-space': 'pre'
         }
     });
+
     $(".home").append($cursor);
     var menu = "home";
+
+    /* Functionality related to the 2nd key/yellow inputs
+    */
+    $(".second").hide()
+    $("#second_mode").click(function(event){
+        $(".default").toggle();
+        $(".second").toggle();
+    })
+
+    $(".alpha").hide()
+    $("#alpha_mode").click(function(event){
+        $(".default").toggle();
+        $(".alpha").toggle();
+    })
 
     /* ---- BASIC MATH ----
        0-9, + - * / ( ) and negative character
@@ -31,8 +46,43 @@ $(function(){
             };
             input = input.slice(0, idx) +  $(this).attr( "id" ) + input.slice(idx);
             $(".home .input:last").text(input);
-            idx += 1;
+            if (idx > 37) {
+                idx = 0;
+            } else {
+                idx += 1;
+                idy += 1;
+            }
         } else if (menu == "yeq"){
+
+        };
+    });
+
+    $("#buttons .operator_four").click(function(event) {
+        if (menu == "home") {
+            input = input.slice(0, idx) + $(this).attr( "id" ) + input.slice(idx);
+            $(".home .input:last").text(input);
+            if (idx > 33) {
+                idx = 0;
+                idy += 1;
+            } else {
+                idx += 4;
+            }
+        } else if (menu == "yeq") {
+
+        };
+    });
+
+    $("#buttons .operator_three").click(function(event){
+        if (menu == "home") {
+            input = input.slice(0, idx) + $(this).attr( "id" ) + input.slice(idx);
+            $(".home .input:last").text(input);
+            if (idx > 34) {
+                idx = 0;
+                idy += 1;
+            } else {
+                idx += 3;
+            }
+        } else if (menu == "yeq") {
 
         };
     });
