@@ -23,6 +23,10 @@
     float: left;
     font-size: 1em;
 }
+#screen .input ins, #screen .y_func ins {
+    text-decoration: none;
+    white-space: pre;
+}
 
 #screen .output {
     height: 1em;
@@ -118,6 +122,6 @@
     padding-right: 0.5em;
 }
 
-.hide {
+.hide, #buttons .second, #buttons .alpha {
     display: none;
 }
