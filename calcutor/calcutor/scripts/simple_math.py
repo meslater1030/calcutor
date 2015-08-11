@@ -1,3 +1,5 @@
+# This module is heavily modified from the following:
+#
 # fourFn.py
 #
 # Demonstration of the pyparsing module, implementing a simple 4-function
