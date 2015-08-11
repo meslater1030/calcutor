@@ -13,11 +13,11 @@ $(function(){
             position: "absolute",
             float: 'left',
             width: '100%',
-            font: '1.5em Droid Sans Mono',
+            font: '1em Droid Sans Mono',
             'white-space': 'pre'
         }
     });
-    $("#screen").append($cursor);
+    $(".home").append($cursor);
     var menu = "home";
 
     /* ---- BASIC MATH ----
@@ -30,21 +30,21 @@ $(function(){
                 idx += 3;
             };
             input = input.slice(0, idx) +  $(this).attr( "id" ) + input.slice(idx);
-            $("#screen .input:last").text(input);
+            $(".home .input:last").text(input);
             idx += 1;
-        } else if (menu == "y="){
+        } else if (menu == "yeq"){
 
         };
     });
 
     /* ---- SUBMENUS ----
-       y=
+       yeq
        navigation
     */
     $("#y_equals").click(function(event){
         $(".home").hide();
-        $(".graph_set").show();
-        var menu = "y=";
+        $(".yeq").show();
+        menu = "yeq";
     });
     $("#buttons #up").click(function(event){
         if (menu != "home") {
@@ -70,7 +70,7 @@ $(function(){
 
     $("#buttons #delete").click(function(event){
         input = input.slice(0, idx) + input.slice(idx + 1);
-        $("#screen .input:last").text(input);
+        $(".home .input:last").text(input);
     });
 
     $("#buttons #clear").click(function(event){
@@ -80,7 +80,10 @@ $(function(){
         input = "";
         idx = 0;
         $(".home").append($cursor);
-        update_cursor()
+        update_cursor();
+        $("." + menu).hide();
+        $(".home").show();
+        menu = 'home';
     });
 
 
@@ -104,16 +107,16 @@ $(function(){
             data: {input: input}
         }).done(function(response){
             output = response.output;
-            $("#screen .output:last").text(output);
-            $("#screen").append("<p class='input'></p>");
-            $("#screen").append("<p class='output'></p>");
+            $(".home .output:last").text(output);
+            $(".home").append("<p class='input'></p>");
+            $(".home").append("<p class='output'></p>");
             input = "";
             idx = 0;
             update_cursor();
         }).fail(function(){
-            $("#screen .output:last").text("Something Went Wrong");
-            $("#screen").append("<p class='input'></p>");
-            $("#screen").append("<p class='output'></p>");
+            $(".home .output:last").text("Something Went Wrong");
+            $(".home").append("<p class='input'></p>");
+            $(".home").append("<p class='output'></p>");
             input = "";
             idx = 0;
             update_cursor();
@@ -128,19 +131,19 @@ $(function(){
     var update_cursor = function(){
         if (menu == "home") {
             $cursor.text(new Array(idx+1).join(' ') + "|");
-            $cursor.css("top", $("#screen .input:last").position().top);
-            $cursor.css("left", $("#screen .input:last").position().left);
-        } else if (menu == "y=") {
+            $cursor.css("top", $(".home .input:last").position().top);
+            $cursor.css("left", $(".home .input:last").position().left);
+        } else if (menu == "yeq") {
             $cursor.text(new Array(idx+1).join(' ') + "|");
-            $cursor.css("top", $("#screen .y_func")[idy].position().top);
-            $cursor.css("left", $("#screen .y_func").position().left);
+            $cursor.css("top", $(".yeq .y_func")[idy].top);
+            $cursor.css("left", $(".yeq .y_func")[idy].left);
         };
     };
 
     var update_scroller = function(){
         if (menu == "home") {
             $("#screen").scrollTop($("#screen")[0].scrollHeight);
-        } else if (menu == "y=") {
+        } else if (menu == "yeq") {
             $("#screen").scrollTop($("#screen .y_func")[idy].scrollHeight);
         };
     };

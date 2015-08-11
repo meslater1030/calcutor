@@ -1,8 +1,8 @@
 #screen {
     overflow-y: hidden;
     overflow-x: hidden;
-    width: 30em;
-    height: 20em;
+    width: 23em;
+    height: 12em;
     border: 2px solid;
     -webkit-border-radius:10px;
     -moz-border-radius:10px;
@@ -11,30 +11,34 @@
     font-family: 'Droid Sans Mono';
     box-shadow: inset 0 0 10px black;
     padding: 1em;
-    width: 28em;
+    padding-bottom: 2em;
     word-wrap: break-word;
+    background: linear-gradient(to bottom, rgba(127,154,101,0.7) 0%,rgba(127,154,101,0.7) 100%), url(https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Icon_robot.svg/1280px-Icon_robot.svg.png) repeat 0 0;
+    background-size: 100%;
 }
 
 #screen .input, #screen .y_func {
     width: 100%;
     margin: 1px;
     float: left;
-    font-size: 1.5em;
+    font-size: 1em;
 }
 
 #screen .output {
     height: 1em;
     margin: 1px;
     float: right;
-    font-size: 1.5em;
+    font-size: 1em;
 }
 
 #buttons button {
     display: inline-block;
-    width: 6em;
-    height: 3em;
+    width: 5em;
+    height: 2.5em;
     font: 1em;
     margin: 0.3em;
+    margin-top: 0em;
+    margin-bottom: 0em;
     -webkit-border-radius:10px;
     -moz-border-radius:10px;
     border-radius:10px;
@@ -44,50 +48,76 @@
 
 #top-row button {
     height: 2em;
+    margin-top: 0em;
 }
 
 #buttons {
     padding-left: 0.6em;
-    padding-top: 0.3em;
 }
 
 #calcutor {
     margin-right: auto;
     margin-left: auto;
-    width: 30em;
+    width: 25em;
     border: 2px solid black;
     padding: 1em;
     -webkit-border-radius:20px;
     -moz-border-radius:20px;
     border-radius:20px;
-    background-color: grey;
+    background-color: #3D352A;
     box-shadow: 5px 5px 20px black;
     margin-top: 1em;
     margin-bottom: 1em;
 }
 
-.blue {
+.blue-button {
     background-color: #3B4990;
     color: white;
 }
 
-.yellow {
+.yellow-button {
     background-color: #FFD700;
 }
 
-.green {
+.yellow {
+    color: #FFD700;
+}
+
+.green-button {
     background-color: #37BC61;
 }
 
-.black {
+.green {
+    color: #37BC61;
+    display: inline-block;
+    float: right;
+}
+
+.black-button {
     background-color: black;
     color: white;
 }
 
-.white {
+.white-button {
     background-color: #C2C2C2;
 }
 
-.hide{
+.submenues {
+    font-family: sans-serif;
+    margin-bottom: 0em;
+    margin-top: 0.1em;
+}
+
+.yellow {
+    display: inline-block;
+    font-size: 0.6em;
+    width: 6.5em;
+    height: 1em;
+    text-align: left;
+    padding-left: 0.7em;
+    padding-right: 0.5em;
+}
+
+.hide {
     display: none;
 }
