@@ -33,9 +33,9 @@ def my_view(request):
 def graph_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
-        for unic, byte in [('\u02c9', '-'), ('\u00B2', '^2')]:
-            input = input.replace(unic, byte)
-        graph_parse.graph_parse(input)
+        input = clean_string(input)
+        output = graph_parse.graph_parse(input)
+        return {'output': output}
 
 
 def clean_string(input):

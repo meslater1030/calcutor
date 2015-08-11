@@ -89,13 +89,41 @@ $(function(){
 
     /* ---- SUBMENUS ----
        yeq
+       graph
        navigation
     */
     $("#y_equals").click(function(event){
         $(".home").hide();
         $(".yeq").show();
         menu = "yeq";
+        update_cursor();
     });
+
+
+    $("#buttons #graph").click(function(event){
+        $.ajax({
+            type: "POST",
+            url: "/graph/",
+            data: {input: "2X + 1"}
+        }).done(function(response){
+            output = response.output;
+            $(".graph").html('<img src="data:image/png;base64,' + output + '" />');
+            $(".home").hide();
+            $(".graph").show();
+            input = "";
+            idx = 0;
+            update_cursor();
+        }).fail(function(){
+            $(".home .output:last").text("Something Went Wrong");
+            $(".home").append("<p class='input'></p>");
+            $(".home").append("<p class='output'></p>");
+            input = "";
+            idx = 0;
+            update_cursor();
+        });
+    });
+
+
     $("#buttons #up").click(function(event){
         if (menu != "home") {
             idy -= 1;
