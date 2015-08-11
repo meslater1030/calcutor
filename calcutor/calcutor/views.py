@@ -10,7 +10,7 @@ ERROR_MSG = b"ERR: SYNTAX"
 
 @view_config(route_name='home', xhr=True, renderer='json')
 @view_config(route_name='home', renderer='templates/index.jinja2')
-def my_view(request):
+def home_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
         try:
@@ -24,6 +24,8 @@ def my_view(request):
             return {'output': ERROR_MSG}
         if float.is_integer(output):
             output = int(output)
+        output = fourFn.sci_notation(output)
+        import pdb; pdb.set_trace()
         output = unicode(output).encode('utf-8')
         return {'output': output}
     return {}

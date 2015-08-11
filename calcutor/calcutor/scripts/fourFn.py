@@ -143,3 +143,10 @@ def clean_string(input):
         input = re.sub(reg_ex, r'\1 * \2', input)
     checkParens(input)
     return input
+
+
+def sci_notation(output):
+    if output >= 10000000000:
+        return '%e' % output
+    else:
+        return output
