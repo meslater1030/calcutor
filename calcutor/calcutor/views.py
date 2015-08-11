@@ -2,28 +2,32 @@
 from __future__ import unicode_literals
 
 from pyramid.view import view_config
-from scripts import fourFn, graph_parse
+from scripts import simple_math, graph_parse
 from pyparsing import ParseException
-import re
-ERROR_MSG = b"That isn't a valid calculator input."
+
+ERROR_MSG = b"ERR: SYNTAX"
 
 
 @view_config(route_name='home', xhr=True, renderer='json')
 @view_config(route_name='home', renderer='templates/index.jinja2')
-def my_view(request):
+def home_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
         try:
-            input = clean_string(input)
-        except ValueError:
+            input = simple_math.clean_string(input)
+        except SyntaxError:
             return {'output': ERROR_MSG}
         try:
-            fourFn.BNF().parseString(input)
-            output = fourFn.evaluateStack()
+            simple_math.BNF().parseString(input)
+            try:
+                output = simple_math.evaluateStack()
+            except ValueError:
+                return {'output': b"ERR: DOMAIN"}
         except ParseException:
             return {'output': ERROR_MSG}
         if float.is_integer(output):
             output = int(output)
+        output = simple_math.sci_notation(output)
         output = unicode(output).encode('utf-8')
         return {'output': output}
     return {}
@@ -33,15 +37,10 @@ def my_view(request):
 def graph_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
-        input = clean_string(input)
+        try:
+            input = simple_math.clean_string(input)
+        except SyntaxError:
+            return {'output': ERROR_MSG}
+        graph_parse.graph_parse(input)
         output = graph_parse.graph_parse(input)
         return {'output': output}
-
-
-def clean_string(input):
-    if re.search(r'[+\-*/=]{2,}', input):
-        raise ValueError
-    for unic, byte in [('\u02c9', '-'), ('\u00B2', '^2')]:
-        input = input.replace(unic, byte)
-    input = re.sub(r'(\d+)(X)', r'\1 * \2', input)
-    return input

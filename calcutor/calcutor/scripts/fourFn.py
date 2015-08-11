@@ -9,10 +9,18 @@
 # Copyright 2003-2006 by Paul McGuire
 #
 
-from pyparsing import Literal, CaselessLiteral, Word, Combine, Group,\
-    Optional, ZeroOrMore, Forward, nums, alphas
+from pyparsing import (Literal,
+                       CaselessLiteral,
+                       Word,
+                       Combine,
+                       Optional,
+                       ZeroOrMore,
+                       Forward,
+                       nums,
+                       alphas)
 import math
 import operator
+import re
 
 exprStack = []
 
@@ -62,14 +70,19 @@ def BNF():
         pi = CaselessLiteral("PI")
 
         expr = Forward()
-        atom = (Optional("-") + (pi | e | fnumber | ident + lpar + expr + rpar).setParseAction(pushFirst) | (lpar + expr.suppress() + rpar)).setParseAction(pushUMinus)
+        atom = ((Optional("-") + (pi | e | fnumber | ident +
+                                  lpar + expr + rpar).setParseAction(pushFirst)
+                | (lpar + expr.suppress() + rpar)).setParseAction(pushUMinus))
 
-        # by defining exponentiation as "atom [ ^ factor ]..." instead of "atom [ ^ atom ]...", we get right-to-left exponents, instead of left-to-righ
+        # by defining exponentiation as "atom [ ^ factor ]..." instead of
+        # "atom [ ^ atom ]...", we get right-to-left exponents, instead of
+        # left-to-right
         # that is, 2^3^2 = 2^(3^2), not (2^3)^2.
         factor = Forward()
         factor << atom + ZeroOrMore((expop + factor).setParseAction(pushFirst))
 
-        term = factor + ZeroOrMore((multop + factor).setParseAction(pushFirst ))
+        term = factor + ZeroOrMore((multop +
+                                    factor).setParseAction(pushFirst))
         expr << term + ZeroOrMore((addop + term).setParseAction(pushFirst))
         bnf = expr
     return bnf
@@ -85,6 +98,11 @@ fn = {"sin": math.sin,
       "cos": math.cos,
       "tan": math.tan,
       "abs": abs,
+      "sqrt": math.sqrt,
+      "log": math.log,
+      "acos": math.acos,
+      "asin": math.asin,
+      "atan": math.atan,
       "trunc": lambda a: int(a),
       "round": round,
       "sgn": lambda a: abs(a) > epsilon and cmp(a, 0) or 0}
@@ -102,9 +120,45 @@ def evaluateStack():
         return math.pi  # 3.1415926535
     elif op == "E":
         return math.e  # 2.718281828
+    elif op == "ln":
+        return math.log(evaluateStack(), math.e)
     elif op in fn:
         return fn[op](evaluateStack())
     elif op[0].isalpha():
         return 0
     else:
         return float(op)
+
+
+def checkParens(input):
+    count = 0
+    for x in input:
+        if x == "(":
+            count += 1
+        elif x == ")":
+            count -= 1
+        if count == -1:
+            raise SyntaxError
+
+
+def clean_string(input):
+    if re.search(r'[+\-*/=]{2,}', input):
+        raise SyntaxError
+    for unic, byte in [('\u02c9', '-'),
+                       ('\u00B2', '^2'),
+                       (u'\u221a', 'sqrt'),
+                       (u'sin^-1', 'asin'),
+                       (u'cos^-1', 'acos'),
+                       (u'tan^-1', 'atan')]:
+        input = input.replace(unic, byte)
+    for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
+        input = re.sub(reg_ex, r'\1 * \2', input)
+    checkParens(input)
+    return input
+
+
+def sci_notation(output):
+    if output >= 10000000000 and output.isalpha() is False:
+        return '%e' % output
+    else:
+        return output
