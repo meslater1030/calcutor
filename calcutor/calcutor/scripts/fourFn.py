@@ -20,6 +20,7 @@ from pyparsing import (Literal,
                        alphas)
 import math
 import operator
+import re
 
 exprStack = []
 
@@ -130,4 +131,15 @@ def checkParens(input):
         elif x == ")":
             count -= 1
         if count == -1:
-            raise SyntaxError("ERR: SYNTAX")
+            raise SyntaxError
+
+
+def clean_string(input):
+    if re.search(r'[+\-*/=]{2,}', input):
+        raise SyntaxError
+    for unic, byte in [('\u02c9', '-'), ('\u00B2', '^2')]:
+        input = input.replace(unic, byte)
+    for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
+        input = re.sub(reg_ex, r'\1 * \2', input)
+    checkParens(input)
+    return input
