@@ -18,7 +18,6 @@ def home_view(request):
         except SyntaxError:
             return {'output': ERROR_MSG}
         try:
-            import pdb; pdb.set_trace()
             fourFn.BNF().parseString(input)
             output = fourFn.evaluateStack()
         except ParseException:
