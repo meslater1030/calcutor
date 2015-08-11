@@ -23,6 +23,9 @@
     float: left;
     font-size: 1em;
 }
+#screen .input ins, #screen .y_func ins {
+    text-decoration: none;
+}
 
 #screen .output {
     height: 1em;

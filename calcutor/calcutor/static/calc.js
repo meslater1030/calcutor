@@ -25,14 +25,8 @@ $(function(){
     */
     $(".second").hide()
     $("#second_mode").click(function(event){
-        $(".default").toggle();
-        $(".second").toggle();
-    })
-
-    $(".alpha").hide()
-    $("#alpha_mode").click(function(event){
-        $(".default").toggle();
-        $(".alpha").toggle();
+        $(".first").toggle()
+        $(".second").toggle()
     })
 
     /* ---- BASIC MATH ----
@@ -179,12 +173,13 @@ $(function(){
            -update scroll
     */
     var update_cursor = function(){
+        console.log(idx, idy);
         if (menu == "home") {
-            $cursor.text(new Array(idx+1).join(' ') + "|");
+            $cursor.text(new Array(idy+1).join('\n') + new Array(idx+1).join(' ') + "|");
             $cursor.css("top", $(".home .input:last").position().top);
             $cursor.css("left", $(".home .input:last").position().left);
         } else if (menu == "yeq") {
-            $cursor.text(new Array(idx+1).join(' ') + "|");
+            $cursor.text(new Array(idy).join('\n') + new Array(idx+1).join(' ') + "|");
             $cursor.css("top", $(".yeq .y_func")[idy].top);
             $cursor.css("left", $(".yeq .y_func")[idy].left);
         };
