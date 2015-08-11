@@ -48,6 +48,17 @@ $(function(){
     $("#buttons button").click(function(event) {
         $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
         switch ($(this).attr('id')) {
+            case '+':
+            case '-':
+            case '/':
+            case '*':
+            case '^':
+            case '\u00B2':
+                {
+                    if (input == ""){
+                        write_it('Ans');
+                    };
+                }
             case '0':
             case '1':
             case '2':
@@ -58,19 +69,21 @@ $(function(){
             case '7':
             case '8':
             case '9':
+            case '10^(':
+            case 'log(':
+            case 'sin(':
+            case 'tan(':
+            case 'cos(':
+            case 'sin^-1(':
+            case 'tan^-1(':
+            case 'cos^-1(':
+            case '(':
+            case '(':
+            case ')':
+            case '{':
+            case '}':
+            case ',':
                 {
-                    write_it(this.id);
-                }
-                break;
-            case '+':
-            case '-':
-            case '/':
-            case '*':
-            case '\u00B2':
-                {
-                    if (input == ""){
-                        write_it('Ans');
-                    };
                     write_it(this.id);
                 }
                 break;
@@ -101,7 +114,7 @@ $(function(){
                     if($(cur.prevAll()[35]).length == 0){
                         $(".input:last ins:first").addClass("cursor");
                         break;
-                    }
+                    };
                     $(cur.prevAll()[35]).addClass("cursor");
                 }
                 break;
@@ -112,16 +125,17 @@ $(function(){
                     if($(cur.nextAll()[35]).length == 0){
                         $(".input:last ins:last").addClass("cursor");
                         break;
-                    }
+                    };
                     $(cur.nextAll()[35]).addClass("cursor");
                 }
-
                 break;
             case 'delete':
                 {
                     var cur = $(".cursor");
-                    cur.next().addClass('cursor');
-                    cur.remove()
+                    if (cur.next().length != 0){
+                        cur.next().addClass('cursor');
+                        cur.remove()
+                    };
                 }
                 break;
             case 'clear':
