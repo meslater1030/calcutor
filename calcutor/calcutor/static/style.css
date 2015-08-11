@@ -17,7 +17,7 @@
     background-size: 100%;
 }
 
-#screen .input {
+#screen .input, #screen .y_func {
     width: 100%;
     margin: 1px;
     float: left;
@@ -118,3 +118,6 @@
     padding-right: 0.5em;
 }
 
+.hide {
+    display: none;
+}
