@@ -12,7 +12,7 @@ $(function(){
             position: "absolute",
             float: 'left',
             width: '100%',
-            font: '1.5em Droid Sans Mono',
+            font: '1em Droid Sans Mono',
             'white-space': 'pre'
         }
     });
@@ -28,7 +28,11 @@ $(function(){
         };
         input = input.slice(0, idx) +  $(this).attr( "id" ) + input.slice(idx);
         $("#screen .input:last").text(input);
+        if (idx > 38){
+            idx = 0;
+        } else {
         idx += 1;
+        }
     });
 
     /* ---- INPUT MODIFICATION ----
