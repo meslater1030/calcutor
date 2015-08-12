@@ -39,7 +39,7 @@ def graph_view(request):
         equations = []
         for x in xrange(10):
             try:
-                result = request.params.get('\\Y{}:'.format(str(x)))
+                result = request.params.get('\\Y{}:'.format(str(x))).strip()
             except KeyError:
                 continue
             if result:
@@ -50,8 +50,6 @@ def graph_view(request):
         try:
             for idx, eq in enumerate(equations):
                 equations[idx] = simple_math.clean_string(eq)
-                print eq
-                print equations[idx]
         except SyntaxError:
             request.response.status = 400
             return {'error': ERROR_MSG}
