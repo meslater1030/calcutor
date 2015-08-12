@@ -21,18 +21,15 @@ $(function(){
         $("#screen").scrollTop($("#screen")[0].scrollHeight);
     };
     var write_it = function(token){
-        var cur = $(menu + " .cursor");
-        cur.text(token);
-        cur.removeClass('cursor');
-        if (cur.next().length == 0){
-            cur.after("<ins> </ins>")
-        }
-        cur.next().addClass('cursor');
-        if (menu == ".home") {
-            input += token;
-        } else if (menu == ".table"){
-            tableinput += token;
-        }
+        if ( $(menu + " .cursor").is("ins") ) {
+            var cur = $(menu + " .cursor");
+            cur.text(token);
+            cur.removeClass('cursor');
+            if (cur.next().length == 0){
+                cur.after("<ins> </ins>")
+            }
+            cur.next().addClass('cursor');
+        };
     };
     var send_it = function(string){
         $.ajax({
@@ -50,9 +47,34 @@ $(function(){
             $(".home").append("<p class='output'></p>");
         });
     };
+    var get_input = function(){
+        var input = "";
+        $(".home .input:last ins").each(function(){
+            input += this.innerHTML;
+        });
+        return input.trim();
+    };
+
+    var math_ans = function(eq){
+        switch (eq) {
+            case '>Frac':
+            case '>Dec':
+            case '\u00B3':
+            case '>Rect':
+            case '>Polar':
+            case 'nPr':
+            case 'nCr':
+            case '!':
+                {
+                    if (input == ""){
+                        write_it('Ans');
+                    };
+                }
+                break;
+        };
+    };
 
     $("#buttons button").click(function(event) {
-        $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
         $(".default").show();
         $(".alpha").hide();
         $(".second").hide();
@@ -64,7 +86,7 @@ $(function(){
             case '^':
             case '\u00B2':
                 {
-                    if (menu == ".home" && input == ""){
+                    if (menu == ".home" && get_input() == ""){
                         write_it('Ans');
                     };
                 }
@@ -140,12 +162,12 @@ $(function(){
                 break;
             case 'right':
                 {
-                    if ($(".cursor").next().length == 0){
+                    if ($(menu + " .cursor").next().length == 0){
                         break;
                     } else if ($("p").hasClass("cursor")) {
                         break;
                     };
-                    var cur = $(".cursor");
+                    var cur = $(menu + " .cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
                     cur.next().addClass("cursor");
@@ -153,12 +175,12 @@ $(function(){
                 break;
             case 'left':
                 {
-                    if ($(".cursor").prev().length == 0){
+                    if ($(menu + " .cursor").prev().length == 0){
                         break;
                     } else if ($("p").hasClass("cursor")) {
                         break;
                     };
-                    var cur = $(".cursor");
+                    var cur = $(menu + " .cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
                     cur.prev().addClass("cursor");
@@ -166,7 +188,7 @@ $(function(){
                 break;
             case 'up':
                 {
-                    var cur = $(".cursor");
+                    var cur = $(menu + " .cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)");
                     if ($("p").hasClass("cursor")) {
                         var previous = cur.prev().filter(":visible");
@@ -189,14 +211,14 @@ $(function(){
                     } else if (menu == ".yequals") {
                         if (cur.parent().prev().length != 0){
                             cur.removeClass("cursor");
-                            cur.parent().prev().find("ins:not(ins:first)").first().addClass("cursor");
+                            cur.parent().prev().find("ins:first").first().addClass("cursor");
                         };
                     };
                 }
                 break;
             case 'down':
                 {
-                    var cur = $(menu + ".cursor");
+                    var cur = $(menu + " .cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     if ($("p").hasClass("cursor")) {
                         if (cur.attr('class').indexOf(cur.next().attr('class')) > -1) {
@@ -219,15 +241,15 @@ $(function(){
                     } else if (menu == ".yequals") {
                         if (cur.parent().next().length != 0){
                             cur.removeClass("cursor");
-                            cur.parent().next().find("ins:not(ins:first)").first().addClass("cursor");
+                            cur.parent().next().find("ins:first").first().addClass("cursor");
                         };
                     };
                 }
                 break;
             case 'delete':
                 {
-                    var cur = $(".cursor");
-                    if (cur.next().length != 0){
+                    var cur = $(menu + " .cursor");
+                    if (cur.next().length != 0 && cur.is("ins")){
                         cur.next().addClass('cursor');
                         cur.remove()
                     };
@@ -238,6 +260,7 @@ $(function(){
                     $(".cursor").removeClass('cursor');
                     menu = ".home";
                     $(".yequals").hide();
+                    $(".math_menu").hide();
                     $(".graph").hide();
                     $(".table").hide();
                     $(".home").show();
@@ -262,7 +285,7 @@ $(function(){
             case 'y_equals':
                 {
                     $(".cursor").removeClass("cursor");
-                    $(".yequals .y_func:first ins:not(.yequals ins:first):first").addClass('cursor');
+                    $(".yequals .y_func:first ins:first").addClass('cursor');
                     menu = ".yequals";
                     $(".home").hide();
                     $("#all_menus").show();
@@ -272,20 +295,22 @@ $(function(){
                 break;
             case 'ENTER':
                 {
+
                     if (menu == ".table"){
                         update_table();
                     } else if ($(menu + " ins").hasClass("cursor")){
-                        if (menu == ".yequals"){
-                            $("#down").click();
-                            break;
-                        };
-                        if (input == ""){
-                            input = last_input;
-                        };
-                        last_input = input;
-                        input = input.split("Ans").join(output);
-                        send_it(input);
-                        input = "";
+                            if (menu == ".yequals"){
+                                $("#down").click();
+                                break;
+                            };
+                            input = get_input()
+                            if (input == ""){
+                                input = last_input;
+                            };
+                            last_input = input;
+                            input = input.split("Ans").join(output);
+                            send_it(input);
+                            input = "";
                     } else if ($(menu + ".submenu").hasClass("cursor")){
                         var cur_id = "." + $(menu + ".cursor").attr('id');
                         $(".submenu_options").hide();
@@ -297,7 +322,7 @@ $(function(){
                         $("#all_menus").hide();
                         $(".home").show();
                         menu = ".home"
-                        console.log(cur_id)
+                        math_ans(cur_id);
                         write_it(cur_id);
                     };
                 }
@@ -310,6 +335,7 @@ $(function(){
                     $(".math_menu").show();
                     $("#all_menus").show();
                     $(".math_submenu").show();
+                    $(".graph").hide();
                     $(".num_submenu").hide();
                     $(".cpx_submenu").hide();
                     $(".prb_submenu").hide();
@@ -361,7 +387,9 @@ $(function(){
             default: break;
         };
         update_scroller();
+        $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
         $("ins:not(.cursor)").css("background-color", "rgba(0, 0, 0, 0)");
+        $("button").blur();
     });
 
     function get_equations(){
@@ -369,10 +397,10 @@ $(function(){
         for (i=0; i<10; i++){
             var yfn = "";
             var $y = $($(".y_func")[i]);
-            $y.find("ins:not(ins:first)").each(function(){
+            $y.find("ins").each(function(){
                 yfn += this.innerHTML;
             });
-            equations[$y.find("ins:first").text()] = yfn;
+            equations[$y.find("span").text()] = yfn;
         };
         return equations;
     }
@@ -403,7 +431,6 @@ $(function(){
     }
 
     $("body").keyup(function(event){
-        console.log(event.key);
         switch (event.key) {
             case "Enter":
                 {
@@ -411,11 +438,84 @@ $(function(){
                 }
                 break;
             case "Up":
-            case "Down":
-            case "Left":
-            case "Right":
+            case "ArrowUp":
                 {
-                    $("#" + event.key.toLowerCase()).click();
+                    $("#up").click();
+                }
+                break;
+            case "Down":
+            case "ArrowDown":
+                {
+                    $("#down").click();
+                }
+                break;
+            case "Left":
+            case "ArrowLeft":
+                {
+                    $("#left").click();
+                }
+                break;
+            case "Right":
+            case "ArrowRight":
+                {
+                    $("#right").click();
+                }
+                break;
+            case "Del":
+            case "Delete":
+                {
+                    $("#delete").click();
+                }
+                break;
+            case "s":
+                {
+                    document.getElementById("sin(").click();
+                }
+                break;
+            case "c":
+                {
+                    document.getElementById("cos(").click();
+                }
+                break;
+            case "t":
+                {
+                    document.getElementById("tan(").click();
+                }
+                break;
+            case "i":
+                {
+                    document.getElementById("\u2148").click();
+                }
+                break;
+            case " ":
+                {
+                    document.getElementById("\u2423").click();
+                }
+                break;
+            case "x":
+                {
+                    document.getElementById("X").click();
+                }
+                break;
+            case "p":
+                {
+                    document.getElementById("\u03C0").click();
+                }
+                break;
+            case "g":
+                {
+                    document.getElementById("graph").click();
+                }
+                break;
+            case "y":
+                {
+                    document.getElementById("y_equals").click();
+                }
+                break;
+            case "Esc":
+            case "Escape":
+                {
+                    $("#clear").click();
                 }
                 break;
             case "Backspace":
@@ -426,14 +526,8 @@ $(function(){
                 break;
             default:
                 {
-                    try {
-                        if ($("#"+event.key).length != 0){
-                            $("#"+event.key).click();
-                        };
-                    } catch (err) {
-                        if (document.getElementById(event.key) != null) {
-                            document.getElementById(event.key).click();
-                        }
+                    if (document.getElementById(event.key) != null) {
+                        document.getElementById(event.key).click();
                     };
                 }
                 break;

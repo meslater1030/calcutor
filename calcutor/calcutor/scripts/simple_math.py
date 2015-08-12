@@ -162,6 +162,7 @@ def clean_string(input):
     for unic, byte in [(u'\u02c9', '-'),
                        (u'\u00B2', '^2'),
                        (u'\u221a', 'sqrt'),
+                       (u'\u00B3', '^3'),
                        (u'sin^-1', 'asin'),
                        (u'cos^-1', 'acos'),
                        (u'tan^-1', 'atan'),
