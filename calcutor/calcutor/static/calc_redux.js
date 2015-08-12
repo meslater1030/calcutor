@@ -27,7 +27,9 @@ $(function(){
             cur.after("<ins></ins>")
         }
         cur.next().addClass('cursor');
-        input += token;
+        if (menu == ".home") {
+            input += token;
+        }
     };
     var send_it = function(string){
         $.ajax({
@@ -57,7 +59,7 @@ $(function(){
             case '\u00B2':
                 {
                     if (input == ""){
-                        write_it('Ans');
+                        input = write_it('Ans');
                     };
                 }
             case 'A':
@@ -125,7 +127,7 @@ $(function(){
             case ',':
             case 'Ans':
                 {
-                    write_it(this.id);
+                    input = write_it(this.id);
                 }
                 break;
             case 'right':
@@ -248,10 +250,19 @@ $(function(){
                 break;
             case 'graph':
                 {
+                    var equations = {};
+                    for (i=0; i<10; i++){
+                        var yfn = "";
+                        var $y = $($(".y_func")[i]);
+                        $y.find("ins:not(ins:first)").each(function(){
+                            yfn += this.innerHTML;
+                        });
+                        equations[$y.find("ins:first").text()] = yfn;
+                    };
                     $.ajax({
                         type: "POST",
                         url: "/graph/",
-                        data: {input: "2X + 1"}
+                        data: equations,
                     }).done(function(response){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
