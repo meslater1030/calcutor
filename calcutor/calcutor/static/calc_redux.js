@@ -5,6 +5,7 @@ $(function(){
     var menu = ".home";
 
     setInterval(function(){
+        console.log($(".cursor").text());
         if ($(".cursor").text() == ""){
             $(".cursor").text(" ")
         }
@@ -57,8 +58,8 @@ $(function(){
             case '^':
             case '\u00B2':
                 {
-                    if (input == ""){
-                        input = write_it('Ans');
+                    if (menu == ".home" && input == ""){
+                        write_it('Ans');
                     };
                 }
             case 'A':
@@ -126,7 +127,7 @@ $(function(){
             case ',':
             case 'Ans':
                 {
-                    input = write_it(this.id);
+                    write_it(this.id);
                 }
                 break;
             case 'right':
@@ -157,7 +158,7 @@ $(function(){
                         var cur = $(".cursor");
                         cur.removeClass("cursor");
                         if($(cur.prevAll()[35]).length == 0){
-                            $(".input:last ins:first").addClass("cursor");
+                            $(".home .input:last ins:first").addClass("cursor");
                             break;
                         };
                         $(cur.prevAll()[35]).addClass("cursor");
@@ -176,7 +177,7 @@ $(function(){
                         var cur = $(".cursor");
                         cur.removeClass("cursor");
                         if($(cur.nextAll()[35]).length == 0){
-                            $(".input:last ins:last").addClass("cursor");
+                            $(".home .input:last ins:last").addClass("cursor");
                             break;
                         };
                         $(cur.nextAll()[35]).addClass("cursor");
@@ -200,6 +201,7 @@ $(function(){
                 break;
             case 'clear':
                 {
+                    menu = ".home";
                     $(".yequals").hide();
                     $(".graph").hide();
                     $(".home").show();
@@ -255,6 +257,7 @@ $(function(){
                 break;
             case 'quit':
                 {
+                    menu = ".home";
                     var cur = $(".cursor");
                     cur.removeClass("cursor");
                     $("#math_menu").hide();
