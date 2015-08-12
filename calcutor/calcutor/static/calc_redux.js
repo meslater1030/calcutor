@@ -52,6 +52,25 @@ $(function(){
         return input.trim();
     };
 
+    var math_ans = function(eq){
+        switch (eq) {
+            case '>Frac':
+            case '>Dec':
+            case '\u00B3':
+            case '>Rect':
+            case '>Polar':
+            case 'nPr':
+            case 'nCr':
+            case '!':
+                {
+                    if (input == ""){
+                        write_it('Ans');
+                    };
+                }
+                break;
+        };
+    };
+
     $("#buttons button").click(function(event) {
         $(".default").show();
         $(".alpha").hide();
@@ -140,12 +159,12 @@ $(function(){
                 break;
             case 'right':
                 {
-                    if ($(".cursor").next().length == 0){
+                    if ($(menu + ".cursor").next().length == 0){
                         break;
                     } else if ($("p").hasClass("cursor")) {
                         break;
                     };
-                    var cur = $(".cursor");
+                    var cur = $(menu + ".cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
                     cur.next().addClass("cursor");
@@ -153,12 +172,12 @@ $(function(){
                 break;
             case 'left':
                 {
-                    if ($(".cursor").prev().length == 0){
+                    if ($(menu + ".cursor").prev().length == 0){
                         break;
                     } else if ($("p").hasClass("cursor")) {
                         break;
                     };
-                    var cur = $(".cursor");
+                    var cur = $(menu + ".cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
                     cur.prev().addClass("cursor");
@@ -166,7 +185,7 @@ $(function(){
                 break;
             case 'up':
                 {
-                    var cur = $(".cursor");
+                    var cur = $(menu + ".cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)");
                     if ($("p").hasClass("cursor")) {
                         var previous = cur.prev().filter(":visible");
@@ -300,7 +319,7 @@ $(function(){
                         $("#all_menus").hide();
                         $(".home").show();
                         menu = ".home"
-                        console.log(cur_id)
+                        math_ans(cur_id);
                         write_it(cur_id);
                     };
                 }
