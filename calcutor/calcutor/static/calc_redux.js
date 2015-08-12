@@ -226,6 +226,7 @@ $(function(){
                     menu = ".yequals";
                     $(".home").toggle();
                     $(".yequals").toggle();
+                    $(".graph").hide();
                 }
                 break;
             case 'ENTER':
@@ -282,6 +283,7 @@ $(function(){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
                         $(".home").hide();
+                        $(".yequals").hide();
                         $(".graph").show();
                         input = "";
                         idx = 0;

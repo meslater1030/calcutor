@@ -18,18 +18,18 @@ def graph_parse(equations):
     ]
     for idx, eq in enumerate(equations):
         for calc, gval in replacevals:
-            equations[idx] = eq.replace(calc, gval)
-    import pdb; pdb.set_trace()
+            eq = eq.replace(calc, gval)
+        equations[idx] = eq
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    X = np.arange(-10, 11, 1)
+    X = np.arange(-10, 11, .1)
     for eq in equations:
         Y = ne.evaluate(eq)
         ax.plot(X, Y, color='k')
     ax.axhline(y=0, color='k')
     ax.axvline(x=0, color='k')
-    ax.set_xlim(-20, 20)
-    ax.set_ylim(-20, 20)
+    ax.set_xlim(-10, 10)
+    ax.set_ylim(-10, 10)
     buf = cStringIO.StringIO()
     fig.savefig(buf, format='png', transparent=True)
     encoded = base64.b64encode(buf.getvalue())
