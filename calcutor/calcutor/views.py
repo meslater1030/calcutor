@@ -80,6 +80,8 @@ def table_view(request):
         xvalue = request.params.get('X').strip()
 
         for key in output:
+            if not output[key]:
+                continue
             try:
                 output[key] = simple_math.clean_string(output[key])
             except SyntaxError:

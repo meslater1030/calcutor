@@ -349,9 +349,11 @@ $(function(){
             case 'TABLE':
                 {
                     $(".home").hide();
+                    $("#all_menus").show();
                     $(".view").hide();
-                    $(".all_menus").show();
+                    $(".table .cursor").removeClass("cursor")
                     $(".table").show();
+                    $(".table ins:first").addClass("cursor")
                     menu = ".table";
                 }
                 break;
