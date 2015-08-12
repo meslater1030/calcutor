@@ -27,9 +27,6 @@ $(function(){
             cur.after("<ins> </ins>")
         }
         cur.next().addClass('cursor');
-        if (menu == ".home") {
-            input += token;
-        }
     };
     var send_it = function(string){
         $.ajax({
@@ -47,9 +44,15 @@ $(function(){
             $(".home").append("<p class='output'></p>");
         });
     };
+    var get_input = function(){
+        var input = "";
+        $(".home .input:last ins").each(function(){
+            input += this.innerHTML;
+        });
+        return input.trim();
+    };
 
     $("#buttons button").click(function(event) {
-        $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
         $(".default").show();
         $(".alpha").hide();
         $(".second").hide();
@@ -61,7 +64,7 @@ $(function(){
             case '^':
             case '\u00B2':
                 {
-                    if (menu == ".home" && input == ""){
+                    if (menu == ".home" && get_input() == ""){
                         write_it('Ans');
                     };
                 }
@@ -193,7 +196,7 @@ $(function(){
                 break;
             case 'down':
                 {
-                    var cur = $(menu + ".cursor");
+                    var cur = $(menu + " .cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     if ($("p").hasClass("cursor")) {
                         if (cur.attr('class').indexOf(cur.next().attr('class')) > -1) {
@@ -269,21 +272,23 @@ $(function(){
                 break;
             case 'ENTER':
                 {
+
                     if (menu == ".table"){
                         update_table();
                     };
                     if ($(menu + " ins").hasClass("cursor")){
-                        if (menu == ".yequals"){
-                            $("#down").click();
-                            break;
-                        };
-                        if (input == ""){
-                            input = last_input;
-                        };
-                        last_input = input;
-                        input = input.split("Ans").join(output);
-                        send_it(input);
-                        input = "";
+                            if (menu == ".yequals"){
+                                $("#down").click();
+                                break;
+                            };
+                            input = get_input()
+                            if (input == ""){
+                                input = last_input;
+                            };
+                            last_input = input;
+                            input = input.split("Ans").join(output);
+                            send_it(input);
+                            input = "";
                     } else if ($(menu + ".submenu").hasClass("cursor")){
                         var cur_id = "." + $(menu + ".cursor").attr('id');
                         $(".submenu_options").hide();
@@ -297,7 +302,7 @@ $(function(){
                         menu = ".home"
                         console.log(cur_id)
                         write_it(cur_id);
-                    }
+                    };
                 }
                 break;
             case 'math':
@@ -355,7 +360,9 @@ $(function(){
             default: break;
         };
         update_scroller();
+        $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
         $("ins:not(.cursor)").css("background-color", "rgba(0, 0, 0, 0)");
+        $("button").blur();
     });
 
     function get_equations(){
@@ -372,7 +379,6 @@ $(function(){
     }
 
     $("body").keyup(function(event){
-        console.log(event.key);
         switch (event.key) {
             case "Enter":
                 {
@@ -380,11 +386,62 @@ $(function(){
                 }
                 break;
             case "Up":
-            case "Down":
-            case "Left":
-            case "Right":
+            case "ArrowUp":
                 {
-                    $("#" + event.key.toLowerCase()).click();
+                    $("#up").click();
+                }
+                break;
+            case "Down":
+            case "ArrowDown":
+                {
+                    $("#down").click();
+                }
+                break;
+            case "Left":
+            case "ArrowLeft":
+                {
+                    $("#left").click();
+                }
+                break;
+            case "Right":
+            case "ArrowRight":
+                {
+                    $("#right").click();
+                }
+                break;
+            case "Del":
+                {
+                    $("#delete").click();
+                }
+                break;
+            case "s":
+                {
+                    document.getElementById("sin(").click();
+                }
+                break;
+            case "c":
+                {
+                    document.getElementById("cos(").click();
+                }
+                break;
+            case "t":
+                {
+                    document.getElementById("tan(").click();
+                }
+                break;
+            case "i":
+                {
+                    document.getElementById("\u2148").click();
+                }
+                break;
+            case " ":
+                {
+                    document.getElementById("\u2423").click();
+                }
+                break;
+            case "x":
+                {
+                    document.getElementById("X").click();
                 }
                 break;
             case "Backspace":
@@ -395,14 +452,8 @@ $(function(){
                 break;
             default:
                 {
-                    try {
-                        if ($("#"+event.key).length != 0){
-                            $("#"+event.key).click();
-                        };
-                    } catch (err) {
-                        if (document.getElementById(event.key) != null) {
-                            document.getElementById(event.key).click();
-                        }
+                    if (document.getElementById(event.key) != null) {
+                        document.getElementById(event.key).click();
                     };
                 }
                 break;
