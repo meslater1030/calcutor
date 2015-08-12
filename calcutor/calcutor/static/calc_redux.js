@@ -193,7 +193,7 @@ $(function(){
                 break;
             case 'down':
                 {
-                    var cur = $(".cursor");
+                    var cur = $(menu + ".cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     if ($("p").hasClass("cursor")) {
                         if (cur.attr('class').indexOf(cur.next().attr('class')) > -1) {
@@ -271,8 +271,8 @@ $(function(){
                 {
                     if (menu == ".table"){
                         update_table();
-                    }
-                    if ($("ins").hasClass("cursor")){
+                    };
+                    if ($(menu + " ins").hasClass("cursor")){
                         if (menu == ".yequals"){
                             $("#down").click();
                             break;
@@ -284,19 +284,18 @@ $(function(){
                         input = input.split("Ans").join(output);
                         send_it(input);
                         input = "";
-                    } else if ($(".submenu").hasClass("cursor")){
-                        var cur_id = "." + $(".cursor").attr('id');
+                    } else if ($(menu + ".submenu").hasClass("cursor")){
+                        var cur_id = "." + $(menu + ".cursor").attr('id');
                         $(".submenu_options").hide();
                         $(cur_id).show();
-                    } else if ($("p").hasClass("cursor")){
-                        var cur = $(".cursor");
+                    } else if ($("p" + menu).hasClass("cursor")){
+                        var cur = $(menu + ".cursor");
                         cur.css("background-color", "rgba(0, 0, 0, 0)")
-                        var cur_id = $(".cursor").attr('id');
+                        var cur_id = $(menu + ".cursor").attr('id');
                         $("#all_menus").hide();
-                        $(".input").show();
-                        $(".output").show();
-                        $("ins").addClass("cursor");
+                        $(".home").show();
                         menu = ".home"
+                        console.log(cur_id)
                         write_it(cur_id);
                     }
                 }
@@ -304,8 +303,6 @@ $(function(){
             case 'math':
                 {
                     menu = ".math_menu";
-                    var cur = $(".cursor");
-                    cur.removeClass("cursor");
                     var $math_submenu = $(".submenu:first");
                     $math_submenu.addClass("cursor");
                     $(".math_menu").show();
@@ -321,14 +318,9 @@ $(function(){
             case 'quit':
                 {
                     menu = ".home";
-                    var cur = $(".cursor");
-                    cur.removeClass("cursor");
                     $("#all_menus").hide();
                     $(".yequals").hide();
                     $(".home").show()
-                    $(".input").show();
-                    $(".output").show();
-                    $(".input").append("<ins class='cursor'></ins>");
                 }
                 break;
             case 'graph':
