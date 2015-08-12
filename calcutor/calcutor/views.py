@@ -44,7 +44,6 @@ def graph_view(request):
                 continue
             if result:
                 equations.append(result)
-        import pdb; pdb.set_trace()
         if not equations:
             request.response.status = 400
             return {'error': 'No equations to graph.'}
