@@ -228,6 +228,7 @@ $(function(){
                     menu = ".yequals";
                     $(".home").toggle();
                     $(".yequals").toggle();
+                    $(".graph").hide();
                 }
                 break;
             case 'ENTER':
@@ -285,14 +286,24 @@ $(function(){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
                         $(".home").hide();
+                        $(".yequals").hide();
                         $(".graph").show();
                         input = "";
-                        idx = 0;
-                        update_cursor();
+                        menu = ".home";
                     }).fail(function(){
                         $(".home .output:last").text("Something Went Wrong");
+                        $(".yequals").hide();
+                        $(".home").show();
+                        menu = ".home";
                     });
                 }
+                break;
+            case 'TABLE':
+                {
+                    $(".home").hide();
+                    $(".table").show();
+                }
+                break;
             default: break;
         };
         update_scroller();

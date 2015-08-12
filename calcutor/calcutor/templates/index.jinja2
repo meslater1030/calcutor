@@ -69,6 +69,24 @@
         </div>
        <div class="hide graph">
        </div>
+       <div class="hide table">
+         <table id="xytable">
+           <tr>
+             <th>X</th>
+             <th>Y1</th>
+           </tr>
+           <tr>
+             <td><p class="input"><ins class="cursor"></ins></p></td>
+             <td><p class="output"></p></td>
+           </tr>
+           {% for n in range(1,5) %}
+             <tr>
+               <td><p class="input"></p></td>
+               <td><p class="output"></p></td>
+             </tr>
+           {% endfor %}
+         </table>
+       </div>
       </div>
       <div id="buttons">
         <div class="secondary_options">
