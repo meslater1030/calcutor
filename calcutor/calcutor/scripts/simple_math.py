@@ -10,7 +10,7 @@
 #
 # Copyright 2003-2006 by Paul McGuire
 #
-from __future__ import division
+
 from pyparsing import (Literal,
                        CaselessLiteral,
                        Word,
@@ -113,6 +113,7 @@ fn = {"sin": math.sin,
 
 
 def evaluateStack():
+    import pdb; pdb.set_trace()
     op = exprStack.pop()
     if op == 'unary -':
         return -evaluateStack()
@@ -148,6 +149,17 @@ def checkParens(input):
             raise SyntaxError
 
 
+def fix_decimals(input):
+    if input[0] == '.':
+        input = '0' + input
+    for item in [('+.', '+0.'),
+                 ('*.', '*0.'),
+                 ('/.', '0/.'),
+                 ('-.', '0-.')]:
+        input = input.replace(item[0], item[1])
+    return input
+
+
 def clean_string(input):
     if re.search(r'[+\-*/=]{2,}', input):
         raise SyntaxError
@@ -161,6 +173,7 @@ def clean_string(input):
     for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
         input = re.sub(reg_ex, r'\1 * \2', input)
     checkParens(input)
+    input = fix_decimals(input)
     return input
 
 

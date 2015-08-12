@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from __future__ import division
 from pyramid.view import view_config
 from scripts import simple_math, graph_parse
 from pyparsing import ParseException
@@ -18,7 +17,6 @@ def home_view(request):
         except SyntaxError:
             return {'output': ERROR_MSG}
         try:
-            import pdb; pdb.set_trace()
             simple_math.BNF().parseString(input)
             try:
                 output = simple_math.evaluateStack()
