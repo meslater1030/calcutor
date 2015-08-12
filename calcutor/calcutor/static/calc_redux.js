@@ -271,14 +271,11 @@ $(function(){
             case 'ENTER':
                 {
                     if ($("ins").hasClass("cursor")){
-<<<<<<< Updated upstream
-=======
                         if (menu == ".yequals"){
                             $("#down").click();
                             break;
                         };
                         input = get_input()
->>>>>>> Stashed changes
                         if (input == ""){
                             input = last_input;
                         };
