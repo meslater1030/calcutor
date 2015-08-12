@@ -168,3 +168,19 @@
     border-left: none;
 }
 
+
+@-moz-document url-prefix() {
+    #calcutor {
+        width: 30em;
+    }
+
+    #screen {
+        width: 27em;
+    }
+
+    .yellow {
+        width: 7.5em;
+        padding-right: 0.2em;
+    }
+}
+

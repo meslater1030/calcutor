@@ -4,8 +4,8 @@ $(function(){
     var output = "";
 
     setInterval(function(){
-        if ($(".cursor").text() == ""){
-            $(".cursor").text(" ")
+        if ($(".home .input:last .cursor").text() == ""){
+            $(".home .input:last .cursor").text(" ")
         }
         if ($(".cursor").css("background-color") == "transparent"){
             $(".cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
@@ -133,6 +133,7 @@ $(function(){
                         break;
                     }
                     var cur = $(".cursor");
+                    cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
                     cur.next().addClass("cursor");
                 }
@@ -143,6 +144,7 @@ $(function(){
                         break;
                     }
                     var cur = $(".cursor");
+                    cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
                     cur.prev().addClass("cursor");
                 }
@@ -200,6 +202,11 @@ $(function(){
                     $(".alpha").toggle();
                 }
                 break;
+            case 'y=':
+                {
+                    $(".home").toggle();
+                    $(".yequals").toggle();
+                }
             case 'ENTER':
                 {
                     if (input == ""){
@@ -209,6 +216,30 @@ $(function(){
                     input = input.split("Ans").join(output);
                     send_it(input);
                     input = "";
+                }
+                break;
+            case 'math':
+                {
+                    var cur = $(".cursor");
+                    cur.removeClass("cursor");
+                    var $math_submenu = $("#math_submenu");
+                    $math_submenu.addClass("cursor");
+                    $("#math_menu").show();
+                    $(".num_submenu").hide();
+                    $(".cpx_submenu").hide();
+                    $(".prb_submenu").hide();
+                    $(".input").hide();
+                    $(".output").hide();
+                }
+                break;
+            case 'quit':
+                {
+                    var cur = $(".cursor");
+                    cur.removeClass("cursor");
+                    $("#math_menu").hide();
+                    $(".input").show();
+                    $(".output").show();
+                    $(".input").append("<ins class='cursor'></ins>");
                 }
                 break;
             case 'graph':
@@ -240,4 +271,5 @@ $(function(){
         };
         update_scroller();
     });
+    $("#math_menu").hide();
 });
