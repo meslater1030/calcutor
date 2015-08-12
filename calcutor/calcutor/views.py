@@ -36,11 +36,26 @@ def home_view(request):
 @view_config(route_name='graph', renderer='json')
 def graph_view(request):
     if request.method == 'POST':
-        input = request.params.get('input')
+        equations = []
+        for x in xrange(10):
+            try:
+                result = request.params.get('\\Y{}:'.format(str(x))).strip()
+            except KeyError:
+                continue
+            if result:
+                equations.append(result)
+        if not equations:
+            request.response.status = 400
+            return {'error': 'No equations to graph.'}
         try:
-            input = simple_math.clean_string(input)
+            for idx, eq in enumerate(equations):
+                equations[idx] = simple_math.clean_string(eq)
         except SyntaxError:
-            return {'output': ERROR_MSG}
-        graph_parse.graph_parse(input)
-        output = graph_parse.graph_parse(input)
+            request.response.status = 400
+            return {'error': ERROR_MSG}
+        try:
+            output = graph_parse.graph_parse(equations)
+        except (TypeError, ValueError):
+            request.response.status = 400
+            return {'error': ERROR_MSG}
         return {'output': output}

@@ -15,6 +15,19 @@
           <p class="output"></p>
         </div>
         <div id="all_menus">
+        <div class="hide yequals">
+         <div class="y_func input"><ins>\Y1:</ins><ins class="cursor"></ins></div>
+         <div class="y_func input"><ins>\Y2:</ins><ins></ins> </div>
+         <div class="y_func input"><ins>\Y3:</ins><ins></ins> </div>
+         <div class="y_func input"><ins>\Y4:</ins><ins></ins> </div>
+         <div class="y_func input"><ins>\Y5:</ins><ins></ins> </div>
+         <div class="y_func input"><ins>\Y6:</ins><ins></ins> </div>
+         <div class="y_func input"><ins>\Y7:</ins><ins></ins> </div>
+         <div class="y_func input"><ins>\Y8:</ins><ins></ins> </div>
+         <div class="y_func input"><ins>\Y9:</ins><ins></ins> </div>
+         <div class="y_func input"><ins>\Y0:</ins><ins></ins> </div>
+       </div>
+       <div id="math_menu">
           <ul>
             <li class="submenu" id="math_submenu">MATH</li>
             <li class="submenu" id="num_submenu">NUM</li>
@@ -55,19 +68,25 @@
           <p class="prb_submenu submenu_options" id="randnorm">6: randNorm(</p>
           <p class="prb_submenu submenu_options" id="randbin">7: randBin(</p>
         </div>
-        <div class="hide yeq">
-         <p class="y_func">\Y1:</p>
-         <p class="y_func">\Y2:</p>
-         <p class="y_func">\Y3:</p>
-         <p class="y_func">\Y4:</p>
-         <p class="y_func">\Y5:</p>
-         <p class="y_func">\Y6:</p>
-         <p class="y_func">\Y7:</p>
-         <p class="y_func">\Y8:</p>
-         <p class="y_func">\Y9:</p>
-         <p class="y_func">\Y0:</p>
-       </div>
        <div class="hide graph">
+       </div>
+       <div class="hide table">
+         <table id="xytable">
+           <tr>
+             <th>X</th>
+             <th>Y1</th>
+           </tr>
+           <tr>
+             <td><p class="input"><ins class="cursor"></ins></p></td>
+             <td><p class="output"></p></td>
+           </tr>
+           {% for n in range(1,5) %}
+             <tr>
+               <td><p class="input"></p></td>
+               <td><p class="output"></p></td>
+             </tr>
+           {% endfor %}
+         </table>
        </div>
       </div>
       <div id="buttons">
@@ -124,8 +143,8 @@
         <button class="green-button alpha" type="button" id="alpha_mode">ALPHA</button>
         <button class="green-button default" type="button" id="alpha_mode">ALPHA</button>
         <button class="black-button second" type="button" id="link">X,T,&empty;,<i>n</i></button>
-        <button class="black-button alpha" type="button" id="xton">X,T,&empty;,<i>n</i></button>
-        <button class="black-button default" type="button" id="xton">X,T,&empty;,<i>n</i></button>
+        <button class="black-button alpha" type="button" id="X">X,T,&empty;,<i>n</i></button>
+        <button class="black-button default" type="button" id="X">X,T,&empty;,<i>n</i></button>
         <button class="black-button second" type="button" id="list">STAT</button>
         <button class="black-button alpha" type="button" id="stat">STAT</button>
         <button class="black-button default" type="button" id="stat">STAT</button>

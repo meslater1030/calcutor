@@ -2,15 +2,16 @@ $(function(){
     var last_input = "";
     var input = "";
     var output = "";
+    var menu = ".home";
 
     setInterval(function(){
-        if ($(".cursor").text() == ""){
-            $(".cursor").text(" ")
+        if ($(menu + " .cursor").text() == ""){
+            $(menu + " .cursor").text(" ")
         }
-        if ($(".cursor").css("background-color") == "transparent"){
-            $(".cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
+        if ($(menu + " .cursor").css("background-color") == "transparent"){
+            $(menu + " .cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
         } else {
-            $(".cursor").css("background-color", "rgba(0, 0, 0, 0)");
+            $(menu + " .cursor").css("background-color", "rgba(0, 0, 0, 0)");
         };
 
     }, 500);
@@ -19,14 +20,16 @@ $(function(){
         $("#screen").scrollTop($("#screen")[0].scrollHeight);
     };
     var write_it = function(token){
-        var curr = $(".home .input:last .cursor");
-        curr.text(token);
-        curr.removeClass('cursor');
-        if (curr.next().length == 0){
-            curr.after("<ins> </ins>")
+        var cur = $(menu + " .cursor");
+        cur.text(token);
+        cur.removeClass('cursor');
+        if (cur.next().length == 0){
+            cur.after("<ins> </ins>")
         }
-        curr.next().addClass('cursor');
-        input += token;
+        cur.next().addClass('cursor');
+        if (menu == ".home") {
+            input += token;
+        }
     };
     var send_it = function(string){
         $.ajax({
@@ -58,7 +61,7 @@ $(function(){
             case '^':
             case '\u00B2':
                 {
-                    if (input == ""){
+                    if (menu == ".home" && input == ""){
                         write_it('Ans');
                     };
                 }
@@ -171,12 +174,19 @@ $(function(){
                     } else if ($("li").hasClass("cursor")) {
                         break;
                     }
-                    if($(cur.prevAll()[35]).length == 0){
-                        $(".input:last ins:first").addClass("cursor");
+                    if (menu == ".home") {
                         cur.removeClass("cursor");
-                    } else {
+                        if($(cur.prevAll()[35]).length == 0){
+                            $(".home .input:last ins:first").addClass("cursor");
+                            break;
+                        };
                         $(cur.prevAll()[35]).addClass("cursor");
-                    }
+                    } else if (menu == ".yequals") {
+                        if (cur.parent().prev().length != 0){
+                            cur.removeClass("cursor");
+                            cur.parent().prev().find("ins:not(ins:first)").first().addClass("cursor");
+                        };
+                    };
                 }
                 break;
             case 'down':
@@ -193,12 +203,22 @@ $(function(){
                     } else if ($("li").hasClass("cursor")){
                         $(".submenu_options:visible:first").addClass("cursor");
                         cur.removeClass("cursor");
-                    } else if($(cur.nextAll()[35]).length == 0){
-                        $(".input:last ins:last").addClass("cursor");
+                    }
+                    if (menu == ".home") {
+                        var cur = $(".cursor");
                         cur.removeClass("cursor");
-                        break;
+                        if($(cur.nextAll()[35]).length == 0){
+                            $(".home .input:last ins:last").addClass("cursor");
+                            break;
+                        };
+                        $(cur.nextAll()[35]).addClass("cursor");
+                    } else if (menu == ".yequals") {
+                        var cur = $(".cursor");
+                        if (cur.parent().next().length != 0){
+                            cur.removeClass("cursor");
+                            cur.parent().next().find("ins:not(ins:first)").first().addClass("cursor");
+                        };
                     };
-                    $(cur.nextAll()[35]).addClass("cursor");
                 }
                 break;
             case 'delete':
@@ -212,6 +232,8 @@ $(function(){
                 break;
             case 'clear':
                 {
+                    menu = ".home";
+                    $(".yequals").hide();
                     $(".graph").hide();
                     $(".home").show();
                     $(".home").empty();
@@ -230,6 +252,14 @@ $(function(){
                 {
                     $(".default").hide();
                     $(".alpha").show();
+                }
+                break;
+            case 'y_equals':
+                {
+                    menu = ".yequals";
+                    $(".home").hide();
+                    $(".yequals").show();
+                    $(".graph").hide();
                 }
                 break;
             case 'ENTER':
@@ -274,6 +304,7 @@ $(function(){
                 break;
             case 'quit':
                 {
+                    menu = ".home";
                     var cur = $(".cursor");
                     cur.removeClass("cursor");
                     $("#all_menus").hide();
@@ -284,25 +315,45 @@ $(function(){
                 break;
             case 'graph':
                 {
+                    var equations = {};
+                    for (i=0; i<10; i++){
+                        var yfn = "";
+                        var $y = $($(".y_func")[i]);
+                        $y.find("ins:not(ins:first)").each(function(){
+                            yfn += this.innerHTML;
+                        });
+                        equations[$y.find("ins:first").text()] = yfn;
+                    };
                     $.ajax({
                         type: "POST",
                         url: "/graph/",
-                        data: {input: "2X + 1"}
+                        data: equations,
                     }).done(function(response){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
                         $(".home").hide();
+                        $(".yequals").hide();
                         $(".graph").show();
                         input = "";
-                        idx = 0;
-                        update_cursor();
+                        menu = ".home";
                     }).fail(function(){
                         $(".home .output:last").text("Something Went Wrong");
+                        $(".yequals").hide();
+                        $(".home").show();
+                        menu = ".home";
                     });
                 }
+                break;
+            case 'TABLE':
+                {
+                    $(".home").hide();
+                    $(".table").show();
+                }
+                break;
             default: break;
         };
         update_scroller();
+        $("ins:not(.cursor)").css("background-color", "rgba(0, 0, 0, 0)");
     });
     $("#all_menus").hide();
 });
