@@ -261,13 +261,15 @@ $(function(){
                     menu = ".yequals";
                     $(".home").hide();
                     $("#all_menus").show();
+                    $(".view").hide();
                     $(".yequals").show();
-                    $(".math_menu").hide();
-                    $(".graph").hide();
                 }
                 break;
             case 'ENTER':
                 {
+                    if (menu == ".table"){
+                        update_table();
+                    }
                     if ($("ins").hasClass("cursor")){
                         if (input == ""){
                             input = last_input;
@@ -330,7 +332,7 @@ $(function(){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
                         $(".home").hide();
-                        $(".yequals").hide();
+                        $(".view").hide();
                         $(".graph").show();
                         input = "";
                         menu = ".home";
@@ -344,7 +346,7 @@ $(function(){
                 break;
             case 'TABLE':
                 {
-                    $(".home").hide();
+                    $(".view").hide();
                     $(".table").show();
                     menu = ".table";
                 }
