@@ -2,6 +2,7 @@ $(function(){
     var last_input = "";
     var input = "";
     var output = "";
+    var menu = ".home";
 
     setInterval(function(){
         if ($(".home .input:last .cursor").text() == ""){
@@ -19,14 +20,16 @@ $(function(){
         $("#screen").scrollTop($("#screen")[0].scrollHeight);
     };
     var write_it = function(token){
-        var curr = $(".home .input:last .cursor");
-        curr.text(token);
-        curr.removeClass('cursor');
-        if (curr.next().length == 0){
-            curr.after("<ins></ins>")
+        var cur = $(menu + " .cursor");
+        cur.text(token);
+        cur.removeClass('cursor');
+        if (cur.next().length == 0){
+            cur.after("<ins></ins>")
         }
-        curr.next().addClass('cursor');
-        input += token;
+        cur.next().addClass('cursor');
+        if (menu == ".home") {
+            input += token;
+        }
     };
     var send_it = function(string){
         $.ajax({
@@ -56,7 +59,7 @@ $(function(){
             case '\u00B2':
                 {
                     if (input == ""){
-                        write_it('Ans');
+                        input = write_it('Ans');
                     };
                 }
             case 'A':
@@ -124,7 +127,7 @@ $(function(){
             case ',':
             case 'Ans':
                 {
-                    write_it(this.id);
+                    input = write_it(this.id);
                 }
                 break;
             case 'right':
@@ -182,6 +185,7 @@ $(function(){
                 break;
             case 'clear':
                 {
+                    $(".yequals").hide();
                     $(".graph").hide();
                     $(".home").show();
                     $(".home").empty();
@@ -202,11 +206,13 @@ $(function(){
                     $(".alpha").toggle();
                 }
                 break;
-            case 'y=':
+            case 'y_equals':
                 {
+                    menu = ".yequals";
                     $(".home").toggle();
                     $(".yequals").toggle();
                 }
+                break;
             case 'ENTER':
                 {
                     if (input == ""){
@@ -244,10 +250,19 @@ $(function(){
                 break;
             case 'graph':
                 {
+                    var equations = {};
+                    for (i=0; i<10; i++){
+                        var yfn = "";
+                        var $y = $($(".y_func")[i]);
+                        $y.find("ins:not(ins:first)").each(function(){
+                            yfn += this.innerHTML;
+                        });
+                        equations[$y.find("ins:first").text()] = yfn;
+                    };
                     $.ajax({
                         type: "POST",
                         url: "/graph/",
-                        data: {input: "2X + 1"}
+                        data: equations,
                     }).done(function(response){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
