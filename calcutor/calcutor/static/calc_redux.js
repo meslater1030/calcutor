@@ -23,7 +23,7 @@ $(function(){
         curr.text(token);
         curr.removeClass('cursor');
         if (curr.next().length == 0){
-            curr.after("<ins></ins>")
+            curr.after("<ins> </ins>")
         }
         curr.next().addClass('cursor');
         input += token;
