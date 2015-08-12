@@ -5,8 +5,8 @@ $(function(){
     var menu = ".home";
 
     setInterval(function(){
-        if ($(".home .input:last .cursor").text() == ""){
-            $(".home .input:last .cursor").text(" ")
+        if ($(".cursor").text() == ""){
+            $(".cursor").text(" ")
         }
         if ($(".cursor").css("background-color") == "transparent"){
             $(".cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
@@ -49,7 +49,6 @@ $(function(){
     };
 
     $("#buttons button").click(function(event) {
-        $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
         switch ($(this).attr('id')) {
             case '+':
             case '-':
@@ -154,24 +153,40 @@ $(function(){
                 break;
             case 'up':
                 {
-                    var cur = $(".cursor");
-                    cur.removeClass("cursor");
-                    if($(cur.prevAll()[35]).length == 0){
-                        $(".input:last ins:first").addClass("cursor");
-                        break;
+                    if (menu == ".home") {
+                        var cur = $(".cursor");
+                        cur.removeClass("cursor");
+                        if($(cur.prevAll()[35]).length == 0){
+                            $(".input:last ins:first").addClass("cursor");
+                            break;
+                        };
+                        $(cur.prevAll()[35]).addClass("cursor");
+                    } else if (menu == ".yequals") {
+                        var cur = $(".cursor");
+                        if (cur.parent().prev().length != 0){
+                            cur.removeClass("cursor");
+                            cur.parent().prev().find("ins:not(ins:first)").first().addClass("cursor");
+                        };
                     };
-                    $(cur.prevAll()[35]).addClass("cursor");
                 }
                 break;
             case 'down':
                 {
-                    var cur = $(".cursor");
-                    cur.removeClass("cursor");
-                    if($(cur.nextAll()[35]).length == 0){
-                        $(".input:last ins:last").addClass("cursor");
-                        break;
+                    if (menu == ".home") {
+                        var cur = $(".cursor");
+                        cur.removeClass("cursor");
+                        if($(cur.nextAll()[35]).length == 0){
+                            $(".input:last ins:last").addClass("cursor");
+                            break;
+                        };
+                        $(cur.nextAll()[35]).addClass("cursor");
+                    } else if (menu == ".yequals") {
+                        var cur = $(".cursor");
+                        if (cur.parent().next().length != 0){
+                            cur.removeClass("cursor");
+                            cur.parent().next().find("ins:not(ins:first)").first().addClass("cursor");
+                        };
                     };
-                    $(cur.nextAll()[35]).addClass("cursor");
                 }
                 break;
             case 'delete':
@@ -285,6 +300,7 @@ $(function(){
             default: break;
         };
         update_scroller();
+        $("ins:not(.cursor)").css("background-color", "rgba(0, 0, 0, 0)");
     });
     $("#math_menu").hide();
 });
