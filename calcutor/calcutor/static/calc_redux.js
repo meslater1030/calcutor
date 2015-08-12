@@ -444,6 +444,26 @@ $(function(){
                     document.getElementById("X").click();
                 }
                 break;
+            case "p":
+                {
+                    document.getElementById("\u03C0").click();
+                }
+                break;
+            case "g":
+                {
+                    document.getElementById("graph").click();
+                }
+                break;
+            case "y":
+                {
+                    document.getElementById("y_equals").click();
+                }
+                break;
+            case "Esc":
+                {
+                    $("#clear").click();
+                }
+                break;
             case "Backspace":
                 {
                     $("#left").click();
