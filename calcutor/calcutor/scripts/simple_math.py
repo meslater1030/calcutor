@@ -23,6 +23,8 @@ from pyparsing import (Literal,
 import math
 import operator
 import re
+from fractions import Fraction
+from decimal import Decimal
 
 exprStack = []
 
@@ -143,6 +145,17 @@ def checkParens(input):
             raise SyntaxError
 
 
+def fix_decimals(input):
+    if input[0] == '.':
+        input = '0' + input
+    for item in [('+.', '+0.'),
+                 ('*.', '*0.'),
+                 ('/.', '0/.'),
+                 ('-.', '0-.')]:
+        input = input.replace(item[0], item[1])
+    return input
+
+
 def clean_string(input):
     if re.search(r'[+\-*/=]{2,}', input):
         raise SyntaxError
@@ -151,12 +164,19 @@ def clean_string(input):
                        (u'\u221a', 'sqrt'),
                        (u'sin^-1', 'asin'),
                        (u'cos^-1', 'acos'),
-                       (u'tan^-1', 'atan')]:
+                       (u'tan^-1', 'atan'),
+                       (u'\u03c0', 'PI')]:
         input = input.replace(unic, byte)
     for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
         input = re.sub(reg_ex, r'\1 * \2', input)
     checkParens(input)
+    input = fix_decimals(input)
     return input
+
+
+def decimal_to_fraction(output):
+    frac = Fraction(Decimal(str(output)))
+    return str(frac.numerator) + "/" + str(frac.denominator)
 
 
 def sci_notation(output):

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from pyramid.view import view_config
 from scripts import simple_math, graph_parse
 from pyparsing import ParseException
@@ -13,6 +12,9 @@ ERROR_MSG = b"ERR: SYNTAX"
 def home_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
+        to_fraction = False
+        if '>Frac' in input:
+            to_fraction = True
         try:
             input = simple_math.clean_string(input)
         except SyntaxError:
@@ -27,7 +29,10 @@ def home_view(request):
             return {'output': ERROR_MSG}
         if float.is_integer(output):
             output = int(output)
-        output = simple_math.sci_notation(output)
+        if to_fraction:
+            output = simple_math.decimal_to_fraction(output)
+        else:
+            output = simple_math.sci_notation(output)
         output = unicode(output).encode('utf-8')
         return {'output': output}
     return {}
