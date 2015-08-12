@@ -103,6 +103,7 @@ $(function(){
             case '7':
             case '8':
             case '9':
+            case '.':
             case "\u03C0":
             case "\u02C9":
             case "\u2148":
@@ -360,5 +361,43 @@ $(function(){
         update_scroller();
         $("ins:not(.cursor)").css("background-color", "rgba(0, 0, 0, 0)");
     });
+    $("body").keyup(function(event){
+        console.log(event.key);
+        switch (event.key) {
+            case "Enter":
+                {
+                    $("#ENTER").click();
+                }
+                break;
+            case "Up":
+            case "Down":
+            case "Left":
+            case "Right":
+                {
+                    $("#" + event.key.toLowerCase()).click();
+                }
+                break;
+            case "Backspace":
+                {
+                    $("#left").click();
+                    $("#delete").click();
+                }
+                break;
+            default:
+                {
+                    try {
+                        if ($("#"+event.key).length != 0){
+                            $("#"+event.key).click();
+                        };
+                    } catch (err) {
+                        if (document.getElementById(event.key) != null) {
+                            document.getElementById(event.key).click();
+                        }
+                    };
+                }
+                break;
+        };
+    });
+
     $("#all_menus").hide();
 });
