@@ -232,6 +232,10 @@ $(function(){
                 break;
             case 'ENTER':
                 {
+                    if (menu == ".yequals"){
+                        $("#down").click();
+                        break;
+                    };
                     if (input == ""){
                         input = last_input;
                     };
