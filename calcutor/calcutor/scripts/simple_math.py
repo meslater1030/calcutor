@@ -146,8 +146,8 @@ def checkParens(input):
 def clean_string(input):
     if re.search(r'[+\-*/=]{2,}', input):
         raise SyntaxError
-    for unic, byte in [('\u02c9', '-'),
-                       ('\u00B2', '^2'),
+    for unic, byte in [(u'\u02c9', '-'),
+                       (u'\u00B2', '^2'),
                        (u'\u221a', 'sqrt'),
                        (u'sin^-1', 'asin'),
                        (u'cos^-1', 'acos'),
