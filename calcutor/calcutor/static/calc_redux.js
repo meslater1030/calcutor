@@ -207,7 +207,7 @@ $(function(){
                             break;
                         };
                         $(cur.prevAll()[35]).addClass("cursor");
-                    } else if (menu == ".yequals") {
+                    } else if (menu == ".yequals" || menu == ".windowmenu") {
                         if (cur.parent().prev().length != 0){
                             cur.removeClass("cursor");
                             cur.parent().prev().find("ins:first").first().addClass("cursor");
@@ -237,7 +237,7 @@ $(function(){
                             break;
                         };
                         $(cur.nextAll()[35]).addClass("cursor");
-                    } else if (menu == ".yequals") {
+                    } else if (menu == ".yequals" || menu == ".windowmenu") {
                         if (cur.parent().next().length != 0){
                             cur.removeClass("cursor");
                             cur.parent().next().find("ins:first").first().addClass("cursor");
@@ -260,6 +260,7 @@ $(function(){
                     menu = ".home";
                     $(".yequals").hide();
                     $(".math_menu").hide();
+                    $(".windowmenu").hide();
                     $(".graph").hide();
                     $(".table").hide();
                     $(".home").show();
@@ -288,6 +289,7 @@ $(function(){
                     menu = ".yequals";
                     $(".home").hide();
                     $("#all_menus").show();
+                    $(".windowmenu").hide();
                     $(".view").hide();
                     $(".yequals").show();
                 }
@@ -356,7 +358,7 @@ $(function(){
                     $.ajax({
                         type: "POST",
                         url: "/graph/",
-                        data: get_equations(),
+                        data: {equations: get_equations(), settings: get_graph_window()}
                     }).done(function(response){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
@@ -380,6 +382,17 @@ $(function(){
                     menu = ".table";
                 }
                 break;
+            case 'window':
+                {
+                    $("#all_menus").show();
+                    $(".math_menu").hide();
+                    $(".home").hide();
+                    $(".yequals").hide();
+                    $(".windowmenu").show();
+                    menu = ".windowmenu";
+                    $(".windowmenu ins:first").addClass("cursor");
+                }
+                break;
             default: break;
         };
         update_scroller();
@@ -399,7 +412,20 @@ $(function(){
             equations[$y.find("span").text()] = yfn;
         };
         return equations;
-    }
+    };
+    function get_graph_window(){
+        var win = {}
+        for (clas in ['Xmin', 'Xmax', 'Xscl', 'Ymin', 'Ymax', 'Yscl']){
+            var val = "";
+            var $setting = $("."+clas);
+            $setting.find("ins").each(function(){
+                val += this.innerHTML;
+            });
+            win[clas] = val;
+        };
+        return win;
+    };
+
 
     $("body").keyup(function(event){
         switch (event.key) {
