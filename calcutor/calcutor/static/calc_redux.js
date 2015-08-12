@@ -370,11 +370,27 @@ $(function(){
                 }
                 break;
             case "Up":
-            case "Down":
-            case "Left":
-            case "Right":
+            case "ArrowUp":
                 {
-                    $("#" + event.key.toLowerCase()).click();
+                    $("#up").click();
+                }
+                break;
+            case "Down":
+            case "ArrowDown":
+                {
+                    $("#down").click();
+                }
+                break;
+            case "Left":
+            case "ArrowLeft":
+                {
+                    $("#left").click();
+                }
+                break;
+            case "Right":
+            case "ArrowRight":
+                {
+                    $("#right").click();
                 }
                 break;
             case "Backspace":
