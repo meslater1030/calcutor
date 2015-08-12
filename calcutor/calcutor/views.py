@@ -64,3 +64,36 @@ def graph_view(request):
             request.response.status = 400
             return {'error': ERROR_MSG}
         return {'output': output}
+
+
+@view_config(route_name='table', renderer='json')
+def table_view(request):
+    if request.method == 'POST':
+        output = {}
+        for x in xrange(10):
+            try:
+                output['Y' + str(x)] = request.params.get('\\Y{}:'.format(
+                    str(x))).strip()
+            except KeyError:
+                continue
+
+        xvalue = request.params.get('X').strip()
+
+        for key in output:
+            try:
+                output[key] = simple_math.clean_string(output[key])
+            except SyntaxError:
+                output[key] = 'ERR'
+
+            output[key] = output[key].replace('X', xvalue)
+
+            try:
+                simple_math.BNF.parseString(output[key])
+            except ParseException:
+                output[key] = 'ERR'
+            else:
+                try:
+                    output[key] = simple_math.evaluateStack()
+                except ValueError:
+                    output[key] = 'ERR'
+        return {'output': output}
