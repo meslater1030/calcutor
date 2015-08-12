@@ -27,9 +27,6 @@ $(function(){
             cur.after("<ins> </ins>")
         }
         cur.next().addClass('cursor');
-        if (menu == ".home") {
-            input += token;
-        }
     };
     var send_it = function(string){
         $.ajax({
@@ -47,9 +44,15 @@ $(function(){
             $(".home").append("<p class='output'></p>");
         });
     };
+    var get_input = function(){
+        var input = "";
+        $(".home .input:last ins").each(function(){
+            input += this.innerHTML;
+        });
+        return input.trim();
+    };
 
     $("#buttons button").click(function(event) {
-        $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
         $(".default").show();
         $(".alpha").hide();
         $(".second").hide();
@@ -61,7 +64,7 @@ $(function(){
             case '^':
             case '\u00B2':
                 {
-                    if (menu == ".home" && input == ""){
+                    if (menu == ".home" && get_input() == ""){
                         write_it('Ans');
                     };
                 }
@@ -268,6 +271,14 @@ $(function(){
             case 'ENTER':
                 {
                     if ($("ins").hasClass("cursor")){
+<<<<<<< Updated upstream
+=======
+                        if (menu == ".yequals"){
+                            $("#down").click();
+                            break;
+                        };
+                        input = get_input()
+>>>>>>> Stashed changes
                         if (input == ""){
                             input = last_input;
                         };
@@ -359,10 +370,10 @@ $(function(){
             default: break;
         };
         update_scroller();
+        $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
         $("ins:not(.cursor)").css("background-color", "rgba(0, 0, 0, 0)");
     });
     $("body").keyup(function(event){
-        console.log(event.key);
         switch (event.key) {
             case "Enter":
                 {
@@ -393,6 +404,41 @@ $(function(){
                     $("#right").click();
                 }
                 break;
+            case "Del":
+                {
+                    $("#delete").click();
+                }
+                break;
+            case "s":
+                {
+                    document.getElementById("sin(").click();
+                }
+                break;
+            case "c":
+                {
+                    document.getElementById("cos(").click();
+                }
+                break;
+            case "t":
+                {
+                    document.getElementById("tan(").click();
+                }
+                break;
+            case "i":
+                {
+                    document.getElementById("\u2148").click();
+                }
+                break;
+            case " ":
+                {
+                    document.getElementById("\u2423").click();
+                }
+                break;
+            case "x":
+                {
+                    document.getElementById("X").click();
+                }
+                break;
             case "Backspace":
                 {
                     $("#left").click();
@@ -401,14 +447,8 @@ $(function(){
                 break;
             default:
                 {
-                    try {
-                        if ($("#"+event.key).length != 0){
-                            $("#"+event.key).click();
-                        };
-                    } catch (err) {
-                        if (document.getElementById(event.key) != null) {
-                            document.getElementById(event.key).click();
-                        }
+                    if (document.getElementById(event.key) != null) {
+                        document.getElementById(event.key).click();
                     };
                 }
                 break;
