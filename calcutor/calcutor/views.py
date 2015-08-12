@@ -52,7 +52,6 @@ def graph_view(request):
                 equations[idx] = simple_math.clean_string(eq)
                 print eq
                 print equations[idx]
-            import pdb; pdb.set_trace()
         except SyntaxError:
             request.response.status = 400
             return {'error': ERROR_MSG}
