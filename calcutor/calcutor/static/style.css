@@ -149,3 +149,22 @@
 
 .menu p {
     margin: 0;
+}
+
+.table table {
+    border: none;
+    border-collapse: collapse;
+}
+
+.table table th{
+    border-bottom: 1px solid #000;
+}
+
+.table table td, .table table th {
+    border-left: 1px solid #000;
+}
+
+.table table td:first-child, .table table th:first-child{
+    border-left: none;
+}
+

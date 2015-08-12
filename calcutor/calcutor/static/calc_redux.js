@@ -229,6 +229,13 @@ $(function(){
                         $(".home .output:last").text("Something Went Wrong");
                     });
                 }
+                break;
+            case 'TABLE':
+                {
+                    $(".home").hide();
+                    $(".table").show();
+                }
+                break;
             default: break;
         };
         update_scroller();
