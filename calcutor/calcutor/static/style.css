@@ -22,7 +22,7 @@
     float: left;
     font-size: 1em;
 }
-#screen .input ins, #screen .y_func ins {
+#screen .input ins, #screen .y_func ins, #screen .y_func span {
     text-decoration: none;
     white-space: pre;
     float: left;
