@@ -355,7 +355,9 @@ $(function(){
                 break;
             case 'TABLE':
                 {
+                    $(".home").hide();
                     $(".view").hide();
+                    $(".all_menus").show();
                     $(".table").show();
                     menu = ".table";
                 }
