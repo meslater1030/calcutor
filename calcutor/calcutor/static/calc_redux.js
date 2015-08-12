@@ -286,12 +286,12 @@ $(function(){
                         $(".yequals").hide();
                         $(".graph").show();
                         input = "";
-                        idx = 0;
-                        update_cursor();
+                        menu = ".home";
                     }).fail(function(){
                         $(".home .output:last").text("Something Went Wrong");
                         $(".yequals").hide();
                         $(".home").show();
+                        menu = ".home";
                     });
                 }
                 break;
