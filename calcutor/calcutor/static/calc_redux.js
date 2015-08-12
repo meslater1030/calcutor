@@ -37,7 +37,7 @@ $(function(){
             output = response.output;
             $(".home .output:last").text(output);
         }).fail(function(){
-            $(".home .output:last").text("Something Went Wrong");
+            $(".home .output:last").text("Your mother was a hamster and your father smelt of elderberries!");
         }).always(function(){
             $(".cursor").removeClass("cursor");
             $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
@@ -138,6 +138,7 @@ $(function(){
             case 'e':
             case '10^(':
             case 'log(':
+            case '^-1':
             case 'sin(':
             case 'tan(':
             case 'cos(':
