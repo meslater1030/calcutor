@@ -258,7 +258,9 @@ $(function(){
                 {
                     menu = ".yequals";
                     $(".home").hide();
+                    $("#all_menus").show();
                     $(".yequals").show();
+                    $(".math_menu").hide();
                     $(".graph").hide();
                 }
                 break;
@@ -277,18 +279,21 @@ $(function(){
                         $(".submenu_options").hide();
                         $(cur_id).show();
                     } else if ($("p").hasClass("cursor")){
+                        var cur = $(".cursor");
+                        cur.css("background-color", "rgba(0, 0, 0, 0)")
                         var cur_id = $(".cursor").attr('id');
-                        console.log(cur_id)
                         $("#all_menus").hide();
                         $(".input").show();
                         $(".output").show();
                         $("ins").addClass("cursor");
+                        menu = ".home"
                         write_it(cur_id);
                     }
                 }
                 break;
             case 'math':
                 {
+                    menu = ".math_menu";
                     var cur = $(".cursor");
                     cur.removeClass("cursor");
                     var $math_submenu = $(".submenu:first");
