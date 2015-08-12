@@ -5,14 +5,13 @@ $(function(){
     var menu = ".home";
 
     setInterval(function(){
-        console.log($(".cursor").text());
-        if ($(".cursor").text() == ""){
-            $(".cursor").text(" ")
+        if ($(menu + " .cursor").text() == ""){
+            $(menu + " .cursor").text(" ")
         }
-        if ($(".cursor").css("background-color") == "transparent"){
-            $(".cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
+        if ($(menu + " .cursor").css("background-color") == "transparent"){
+            $(menu + " .cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
         } else {
-            $(".cursor").css("background-color", "rgba(0, 0, 0, 0)");
+            $(menu + " .cursor").css("background-color", "rgba(0, 0, 0, 0)");
         };
 
     }, 500);
@@ -226,8 +225,8 @@ $(function(){
             case 'y_equals':
                 {
                     menu = ".yequals";
-                    $(".home").toggle();
-                    $(".yequals").toggle();
+                    $(".home").hide();
+                    $(".yequals").show();
                     $(".graph").hide();
                 }
                 break;
