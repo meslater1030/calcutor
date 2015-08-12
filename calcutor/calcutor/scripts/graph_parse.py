@@ -24,8 +24,11 @@ def graph_parse(equations):
     ax = fig.add_subplot(111)
     X = np.arange(-10, 11, .1)
     for eq in equations:
-        Y = ne.evaluate(eq)
-        ax.plot(X, Y, color='k')
+        if 'X' not in eq:
+            ax.axhline(y=ne.evaluate(eq), color='k')
+        else:
+            Y = ne.evaluate(eq)
+            ax.plot(X, Y, color='k')
     ax.axhline(y=0, color='k')
     ax.axvline(x=0, color='k')
     ax.set_xlim(-10, 10)

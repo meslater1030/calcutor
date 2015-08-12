@@ -45,10 +45,16 @@ def graph_view(request):
             if result:
                 equations.append(result)
         if not equations:
-            return {'output': 'No equations to graph.'}
+            request.response.status = 400
+            return {'error': 'No equations to graph.'}
         try:
             equations = [simple_math.clean_string(eq) for eq in equations]
         except SyntaxError:
-            return {'output': ERROR_MSG}
-        output = graph_parse.graph_parse(equations)
+            request.response.status = 400
+            return {'error': ERROR_MSG}
+        try:
+            output = graph_parse.graph_parse(equations)
+        except (TypeError, ValueError):
+            request.response.status = 400
+            return {'error': ERROR_MSG}
         return {'output': output}

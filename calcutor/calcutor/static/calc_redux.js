@@ -290,6 +290,8 @@ $(function(){
                         update_cursor();
                     }).fail(function(){
                         $(".home .output:last").text("Something Went Wrong");
+                        $(".yequals").hide();
+                        $(".home").show();
                     });
                 }
                 break;
