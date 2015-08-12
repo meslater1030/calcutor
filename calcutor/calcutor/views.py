@@ -48,7 +48,11 @@ def graph_view(request):
             request.response.status = 400
             return {'error': 'No equations to graph.'}
         try:
-            equations = [simple_math.clean_string(eq) for eq in equations]
+            for idx, eq in enumerate(equations):
+                equations[idx] = simple_math.clean_string(eq)
+                print eq
+                print equations[idx]
+            import pdb; pdb.set_trace()
         except SyntaxError:
             request.response.status = 400
             return {'error': ERROR_MSG}
