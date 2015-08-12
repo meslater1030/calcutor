@@ -410,6 +410,7 @@ $(function(){
                 }
                 break;
             case "Del":
+            case "Delete":
                 {
                     $("#delete").click();
                 }
@@ -460,6 +461,7 @@ $(function(){
                 }
                 break;
             case "Esc":
+            case "Escape":
                 {
                     $("#clear").click();
                 }
