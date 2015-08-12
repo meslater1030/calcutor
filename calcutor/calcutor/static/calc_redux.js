@@ -104,6 +104,7 @@ $(function(){
             case '7':
             case '8':
             case '9':
+            case '.':
             case "\u03C0":
             case "\u02C9":
             case "\u2148":
@@ -236,6 +237,7 @@ $(function(){
                     menu = ".home";
                     $(".yequals").hide();
                     $(".graph").hide();
+                    $(".table").hide();
                     $(".home").show();
                     $(".home").empty();
                     $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
@@ -260,13 +262,15 @@ $(function(){
                     menu = ".yequals";
                     $(".home").hide();
                     $("#all_menus").show();
+                    $(".view").hide();
                     $(".yequals").show();
-                    $(".math_menu").hide();
-                    $(".graph").hide();
                 }
                 break;
             case 'ENTER':
                 {
+                    if (menu == ".table"){
+                        update_table();
+                    }
                     if ($("ins").hasClass("cursor")){
                         if (input == ""){
                             input = last_input;
@@ -321,29 +325,20 @@ $(function(){
                 break;
             case 'graph':
                 {
-                    var equations = {};
-                    for (i=0; i<10; i++){
-                        var yfn = "";
-                        var $y = $($(".y_func")[i]);
-                        $y.find("ins:not(ins:first)").each(function(){
-                            yfn += this.innerHTML;
-                        });
-                        equations[$y.find("ins:first").text()] = yfn;
-                    };
                     $.ajax({
                         type: "POST",
                         url: "/graph/",
-                        data: equations,
+                        data: get_equations(),
                     }).done(function(response){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
                         $(".home").hide();
-                        $(".yequals").hide();
+                        $(".view").hide();
                         $(".graph").show();
                         input = "";
                         menu = ".home";
                     }).fail(function(){
-                        $(".home .output:last").text("Something Went Wrong");
+                        $(".home .output:last").text("ERR: GRAPH SYNTAX");
                         $(".yequals").hide();
                         $(".home").show();
                         menu = ".home";
@@ -352,8 +347,9 @@ $(function(){
                 break;
             case 'TABLE':
                 {
-                    $(".home").hide();
+                    $(".view").hide();
                     $(".table").show();
+                    menu = ".table";
                 }
                 break;
             default: break;
@@ -361,5 +357,57 @@ $(function(){
         update_scroller();
         $("ins:not(.cursor)").css("background-color", "rgba(0, 0, 0, 0)");
     });
+
+    function get_equations(){
+        var equations = {};
+        for (i=0; i<10; i++){
+            var yfn = "";
+            var $y = $($(".y_func")[i]);
+            $y.find("ins:not(ins:first)").each(function(){
+                yfn += this.innerHTML;
+            });
+            equations[$y.find("ins:first").text()] = yfn;
+        };
+        return equations;
+    }
+
+    $("body").keyup(function(event){
+        console.log(event.key);
+        switch (event.key) {
+            case "Enter":
+                {
+                    $("#ENTER").click();
+                }
+                break;
+            case "Up":
+            case "Down":
+            case "Left":
+            case "Right":
+                {
+                    $("#" + event.key.toLowerCase()).click();
+                }
+                break;
+            case "Backspace":
+                {
+                    $("#left").click();
+                    $("#delete").click();
+                }
+                break;
+            default:
+                {
+                    try {
+                        if ($("#"+event.key).length != 0){
+                            $("#"+event.key).click();
+                        };
+                    } catch (err) {
+                        if (document.getElementById(event.key) != null) {
+                            document.getElementById(event.key).click();
+                        }
+                    };
+                }
+                break;
+        };
+    });
+
     $("#all_menus").hide();
 });

@@ -15,7 +15,7 @@
           <p class="output"></p>
         </div>
         <div id="all_menus">
-        <div class="yequals">
+        <div class="yequals view">
          <div class="y_func input"><ins>\Y1:</ins><ins class="cursor"></ins></div>
          <div class="y_func input"><ins>\Y2:</ins><ins></ins> </div>
          <div class="y_func input"><ins>\Y3:</ins><ins></ins> </div>
@@ -27,7 +27,7 @@
          <div class="y_func input"><ins>\Y9:</ins><ins></ins> </div>
          <div class="y_func input"><ins>\Y0:</ins><ins></ins> </div>
        </div>
-       <div class="math_menu">
+       <div class="math_menu view">
           <ul>
             <li class="submenu" id="math_submenu">MATH</li>
             <li class="submenu" id="num_submenu">NUM</li>
@@ -68,22 +68,29 @@
           <p class="prb_submenu submenu_options" id="randNorm(">6: randNorm(</p>
           <p class="prb_submenu submenu_options" id="randBin(">7: randBin(</p>
         </div>
-       <div class="hide graph">
+       <div class="hide graph view">
        </div>
-       <div class="hide table">
+       <div class="hide table view">
          <table id="xytable">
            <tr>
              <th>X</th>
-             <th>Y1</th>
+             {% for x in range(1,10) %}
+               <th>Y{{ x }}</th>
+             {% endfor %}
+             <th>Y0</th>
            </tr>
            <tr>
-             <td><p class="input"><ins class="cursor"></ins></p></td>
-             <td><p class="output"></p></td>
-           </tr>
-           {% for n in range(1,5) %}
-             <tr>
-               <td><p class="input"></p></td>
+             <td class="input"><ins class="cursor"></ins></td>
+             {% for x in range(10) %}
                <td><p class="output"></p></td>
+             {% endfor %}
+           </tr>
+           {% for n in range(8) %}
+             <tr>
+               <td class="input"><ins></ins></td>
+               {% for x in range(10) %}
+                 <td><p class="output"></p></td>
+               {% endfor %}
              </tr>
            {% endfor %}
          </table>
