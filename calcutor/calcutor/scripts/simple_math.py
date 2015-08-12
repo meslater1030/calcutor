@@ -10,7 +10,7 @@
 #
 # Copyright 2003-2006 by Paul McGuire
 #
-
+from __future__ import division
 from pyparsing import (Literal,
                        CaselessLiteral,
                        Word,
@@ -23,6 +23,8 @@ from pyparsing import (Literal,
 import math
 import operator
 import re
+from fractions import Fraction
+from decimal import Decimal
 
 exprStack = []
 
@@ -128,6 +130,9 @@ def evaluateStack():
         return fn[op](evaluateStack())
     elif op[0].isalpha():
         return 0
+    elif op == ">Frac":
+        frac = Fraction(Decimal(evaluateStack()))
+        return str(frac.numerator) + "/" + str(frac.denominator)
     else:
         return float(op)
 

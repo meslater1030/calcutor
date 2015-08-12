@@ -66,6 +66,7 @@ $(function(){
                     };
                 }
             case 'A':
+            case '.':
             case 'B':
             case 'C':
             case 'D':
