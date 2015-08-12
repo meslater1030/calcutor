@@ -138,16 +138,16 @@
     display: inline-block;
 }
 
-.menu ul {
+#all_menus ul {
     list-style-type: none;
     display: inline;
 }
 
-.menu ul li {
+#all_menus ul li {
     display: inline;
 }
 
-.menu p {
+#all_menus p {
     margin: 0;
 }
 

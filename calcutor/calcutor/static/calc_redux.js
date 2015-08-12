@@ -47,6 +47,9 @@ $(function(){
 
     $("#buttons button").click(function(event) {
         $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
+        $(".default").show();
+        $(".alpha").hide();
+        $(".second").hide();
         switch ($(this).attr('id')) {
             case '+':
             case '-':
@@ -131,6 +134,8 @@ $(function(){
                 {
                     if ($(".cursor").next().length == 0){
                         break;
+                    } else if ($("p").hasClass("cursor")) {
+                        break;
                     }
                     var cur = $(".cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
@@ -142,6 +147,8 @@ $(function(){
                 {
                     if ($(".cursor").prev().length == 0){
                         break;
+                    } else if ($("p").hasClass("cursor")) {
+                        break;
                     }
                     var cur = $(".cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
@@ -152,20 +159,43 @@ $(function(){
             case 'up':
                 {
                     var cur = $(".cursor");
-                    cur.removeClass("cursor");
+                    cur.css("background-color", "rgba(0, 0, 0, 0)");
+                    if ($("p").hasClass("cursor")) {
+                        var previous = cur.prev().filter(":visible");
+                        if ((previous.text() != "") && (previous.is("ul") == false)) {
+                            cur.prev().addClass("cursor");
+                            cur.removeClass("cursor");
+                        } else {
+                            $(".submenu:first").addClass("cursor");
+                        }
+                    } else if ($("li").hasClass("cursor")) {
+                        break;
+                    }
                     if($(cur.prevAll()[35]).length == 0){
                         $(".input:last ins:first").addClass("cursor");
-                        break;
-                    };
-                    $(cur.prevAll()[35]).addClass("cursor");
+                        cur.removeClass("cursor");
+                    } else {
+                        $(cur.prevAll()[35]).addClass("cursor");
+                    }
                 }
                 break;
             case 'down':
                 {
                     var cur = $(".cursor");
-                    cur.removeClass("cursor");
-                    if($(cur.nextAll()[35]).length == 0){
+                    cur.css("background-color", "rgba(0, 0, 0, 0)")
+                    if ($("p").hasClass("cursor")) {
+                        if (cur.attr('class').indexOf(cur.next().attr('class')) > -1) {
+                            cur.next().addClass("cursor");
+                            cur.removeClass("cursor");
+                        } else {
+                            break;
+                        }
+                    } else if ($("li").hasClass("cursor")){
+                        $(".submenu_options:visible:first").addClass("cursor");
+                        cur.removeClass("cursor");
+                    } else if($(cur.nextAll()[35]).length == 0){
                         $(".input:last ins:last").addClass("cursor");
+                        cur.removeClass("cursor");
                         break;
                     };
                     $(cur.nextAll()[35]).addClass("cursor");
@@ -192,34 +222,49 @@ $(function(){
                 break;
             case 'second_mode':
                 {
-                    $(".default").toggle();
-                    $(".second").toggle();
+                    $(".default").hide();
+                    $(".second").show();
                 }
                 break;
             case 'alpha_mode':
                 {
-                    $(".default").toggle();
-                    $(".alpha").toggle();
+                    $(".default").hide();
+                    $(".alpha").show();
                 }
                 break;
             case 'ENTER':
                 {
-                    if (input == ""){
-                        input = last_input;
-                    };
-                    last_input = input;
-                    input = input.split("Ans").join(output);
-                    send_it(input);
-                    input = "";
+                    if ($("ins").hasClass("cursor")){
+                        if (input == ""){
+                            input = last_input;
+                        };
+                        last_input = input;
+                        input = input.split("Ans").join(output);
+                        send_it(input);
+                        input = "";
+                    } else if ($(".submenu").hasClass("cursor")){
+                        var cur_id = "." + $(".cursor").attr('id');
+                        $(".submenu_options").hide();
+                        $(cur_id).show();
+                    } else if ($("p").hasClass("cursor")){
+                        var cur_id = $(".cursor").attr('id');
+                        console.log(cur_id)
+                        $("#all_menus").hide();
+                        $(".input").show();
+                        $(".output").show();
+                        $("ins").addClass("cursor");
+                        write_it(cur_id);
+                    }
                 }
                 break;
             case 'math':
                 {
                     var cur = $(".cursor");
                     cur.removeClass("cursor");
-                    var $math_submenu = $("#math_submenu");
+                    var $math_submenu = $(".submenu:first");
                     $math_submenu.addClass("cursor");
-                    $("#math_menu").show();
+                    $("#all_menus").show();
+                    $(".math_submenu").show();
                     $(".num_submenu").hide();
                     $(".cpx_submenu").hide();
                     $(".prb_submenu").hide();
@@ -231,7 +276,7 @@ $(function(){
                 {
                     var cur = $(".cursor");
                     cur.removeClass("cursor");
-                    $("#math_menu").hide();
+                    $("#all_menus").hide();
                     $(".input").show();
                     $(".output").show();
                     $(".input").append("<ins class='cursor'></ins>");
@@ -259,5 +304,5 @@ $(function(){
         };
         update_scroller();
     });
-    $("#math_menu").hide();
+    $("#all_menus").hide();
 });
