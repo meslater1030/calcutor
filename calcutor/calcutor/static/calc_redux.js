@@ -203,6 +203,7 @@ $(function(){
                     menu = ".home";
                     $(".yequals").hide();
                     $(".graph").hide();
+                    $(".table").hide();
                     $(".home").show();
                     $(".home").empty();
                     $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
@@ -268,19 +269,10 @@ $(function(){
                 break;
             case 'graph':
                 {
-                    var equations = {};
-                    for (i=0; i<10; i++){
-                        var yfn = "";
-                        var $y = $($(".y_func")[i]);
-                        $y.find("ins:not(ins:first)").each(function(){
-                            yfn += this.innerHTML;
-                        });
-                        equations[$y.find("ins:first").text()] = yfn;
-                    };
                     $.ajax({
                         type: "POST",
                         url: "/graph/",
-                        data: equations,
+                        data: get_equations(),
                     }).done(function(response){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
@@ -290,7 +282,7 @@ $(function(){
                         input = "";
                         menu = ".home";
                     }).fail(function(){
-                        $(".home .output:last").text("Something Went Wrong");
+                        $(".home .output:last").text("ERR: GRAPH SYNTAX");
                         $(".yequals").hide();
                         $(".home").show();
                         menu = ".home";
@@ -301,6 +293,7 @@ $(function(){
                 {
                     $(".home").hide();
                     $(".table").show();
+                    menu = ".table";
                 }
                 break;
             default: break;
@@ -309,4 +302,17 @@ $(function(){
         $("ins:not(.cursor)").css("background-color", "rgba(0, 0, 0, 0)");
     });
     $("#math_menu").hide();
+
+    function get_equations(){
+        var equations = {};
+        for (i=0; i<10; i++){
+            var yfn = "";
+            var $y = $($(".y_func")[i]);
+            $y.find("ins:not(ins:first)").each(function(){
+                yfn += this.innerHTML;
+            });
+            equations[$y.find("ins:first").text()] = yfn;
+        };
+        return equations;
+    }
 });
