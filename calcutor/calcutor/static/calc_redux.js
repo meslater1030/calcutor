@@ -5,13 +5,13 @@ $(function(){
     var menu = ".home";
 
     setInterval(function(){
-        if ($(".cursor").text() == ""){
-            $(".cursor").text(" ")
+        if ($(menu + " .cursor").text() == ""){
+            $(menu + " .cursor").text(" ")
         }
-        if ($(".cursor").css("background-color") == "transparent"){
-            $(".cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
+        if ($(menu + " .cursor").css("background-color") == "transparent"){
+            $(menu + " .cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
         } else {
-            $(".cursor").css("background-color", "rgba(0, 0, 0, 0)");
+            $(menu + " .cursor").css("background-color", "rgba(0, 0, 0, 0)");
         };
 
     }, 500);
@@ -57,8 +57,8 @@ $(function(){
             case '^':
             case '\u00B2':
                 {
-                    if (input == ""){
-                        input = write_it('Ans');
+                    if (menu == ".home" && input == ""){
+                        write_it('Ans');
                     };
                 }
             case 'A':
@@ -126,7 +126,7 @@ $(function(){
             case ',':
             case 'Ans':
                 {
-                    input = write_it(this.id);
+                    write_it(this.id);
                 }
                 break;
             case 'right':
@@ -157,7 +157,7 @@ $(function(){
                         var cur = $(".cursor");
                         cur.removeClass("cursor");
                         if($(cur.prevAll()[35]).length == 0){
-                            $(".input:last ins:first").addClass("cursor");
+                            $(".home .input:last ins:first").addClass("cursor");
                             break;
                         };
                         $(cur.prevAll()[35]).addClass("cursor");
@@ -176,7 +176,7 @@ $(function(){
                         var cur = $(".cursor");
                         cur.removeClass("cursor");
                         if($(cur.nextAll()[35]).length == 0){
-                            $(".input:last ins:last").addClass("cursor");
+                            $(".home .input:last ins:last").addClass("cursor");
                             break;
                         };
                         $(cur.nextAll()[35]).addClass("cursor");
@@ -200,6 +200,7 @@ $(function(){
                 break;
             case 'clear':
                 {
+                    menu = ".home";
                     $(".yequals").hide();
                     $(".graph").hide();
                     $(".home").show();
@@ -224,8 +225,8 @@ $(function(){
             case 'y_equals':
                 {
                     menu = ".yequals";
-                    $(".home").toggle();
-                    $(".yequals").toggle();
+                    $(".home").hide();
+                    $(".yequals").show();
                     $(".graph").hide();
                 }
                 break;
@@ -256,6 +257,7 @@ $(function(){
                 break;
             case 'quit':
                 {
+                    menu = ".home";
                     var cur = $(".cursor");
                     cur.removeClass("cursor");
                     $("#math_menu").hide();
