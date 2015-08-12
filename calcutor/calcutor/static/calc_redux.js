@@ -141,7 +141,7 @@ $(function(){
                         break;
                     } else if ($("p").hasClass("cursor")) {
                         break;
-                    }
+                    };
                     var cur = $(".cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
@@ -154,7 +154,7 @@ $(function(){
                         break;
                     } else if ($("p").hasClass("cursor")) {
                         break;
-                    }
+                    };
                     var cur = $(".cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
@@ -207,7 +207,6 @@ $(function(){
                         cur.removeClass("cursor");
                     }
                     if (menu == ".home") {
-                        var cur = $(".cursor");
                         cur.removeClass("cursor");
                         if($(cur.nextAll()[35]).length == 0){
                             $(".home .input:last ins:last").addClass("cursor");
@@ -215,7 +214,6 @@ $(function(){
                         };
                         $(cur.nextAll()[35]).addClass("cursor");
                     } else if (menu == ".yequals") {
-                        var cur = $(".cursor");
                         if (cur.parent().next().length != 0){
                             cur.removeClass("cursor");
                             cur.parent().next().find("ins:not(ins:first)").first().addClass("cursor");
@@ -234,6 +232,7 @@ $(function(){
                 break;
             case 'clear':
                 {
+                    $(".cursor").removeClass('cursor');
                     menu = ".home";
                     $(".yequals").hide();
                     $(".graph").hide();
@@ -259,6 +258,8 @@ $(function(){
                 break;
             case 'y_equals':
                 {
+                    $(".cursor").removeClass("cursor");
+                    $(".yequals .y_func:first ins:not(.yequals ins:first):first").addClass('cursor');
                     menu = ".yequals";
                     $(".home").hide();
                     $("#all_menus").show();
@@ -272,6 +273,10 @@ $(function(){
                         update_table();
                     }
                     if ($("ins").hasClass("cursor")){
+                        if (menu == ".yequals"){
+                            $("#down").click();
+                            break;
+                        };
                         if (input == ""){
                             input = last_input;
                         };
@@ -303,13 +308,14 @@ $(function(){
                     cur.removeClass("cursor");
                     var $math_submenu = $(".submenu:first");
                     $math_submenu.addClass("cursor");
+                    $(".math_menu").show();
                     $("#all_menus").show();
                     $(".math_submenu").show();
                     $(".num_submenu").hide();
                     $(".cpx_submenu").hide();
                     $(".prb_submenu").hide();
-                    $(".input").hide();
-                    $(".output").hide();
+                    $(".home").hide();
+                    $(".yequals").hide();
                 }
                 break;
             case 'quit':
@@ -318,6 +324,8 @@ $(function(){
                     var cur = $(".cursor");
                     cur.removeClass("cursor");
                     $("#all_menus").hide();
+                    $(".yequals").hide();
+                    $(".home").show()
                     $(".input").show();
                     $(".output").show();
                     $(".input").append("<ins class='cursor'></ins>");
