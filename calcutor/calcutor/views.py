@@ -72,7 +72,7 @@ def table_view(request):
         output = {}
         for x in xrange(10):
             try:
-                output['Y' + str(x)] = request.params.get('\\Y{}:'.format(
+                output[str(x)] = request.params.get('\\Y{}:'.format(
                     str(x))).strip()
             except KeyError:
                 continue
@@ -90,7 +90,7 @@ def table_view(request):
             output[key] = output[key].replace('X', xvalue)
 
             try:
-                simple_math.BNF.parseString(output[key])
+                simple_math.BNF().parseString(output[key])
             except ParseException:
                 output[key] = 'ERR'
             else:
@@ -98,4 +98,6 @@ def table_view(request):
                     output[key] = simple_math.evaluateStack()
                 except ValueError:
                     output[key] = 'ERR'
+                if float.is_integer(output[key]):
+                    output[key] = int(output[key])
         return {'output': output}

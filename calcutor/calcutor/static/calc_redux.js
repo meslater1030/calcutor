@@ -2,6 +2,7 @@ $(function(){
     var last_input = "";
     var input = "";
     var output = "";
+    var tableinput = "";
     var menu = ".home";
 
     setInterval(function(){
@@ -29,6 +30,8 @@ $(function(){
         cur.next().addClass('cursor');
         if (menu == ".home") {
             input += token;
+        } else if (menu == ".table"){
+            tableinput += token;
         }
     };
     var send_it = function(string){
@@ -271,9 +274,7 @@ $(function(){
                 {
                     if (menu == ".table"){
                         update_table();
-                    };
-
-                    if ($(menu + " ins").hasClass("cursor")){
+                    } else if ($(menu + " ins").hasClass("cursor")){
                         if (menu == ".yequals"){
                             $("#down").click();
                             break;
@@ -298,7 +299,7 @@ $(function(){
                         menu = ".home"
                         console.log(cur_id)
                         write_it(cur_id);
-                    }
+                    };
                 }
                 break;
             case 'math':
@@ -379,20 +380,21 @@ $(function(){
     function update_table(){
         var table_row = $(".table .cursor").parent().parent();
         equations = get_equations();
-        equations['X'] = table_row.find(".cursor").text();
+        equations['X'] = tableinput;
+        tableinput = "";
         $.ajax({
             type: "POST",
             url: "/table/",
             data: equations,
         }).done(function(response){
             output = response.output;
-            $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
-            $(".home").hide();
-            $(".view").hide();
-            $(".graph").show();
-            input = "";
+            var cells = table_row.find("p");
+            for (i=0; i < cells.length; i++){
+                var checker = cells[i];
+                cells[i].text(output[i]);
+            };
         }).fail(function(){
-            $(".home .output:last").text("ERR: GRAPH SYNTAX");
+            $(".home .output:last").text("ERR: TABLE SYNTAX");
             $(".table").hide();
             $(".home").show();
             menu = ".home";
