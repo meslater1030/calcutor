@@ -272,7 +272,7 @@ $(function(){
                     if (menu == ".table"){
                         update_table();
                     }
-                    if ($("ins").hasClass("cursor")){
+                    else if ($("ins").hasClass("cursor")){
                         if (menu == ".yequals"){
                             $("#down").click();
                             break;
@@ -377,6 +377,30 @@ $(function(){
             equations[$y.find("ins:first").text()] = yfn;
         };
         return equations;
+    }
+
+    function update_table(){
+        var table_row = $(".table .cursor").parent().parent();
+        equations = get_equations();
+        equations['X'] = table_row.find(".cursor").text();
+        $.ajax({
+            type: "POST",
+            url: "/table/",
+            data: equations,
+        }).done(function(response){
+            output = response.output;
+            $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
+            $(".home").hide();
+            $(".view").hide();
+            $(".graph").show();
+            input = "";
+        }).fail(function(){
+            $(".home .output:last").text("ERR: GRAPH SYNTAX");
+            $(".table").hide();
+            $(".home").show();
+            menu = ".home";
+        });
+
     }
 
     $("body").keyup(function(event){
