@@ -13,6 +13,9 @@ requires = [
     'pyramid_jinja2',
     'pyramid_debugtoolbar',
     'waitress',
+    'numexpr',
+    'numpy',
+    'matplotlib',
     ]
 
 setup(name='calcutor',

@@ -24,9 +24,14 @@ $(function(){
     /* Functionality related to the 2nd key/yellow inputs
     */
     $(".second").hide()
-    $("#second_mode").click(function(event){
-        $(".first").toggle()
-        $(".second").toggle()
+    $("#second_mode, .second").click(function(event){
+        $(".default").toggle();
+        $(".second").toggle();
+    })
+    $(".alpha").hide()
+    $("#alpha_mode, .alpha").click(function(event){
+        $(".default").toggle();
+        $(".alpha").toggle();
     })
 
     /* ---- BASIC MATH ----
@@ -83,13 +88,42 @@ $(function(){
 
     /* ---- SUBMENUS ----
        yeq
+       graph
        navigation
     */
     $("#y_equals").click(function(event){
         $(".home").hide();
         $(".yeq").show();
         menu = "yeq";
+        update_cursor();
     });
+
+
+    $("#buttons #graph").click(function(event){
+        menu = "graph";
+        $.ajax({
+            type: "POST",
+            url: "/graph/",
+            data: {input: "2X + 1"}
+        }).done(function(response){
+            output = response.output;
+            $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
+            $(".home").hide();
+            $(".graph").show();
+            input = "";
+            idx = 0;
+            update_cursor();
+        }).fail(function(){
+            $(".home .output:last").text("Something Went Wrong");
+            $(".home").append("<p class='input'></p>");
+            $(".home").append("<p class='output'></p>");
+            input = "";
+            idx = 0;
+            update_cursor();
+        });
+    });
+
+
     $("#buttons #up").click(function(event){
         if (menu != "home") {
             idy -= 1;
@@ -173,12 +207,13 @@ $(function(){
            -update scroll
     */
     var update_cursor = function(){
+        console.log(idx, idy);
         if (menu == "home") {
-            $cursor.text(new Array(idx+1).join(' ') + "|");
+            $cursor.text(new Array(idy+1).join('\n') + new Array(idx+1).join(' ') + "|");
             $cursor.css("top", $(".home .input:last").position().top);
             $cursor.css("left", $(".home .input:last").position().left);
         } else if (menu == "yeq") {
-            $cursor.text(new Array(idx+1).join(' ') + "|");
+            $cursor.text(new Array(idy).join('\n') + new Array(idx+1).join(' ') + "|");
             $cursor.css("top", $(".yeq .y_func")[idy].top);
             $cursor.css("left", $(".yeq .y_func")[idy].left);
         };
@@ -197,4 +232,16 @@ $(function(){
         update_cursor();
     });
 
+    /* MENU FUNCTIONALITY
+    Shows and hides menus on the appropriate button push
+    */
+
+    $("#math_menu").hide();
+    $("#math").click(function(event){
+        $("#math_menu").toggle();
+        $cursor.toggle();
+    });
+
 });
+
+
