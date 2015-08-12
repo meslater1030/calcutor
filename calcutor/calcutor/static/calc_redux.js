@@ -196,7 +196,7 @@ $(function(){
                 break;
             case 'down':
                 {
-                    var cur = $(menu + ".cursor");
+                    var cur = $(menu + " .cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     if ($("p").hasClass("cursor")) {
                         if (cur.attr('class').indexOf(cur.next().attr('class')) > -1) {
@@ -362,6 +362,7 @@ $(function(){
         update_scroller();
         $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
         $("ins:not(.cursor)").css("background-color", "rgba(0, 0, 0, 0)");
+        $("button").blur();
     });
 
     function get_equations(){
