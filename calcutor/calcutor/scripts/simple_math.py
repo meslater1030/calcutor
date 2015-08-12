@@ -130,9 +130,6 @@ def evaluateStack():
         return fn[op](evaluateStack())
     elif op[0].isalpha():
         return 0
-    elif op == ">Frac":
-        frac = Fraction(Decimal(evaluateStack()))
-        return str(frac.numerator) + "/" + str(frac.denominator)
     else:
         return float(op)
 
@@ -167,13 +164,19 @@ def clean_string(input):
                        (u'\u221a', 'sqrt'),
                        (u'sin^-1', 'asin'),
                        (u'cos^-1', 'acos'),
-                       (u'tan^-1', 'atan')]:
+                       (u'tan^-1', 'atan'),
+                       (u'\u03c0', 'PI')]:
         input = input.replace(unic, byte)
     for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
         input = re.sub(reg_ex, r'\1 * \2', input)
     checkParens(input)
     input = fix_decimals(input)
     return input
+
+
+def decimal_to_fraction(output):
+    frac = Fraction(Decimal(str(output)))
+    return str(frac.numerator) + "/" + str(frac.denominator)
 
 
 def sci_notation(output):
