@@ -113,7 +113,6 @@ fn = {"sin": math.sin,
 
 
 def evaluateStack():
-    import pdb; pdb.set_trace()
     op = exprStack.pop()
     if op == 'unary -':
         return -evaluateStack()
