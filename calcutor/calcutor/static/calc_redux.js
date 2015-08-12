@@ -414,14 +414,15 @@ $(function(){
         return equations;
     };
     function get_graph_window(){
-        var win = {}
-        for (clas in ['Xmin', 'Xmax', 'Xscl', 'Ymin', 'Ymax', 'Yscl']){
+        var win = {};
+        var names = ['Xmin', 'Xmax', 'Xscl', 'Ymin', 'Ymax', 'Yscl'];
+        for (clas in names){
             var val = "";
-            var $setting = $("."+clas);
+            var $setting = $("."+names[clas]);
             $setting.find("ins").each(function(){
                 val += this.innerHTML;
             });
-            win[clas] = val;
+            win[names[clas]] = val;
         };
         return win;
     };
