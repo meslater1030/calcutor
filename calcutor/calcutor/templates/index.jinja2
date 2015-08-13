@@ -68,34 +68,36 @@
             <p class="prb_submenu submenu_options math_menu" id="randNorm(">6: randNorm(</p>
             <p class="prb_submenu submenu_options math_menu" id="randBin(">7: randBin(</p>
           </div>
-       <div class="hide graph view">
-       </div>
-       <div class="hide table view">
-        <table id="xytable">
-          <tr>
-            <th>X</th>
-            {% for x in range(1,10) %}
-              <th>Y{{ x }}</th>
-            {% endfor %}
-            <th>Y0</th>
-          </tr>
-          <tr>
-            <td class="input"><ins class="cursor"></ins></td>
-            {% for x in range(1,10) %}
-              <td><p class="output Y{{ x }}"></p></td>
-            {% endfor %}
-            <td><p class="output Y0"></p></td>
-          </tr>
-          {% for n in range(8) %}
-          <tr>
-            <td class="input"><ins></ins></td>
-            {% for x in range(1,10) %}
-              <td><p class="output Y{{ x }}"></p></td>
-            {% endfor %}
-            <td><p class="output Y0"></p></td>
-          </tr>
-        {% endfor %}
-        </table>
+        <div class="hide graph view">
+        </div>
+        <div class="hide table view">
+          <div class="tablewrapper">
+            <table id="xytable">
+              <tr>
+                <th>X</th>
+                {% for x in range(1,10) %}
+                  <th>Y{{ x }}</th>
+                {% endfor %}
+                <th>Y0</th>
+              </tr>
+              <tr>
+                <td class="input"><ins class="cursor"></ins></td>
+                {% for x in range(1,10) %}
+                  <td><p class="output Y{{ x }}"></p></td>
+                {% endfor %}
+                <td><p class="output Y0"></p></td>
+              </tr>
+              {% for n in range(8) %}
+              <tr>
+                <td class="input"><ins></ins></td>
+                {% for x in range(1,10) %}
+                  <td><p class="output Y{{ x }}"></p></td>
+                {% endfor %}
+                <td><p class="output Y0"></p></td>
+              </tr>
+             {% endfor %}
+             </table>
+            </div>
          </div>
          <div class="hide windowmenu view">
           <div class="winsetting Xmin"><span>Xmin=</span><ins>&#713</ins><ins>1</ins><ins>0</ins><ins></ins></div>
