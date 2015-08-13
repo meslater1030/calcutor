@@ -79,6 +79,7 @@ $(function(){
         $(".yequals").hide();
         $(".math_menu").hide();
         $(".graph").hide();
+        $(".table").hide();
 
         $(".windowmenu").hide();
         $("#all_menus").show();
@@ -352,22 +353,18 @@ $(function(){
                     menu = ".math_menu";
                     var $math_submenu = $(".submenu:first");
                     $math_submenu.addClass("cursor");
+                    hide_all();
                     $(".math_menu").show();
-                    $("#all_menus").show();
                     $(".math_submenu").show();
-                    $(".graph").hide();
                     $(".num_submenu").hide();
                     $(".cpx_submenu").hide();
                     $(".prb_submenu").hide();
-                    $(".home").hide();
-                    $(".yequals").hide();
                 }
                 break;
             case 'quit':
                 {
                     menu = ".home";
-                    $("#all_menus").hide();
-                    $(".yequals").hide();
+                    hide_all();
                     $(".home").show()
                 }
                 break;
@@ -382,14 +379,13 @@ $(function(){
                     }).done(function(response){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
-                        $(".home").hide();
-                        $(".view").hide();
+                        hide_all();
                         $(".graph").show();
                         input = "";
                         menu = ".home";
                     }).fail(function(){
                         $(".home .output:last").text("ERR: GRAPH SYNTAX");
-                        $(".yequals").hide();
+                        hide_all();
                         $(".home").show();
                         menu = ".home";
                     });
@@ -397,9 +393,7 @@ $(function(){
                 break;
             case 'TABLE':
                 {
-                    $(".home").hide();
-                    $("#all_menus").show();
-                    $(".view").hide();
+                    hide_all();
                     $(".table .cursor").removeClass("cursor")
                     $(".table").show();
                     $(".table ins:first").addClass("cursor")
@@ -480,6 +474,9 @@ $(function(){
 
     }
 
+    /*
+    KEYBORD INPUT
+    */
     $("body").keyup(function(event){
         switch (event.key) {
             case "Enter":
