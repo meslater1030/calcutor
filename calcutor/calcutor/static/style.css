@@ -16,13 +16,14 @@
     background-size: 100%;
 }
 
-#screen .input, #screen .y_func {
+#screen .input, #screen .y_func, #screen .winsetting{
     width: 100%;
     margin: 1px;
     float: left;
     font-size: 1em;
 }
-#screen .input ins, #screen .y_func ins, #screen .y_func span {
+#screen .input ins, #screen .y_func ins, #screen .y_func span,
+#screen .windowmenu ins, #screen .windowmenu span {
     text-decoration: none;
     white-space: pre;
     float: left;
