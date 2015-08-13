@@ -309,6 +309,7 @@ $(function(){
                             cur.prev().addClass("cursor");
                             cur.removeClass("cursor");
                         } else {
+                            cur.removeClass("cursor");
                             $(".submenu:first").addClass("cursor");
                         }
                     } else if ($("li").hasClass("cursor")) {
@@ -446,11 +447,12 @@ $(function(){
                         $(".submenu_options").hide();
                         $(cur_id).show();
                     } else if ($("p" + menu).hasClass("cursor")){
-                        var cur = $(menu + ".cursor");
+                        var cur = $(menu + " .cursor");
                         cur.css("background-color", "rgba(0, 0, 0, 0)")
-                        var cur_id = $(menu + ".cursor").attr('id');
+                        var cur_id = $(menu + " .cursor").attr('id');
                         $("#all_menus").hide();
                         $(".home").show();
+                        $("p.cursor").removeClass("cursor");
                         menu = ".home"
                         math_ans(cur_id);
                         write_it(cur_id);
