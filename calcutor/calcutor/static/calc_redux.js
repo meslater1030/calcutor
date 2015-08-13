@@ -32,20 +32,18 @@ $(function(){
         };
     };
     var send_it = function(string){
+        var output = "";
         $.ajax({
             type: "POST",
             url: "/",
-            data: {input: input}
+            async: false,
+            data: {input: string}
         }).done(function(response){
             output = response.output;
-            $(".home .output:last").text(output);
         }).fail(function(){
-            $(".home .output:last").text("Your mother was a hamster and your father smelt of elderberries!");
-        }).always(function(){
-            $(".cursor").removeClass("cursor");
-            $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
-            $(".home").append("<p class='output'></p>");
+            output = "Your mother was a hamster and your father smelt of elderberries!";
         });
+        return output;
     };
     var get_input = function(){
         var input = "";
@@ -324,13 +322,22 @@ $(function(){
                                 $("#down").click();
                                 break;
                             };
+                            if (menu == ".windowmenu"){
+                                $("#down").click();
+                                break;
+                            };
+
                             input = get_input()
                             if (input == ""){
                                 input = last_input;
                             };
                             last_input = input;
                             input = input.split("Ans").join(output);
-                            send_it(input);
+                            output = send_it(input);
+                            $(".home .output:last").text(output);
+                            $(".cursor").removeClass("cursor");
+                            $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
+                            $(".home").append("<p class='output'></p>");
                             input = "";
                     } else if ($(menu + ".submenu").hasClass("cursor")){
                         var cur_id = "." + $(menu + ".cursor").attr('id');
@@ -370,10 +377,15 @@ $(function(){
                 break;
             case 'graph':
                 {
+                    var settings = get_graph_window();
+                    $.each(settings, function(index, val){
+                        settings[index] = send_it(val);
+                    });
+                    console.log(settings);
                     $.ajax({
                         type: "POST",
                         url: "/graph/",
-                        data: JSON.stringify({equations: get_equations(), settings: get_graph_window()}),
+                        data: JSON.stringify({equations: get_equations(), settings: settings}),
                         contentType: "application/json; charset=utf-8",
                         dataType: "json"
                     }).done(function(response){
@@ -554,6 +566,11 @@ $(function(){
             case "y":
                 {
                     document.getElementById("y_equals").click();
+                }
+                break;
+            case "n":
+                {
+                    document.getElementById("\u02C9").click();
                 }
                 break;
             case "Esc":
