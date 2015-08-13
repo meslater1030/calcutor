@@ -43,10 +43,12 @@ def home_view(request):
 @view_config(route_name='graph', renderer='json')
 def graph_view(request):
     if request.method == 'POST':
+        eqdict = request.json_body.get('equations')
+        settingsdict = request.json_body.get('settings')
         equations = []
         for x in xrange(10):
             try:
-                result = request.params.get('\\Y{}:'.format(str(x))).strip()
+                result = eqdict.get('\\Y{}:'.format(str(x))).strip()
             except KeyError:
                 continue
             if result:
@@ -61,8 +63,8 @@ def graph_view(request):
             request.response.status = 400
             return {'error': ERROR_MSG}
         try:
-            output = graph_parse.graph_parse(equations)
-        except (TypeError, ValueError):
+            output = graph_parse.graph_parse(equations, settingsdict)
+        except (TypeError, ValueError) as e:
             request.response.status = 400
             return {'error': ERROR_MSG}
         return {'output': output}
