@@ -40,7 +40,7 @@ $(function(){
             output = response.output;
             $(".home .output:last").text(output);
         }).fail(function(){
-            $(".home .output:last").text("Something Went Wrong");
+            $(".home .output:last").text("Your mother was a hamster and your father smelt of elderberries!");
         }).always(function(){
             $(".cursor").removeClass("cursor");
             $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
@@ -72,6 +72,15 @@ $(function(){
                 }
                 break;
         };
+    };
+
+    var hide_all = function(){
+        $(".home").hide();
+        $(".yequals").hide();
+        $(".math_menu").hide();
+        $(".graph").hide();
+
+        $("#all_menus").show();
     };
 
     $("#buttons button").click(function(event) {
@@ -141,6 +150,7 @@ $(function(){
             case 'e':
             case '10^(':
             case 'log(':
+            case '^-1':
             case 'sin(':
             case 'tan(':
             case 'cos(':
@@ -297,9 +307,7 @@ $(function(){
                     $(".cursor").removeClass("cursor");
                     $(".yequals .y_func:first ins:first").addClass('cursor');
                     menu = ".yequals";
-                    $(".home").hide();
-                    $("#all_menus").show();
-                    $(".view").hide();
+                    hide_all();
                     $(".yequals").show();
                 }
                 break;

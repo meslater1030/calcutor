@@ -10,7 +10,7 @@
 #
 # Copyright 2003-2006 by Paul McGuire
 #
-
+from __future__ import division
 from pyparsing import (Literal,
                        CaselessLiteral,
                        Word,
@@ -109,7 +109,9 @@ fn = {"sin": math.sin,
       "atan": math.atan,
       "trunc": lambda a: int(a),
       "round": round,
-      "sgn": lambda a: abs(a) > epsilon and cmp(a, 0) or 0}
+      "sgn": lambda a: abs(a) > epsilon and cmp(a, 0) or 0,
+      "x_root": math.pow
+      }
 
 
 def evaluateStack():
@@ -126,6 +128,8 @@ def evaluateStack():
         return math.e  # 2.718281828
     elif op == "ln":
         return math.log(evaluateStack(), math.e)
+    elif op == "cube_root":
+        return evaluateStack()**(1/3)
     elif op in fn:
         return fn[op](evaluateStack())
     elif op[0].isalpha():
@@ -161,6 +165,8 @@ def clean_string(input):
         raise SyntaxError
     for unic, byte in [(u'\u02c9', '-'),
                        (u'\u00B2', '^2'),
+                       (u'3\u221a', 'cube_root'),
+                       (u'x\u221a', 'x_root'),
                        (u'\u221a', 'sqrt'),
                        (u'\u00B3', '^3'),
                        (u'sin^-1', 'asin'),
@@ -168,10 +174,39 @@ def clean_string(input):
                        (u'tan^-1', 'atan'),
                        (u'\u03c0', 'PI')]:
         input = input.replace(unic, byte)
+    input = x_root(input)
     for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
         input = re.sub(reg_ex, r'\1 * \2', input)
     checkParens(input)
     input = fix_decimals(input)
+    return input
+
+
+def x_root(input):
+    if 'x_root' in input:
+        index = input.index('x_root')
+        operators = ['+', '-', '/', '*']
+        if input[index-1] in operators or input[index+6] in operators:
+            raise SyntaxError
+        left = index-1
+        right = index + 6
+        while left > 0:
+            if input[left] in operators:
+                break
+            else:
+                left -= 1
+        while right < (len(input) - 1):
+            if input[right] in operators:
+                break
+            else:
+                right += 1
+        if left == 0:
+            replacement = (math.pow(float(input[index+6:right+1]),
+                           (1/float(input[:index]))))
+        else:
+            replacement = (math.pow(float(input[index+6:right+1]),
+                           (1/float(input[left:index-1]))))
+        input = input.replace(input[left:right+1], str(replacement))
     return input
 
 

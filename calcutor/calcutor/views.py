@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import division
 from pyramid.view import view_config
 from scripts import simple_math, graph_parse
 from pyparsing import ParseException
