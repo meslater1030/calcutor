@@ -71,32 +71,41 @@
        <div class="hide graph view">
        </div>
        <div class="hide table view">
-         <table id="xytable">
-           <tr>
-             <th>X</th>
-             {% for x in range(1,10) %}
-               <th>Y{{ x }}</th>
-             {% endfor %}
-             <th>Y0</th>
-           </tr>
-           <tr>
-             <td class="input"><ins class="cursor"></ins></td>
-             {% for x in range(1,10) %}
-               <td><p class="output Y{{ x }}"></p></td>
-             {% endfor %}
-             <td><p class="output Y0"></p></td>
-           </tr>
-           {% for n in range(8) %}
-             <tr>
-               <td class="input"><ins></ins></td>
-               {% for x in range(1,10) %}
-                 <td><p class="output Y{{ x }}"></p></td>
-               {% endfor %}
-               <td><p class="output Y0"></p></td>
-             </tr>
-           {% endfor %}
-         </table>
-       </div>
+        <table id="xytable">
+          <tr>
+            <th>X</th>
+            {% for x in range(1,10) %}
+              <th>Y{{ x }}</th>
+            {% endfor %}
+            <th>Y0</th>
+          </tr>
+          <tr>
+            <td class="input"><ins class="cursor"></ins></td>
+            {% for x in range(1,10) %}
+              <td><p class="output Y{{ x }}"></p></td>
+            {% endfor %}
+            <td><p class="output Y0"></p></td>
+          </tr>
+          {% for n in range(8) %}
+          <tr>
+            <td class="input"><ins></ins></td>
+            {% for x in range(1,10) %}
+              <td><p class="output Y{{ x }}"></p></td>
+            {% endfor %}
+            <td><p class="output Y0"></p></td>
+          </tr>
+        {% endfor %}
+        </table>
+         </div>
+         <div class="hide windowmenu view">
+          <div class="winsetting Xmin"><span>Xmin=</span><ins>&#713</ins><ins>1</ins><ins>0</ins><ins></ins></div>
+          <div class="winsetting Xmax"><span>Xmax=</span><ins>1</ins><ins>0</ins><ins></ins></div>
+          <div class="winsetting Xscl"><span>Xscl=</span><ins>1</ins><ins></ins></div>
+          <div class="winsetting Ymin"><span>Ymin=</span><ins>&#713</ins><ins>1</ins><ins>0</ins><ins></ins></div>
+          <div class="winsetting Ymax"><span>Ymax=</span><ins>1</ins><ins>0</ins><ins></ins></div>
+          <div class="winsetting Yscl"><span>Yscl=</span><ins>1</ins><ins></ins></div>
+          <div class="winsetting Xres"><span>Xres=</span><ins>1</ins><ins></ins></div>
+         </div>
       </div>
       </div>
       <div id="buttons">
