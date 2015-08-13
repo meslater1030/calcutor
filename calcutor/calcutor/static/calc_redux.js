@@ -358,7 +358,9 @@ $(function(){
                     $.ajax({
                         type: "POST",
                         url: "/graph/",
-                        data: {equations: get_equations(), settings: get_graph_window()}
+                        data: JSON.stringify({equations: get_equations(), settings: get_graph_window()}),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json"
                     }).done(function(response){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
