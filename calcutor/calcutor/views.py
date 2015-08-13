@@ -105,7 +105,7 @@ def table_view(request):
                 output[key] = 'ERR'
             else:
                 try:
-                    output[key] = clean_string.evaluateStack()
+                    output[key] = simple_math.evaluateStack()
                 except ValueError:
                     output[key] = 'ERR'
                 if float.is_integer(output[key]):
