@@ -213,6 +213,11 @@ $(function(){
                             cur.removeClass("cursor");
                             cur.parent().prev().find("ins:first").first().addClass("cursor");
                         };
+                    } else if (menu == ".table") {
+                        if (cur.parent().parent().prev().length != 0){
+                            cur.removeClass("cursor");
+                            cur.parent().parent().prev().find("ins:first").first().addClass("cursor");
+                        };
                     };
                 }
                 break;
@@ -242,6 +247,11 @@ $(function(){
                         if (cur.parent().next().length != 0){
                             cur.removeClass("cursor");
                             cur.parent().next().find("ins:first").first().addClass("cursor");
+                        };
+                    } else if (menu == ".table") {
+                        if (cur.parent().parent().next().length != 0){
+                            cur.removeClass("cursor");
+                            cur.parent().parent().next().find("ins:first").first().addClass("cursor");
                         };
                     };
                 }
@@ -408,6 +418,9 @@ $(function(){
     function update_table(){
         var table_row = $(".table .cursor").parent().parent();
         equations = get_equations();
+        table_row.find("ins").each(function(idx, val){
+            tableinput += val.textContent;
+        })
         equations['X'] = tableinput;
         tableinput = "";
         $.ajax({
@@ -416,11 +429,11 @@ $(function(){
             data: equations,
         }).done(function(response){
             output = response.output;
-            var cells = table_row.find("p");
-            for (i=0; i < cells.length; i++){
-                var checker = cells[i];
-                cells[i].text(output[i]);
-            };
+            table_row.find(".output").each(function(idx, val){
+                var checker = idx;
+                val.textContent = output[idx+1];
+            });
+            table_row.find("#Y0").textContent = output[0]
         }).fail(function(){
             $(".home .output:last").text("ERR: TABLE SYNTAX");
             $(".table").hide();

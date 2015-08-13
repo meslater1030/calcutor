@@ -70,14 +70,17 @@ def graph_view(request):
 def table_view(request):
     if request.method == 'POST':
         output = {}
+        xvalue = request.params.get('X').strip()
+        if not xvalue:
+            for x in xrange(10):
+                output[str(x)] = ""
+            return {'output': output}
         for x in xrange(10):
             try:
                 output[str(x)] = request.params.get('\\Y{}:'.format(
                     str(x))).strip()
             except KeyError:
                 continue
-
-        xvalue = request.params.get('X').strip()
 
         for key in output:
             if not output[key]:

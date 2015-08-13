@@ -154,6 +154,7 @@
 .table table {
     border: none;
     border-collapse: collapse;
+    width: 100%;
 }
 
 .table table th{
