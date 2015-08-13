@@ -110,7 +110,8 @@ fn = {"sin": math.sin,
       "trunc": lambda a: int(a),
       "round": round,
       "sgn": lambda a: abs(a) > epsilon and cmp(a, 0) or 0,
-      "x_root": math.pow
+      "x_root": math.pow,
+      "int": int,
       }
 
 
@@ -139,6 +140,8 @@ def evaluateStack():
 
 
 def checkParens(input):
+    input.replace("{", "[")
+    input.replace("}", "]")
     count = 0
     for x in input:
         if x == "(":
@@ -176,11 +179,34 @@ def clean_string(input):
         input = input.replace(unic, byte)
     input = x_root(input)
     input = ipart(input)
+    input = fpart(input)
     for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
         input = re.sub(reg_ex, r'\1 * \2', input)
     checkParens(input)
     input = fix_decimals(input)
+    input = min_max(input)
     return input
+
+
+def min_max(input):
+    if 'min(' in input or 'max(' in input:
+        index = input.index('(')
+    else:
+        return input
+    right = index + 1
+    while right < (len(input) - 1):
+        if input[right] == ")":
+            break
+        else:
+            right += 1
+    if '[' in input or ']' in input:
+        pass
+    else:
+        replacement = input[index+1: right].split(',')
+    if 'min(' in input:
+        return str(min([float(x) for x in replacement]))
+    if 'max(' in input:
+        return str(max([float(x) for x in replacement]))
 
 
 def ipart(input):
@@ -194,6 +220,21 @@ def ipart(input):
             else:
                 right += 1
         replacement = float(input[index+6: right]) // 1
+        input = input.replace(input[left: right+1], str(replacement))
+    return str(input)
+
+
+def fpart(input):
+    if 'fPart(' in input:
+        index = input.index('fPart(')
+        left = index
+        right = index + 6
+        while right < (len(input) - 1):
+            if input[right] == ")":
+                break
+            else:
+                right += 1
+        replacement = float(input[index+6: right]) % 1
         input = input.replace(input[left: right+1], str(replacement))
     return str(input)
 

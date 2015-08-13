@@ -28,8 +28,9 @@ def home_view(request):
                 return {'output': b"ERR: DOMAIN"}
         except ParseException:
             return {'output': ERROR_MSG}
-        if float.is_integer(output):
-            output = int(output)
+        if type(output) == float:
+            if float.is_integer(output):
+                output = int(output)
         if to_fraction:
             output = simple_math.decimal_to_fraction(output)
         else:
