@@ -2,7 +2,6 @@ from __future__ import unicode_literals
 
 import unittest
 from pyramid import testing
-from splinter import Browser
 
 from views import home_view
 
@@ -41,12 +40,15 @@ class ViewTests(unittest.TestCase):
         info = home_view(request)
         self.assertEqual(info['output'], 'ERR: SYNTAX')
 
-#        request = testing.DummyRequest(params={'input': '+'}, post={})
-#        info = home_view(request)
-#        self.assertEqual(info['output'], u'ERR: SYNTAX')
+    def test_next_syntax_error(self):
+        request = testing.DummyRequest(params={'input': '+'}, post={})
+        with self.assertRaises(IndexError):
+            info = home_view(request)
 
 
 class FrontEndTests(unittest.TestCase):
+    from splinter import Browser
+
     browser = Browser()
 
     def setUp(self):
