@@ -3,12 +3,14 @@ from __future__ import division
 
 import re
 import math
+import random
 
 
 def clean_string(input):
     checkParens(input)
-    if re.search(r'[+\-*/=]{2,}', input):
+    if re.search(r'[+\-*/=!]{2,}', input):
         raise SyntaxError
+    input = parse_function(input)
     for unic, byte in [(u'\u02c9', '-'),
                        (u'\u00B2', '^2'),
                        (u'3\u221a', 'cube_root'),
@@ -18,13 +20,42 @@ def clean_string(input):
                        (u'sin^-1', 'asin'),
                        (u'cos^-1', 'acos'),
                        (u'tan^-1', 'atan'),
-                       (u'\u03c0', 'PI')]:
-        input = input.replace(unic, byte)
+                       (u'\u03c0', 'PI'),
+                       (u'rand', random.random())]:
+        input = input.replace(unic, str(byte))
     for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
         input = re.sub(reg_ex, r'\1 * \2', input)
-    input = parse_function(input)
     input = x_root(input)
     input = fix_decimals(input)
+    input = factorial(input)
+    return input
+
+
+def factorial(input):
+    if "!" in input:
+        index = input.index("!")
+        if index > 0 and input[index-1] in operators:
+            raise SyntaxError
+        left = index - 1
+        right = index
+        while left > 0:
+            if input[left] in operators:
+                break
+            else:
+                left -= 1
+        to_evaluate = input[left:right]
+        if "(" in to_evaluate:
+            to_evaluate = to_evaluate.strip("(")
+            to_evaluate = to_evaluate.strip(")")
+            to_evaluate = to_evaluate.split(",")
+            output = ""
+            for x in to_evaluate:
+                output += str(math.factorial(float(x))) + ","
+            output = output[:-1]
+            output = "({})".format(output)
+        else:
+            output = str(math.factorial(float(to_evaluate)))
+        input = input.replace(input[left:index+1], output)
     return input
 
 
@@ -53,7 +84,7 @@ def fix_decimals(input):
         input = input.replace(item[0], item[1])
     return input
 
-operators = ['*', '+', '-', '/']
+operators = ['*', '+', '-', '/', '!']
 
 
 def parse_function(input):
@@ -123,6 +154,18 @@ def lcm(to_evaluate):
     except ValueError:
         raise SyntaxError
 
+
+def randint(to_evaluate):
+    to_evaluate = to_evaluate.split(',')
+    try:
+        x, y = to_evaluate
+        x = int(x)
+        y = int(y)
+        rand = random.randint(x, y)
+        return str(rand)
+    except ValueError:
+        raise SyntaxError
+
 functions = {
     "iPart(": ipart,
     "fPart(": fpart,
@@ -130,6 +173,7 @@ functions = {
     "max(": max_val,
     "lcm(": lcm,
     "gcd(": gcd,
+    "randInt(": randint,
 }
 
 

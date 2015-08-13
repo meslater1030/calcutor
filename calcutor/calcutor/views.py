@@ -16,6 +16,9 @@ def home_view(request):
         to_fraction = False
         if '>Frac' in input:
             to_fraction = True
+        if '!' in input:
+            output = clean_string.factorial(input)
+            return {'output': output}
         try:
             input = clean_string.clean_string(input)
         except SyntaxError:
@@ -26,8 +29,8 @@ def home_view(request):
                 output = simple_math.evaluateStack()
             except ValueError:
                 return {'output': b"ERR: DOMAIN"}
-        except ParseException as e:
-            return {'output': e}
+        except ParseException:
+            return {'output': ERROR_MSG}
         if type(output) == float:
             if float.is_integer(output):
                 output = int(output)
