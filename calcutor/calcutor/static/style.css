@@ -151,10 +151,19 @@
     margin: 0;
 }
 
+.table {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
 .table table {
     border: none;
     border-collapse: collapse;
-    width: 100%;
+    width: 800px;
+    table-layout: fixed;
+    padding-bottom: 15px;
+    overflow: auto;
 }
 
 .table table th{
