@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from __future__ import division
 from pyramid.view import view_config
-from scripts import simple_math, graph_parse
+from scripts import simple_math, graph_parse, clean_string
 from pyparsing import ParseException
 
 ERROR_MSG = b"ERR: SYNTAX"
@@ -17,7 +17,7 @@ def home_view(request):
         if '>Frac' in input:
             to_fraction = True
         try:
-            input = simple_math.clean_string(input)
+            input = clean_string.clean_string(input)
         except SyntaxError:
             return {'output': ERROR_MSG}
         try:
@@ -26,8 +26,8 @@ def home_view(request):
                 output = simple_math.evaluateStack()
             except ValueError:
                 return {'output': b"ERR: DOMAIN"}
-        except ParseException:
-            return {'output': ERROR_MSG}
+        except ParseException as e:
+            return {'output': e}
         if type(output) == float:
             if float.is_integer(output):
                 output = int(output)
@@ -58,7 +58,7 @@ def graph_view(request):
             return {'error': 'No equations to graph.'}
         try:
             for idx, eq in enumerate(equations):
-                equations[idx] = simple_math.clean_string(eq)
+                equations[idx] = clean_string.clean_string(eq)
         except SyntaxError:
             request.response.status = 400
             return {'error': ERROR_MSG}
@@ -90,7 +90,7 @@ def table_view(request):
             if not output[key]:
                 continue
             try:
-                output[key] = simple_math.clean_string(output[key])
+                output[key] = clean_string.clean_string(output[key])
             except SyntaxError:
                 output[key] = 'ERR'
 
@@ -102,7 +102,7 @@ def table_view(request):
                 output[key] = 'ERR'
             else:
                 try:
-                    output[key] = simple_math.evaluateStack()
+                    output[key] = clean_string.evaluateStack()
                 except ValueError:
                     output[key] = 'ERR'
                 if float.is_integer(output[key]):
