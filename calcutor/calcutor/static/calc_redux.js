@@ -17,6 +17,8 @@ $(function(){
 
     }, 500);
 
+    $(".tablewrapper").scrollLeft(0);
+
     /*************** HELPERS ***************/
 
     /***** VISUAL *****/
@@ -104,10 +106,9 @@ $(function(){
         }).done(function(response){
             output = response.output;
             table_row.find(".output").each(function(idx, val){
-                var checker = idx;
                 val.textContent = output[idx+1];
             });
-            table_row.find("#Y0").textContent = output[0]
+            table_row.find(".Y0")[0].textContent = output[0];
         }).fail(function(){
             $(".home .output:last").text("ERR: TABLE SYNTAX");
             $(".table").hide();
