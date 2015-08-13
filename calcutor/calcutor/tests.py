@@ -87,5 +87,71 @@ class FrontEndTests(unittest.TestCase):
         self.browser.find_by_id('graph').click()
         self.assertFalse(self.browser.find_by_tag('img').is_empty())
 
+    def test_text_entry(self):
+        for x in range(10):
+            self.browser.find_by_id(str(x)).first.click()
+        self.assertEqual(self.browser.find_by_css(".input").first.text,
+                         "0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n ")
+        self.browser.find_by_id('left').first.click()
+        self.browser.find_by_id('delete').first.click()
+        self.assertEqual(self.browser.find_by_css(".input").first.text,
+                         "0\n1\n2\n3\n4\n5\n6\n7\n8\n ")
+        self.browser.find_by_id('up').first.click()
+        self.browser.find_by_id('sin(').first.click()
+        self.assertEqual(self.browser.find_by_css(".input").first.text,
+                         "sin(\n1\n2\n3\n4\n5\n6\n7\n8\n ")
+        self.browser.find_by_id('right').first.click()
+        self.browser.find_by_id('delete').first.click()
+        self.assertEqual(self.browser.find_by_css(".input").first.text,
+                         "sin(\n1\n3\n4\n5\n6\n7\n8\n ")
+        self.browser.find_by_id('down').first.click()
+        self.browser.find_by_id('second_mode').first.click()
+        self.browser.find_by_id('\u03C0').first.click()
+        self.assertEqual(self.browser.find_by_css(".input").first.text,
+                         "sin(\n1\n3\n4\n5\n6\n7\n8\n\u03C0\n ")
+
+    def test_clear(self):
+        self.browser.find_by_id("1").first.click()
+        self.assertEqual(self.browser.find_by_css(".input").first.text, "1\n ")
+        self.browser.find_by_id("clear").first.click()
+        self.assertEqual(
+            self.browser.find_by_css(".input").first.text.strip(), "")
+        self.browser.find_by_id("y_equals").first.click()
+        self.assertTrue(self.browser.is_text_present("Y1:"))
+        self.browser.find_by_id("clear").first.click()
+        self.assertFalse(self.browser.is_text_present("Y1:"))
+        self.assertEqual(
+            self.browser.find_by_css(".input").first.text.strip(), "")
+
+    def test_math_menu(self):
+        self.browser.find_by_id("math").first.click()
+        self.assertTrue(self.browser.is_text_present("MATH"))
+        self.assertTrue(self.browser.is_text_present("NUM"))
+        self.assertTrue(self.browser.is_text_present("CPX"))
+        self.assertTrue(self.browser.is_text_present("PRB"))
+
+    def test_math_menu_traversing(self):
+        self.browser.find_by_id("math").first.click()
+        self.assertTrue(self.browser.is_text_present("\u00B3"))
+        self.browser.find_by_id("right").first.click()
+        self.browser.find_by_id("ENTER").first.click()
+        self.assertTrue(self.browser.is_text_present("abs("))
+        self.browser.find_by_id("right").first.click()
+        self.browser.find_by_id("ENTER").first.click()
+        self.assertTrue(self.browser.is_text_present("conj("))
+        self.browser.find_by_id("right").first.click()
+        self.browser.find_by_id("ENTER").first.click()
+        self.assertTrue(self.browser.is_text_present("rand"))
+
+    def test_window_menu(self):
+        self.browser.find_by_id("window").first.click()
+        self.assertTrue(self.browser.is_text_present("Xmin"))
+        self.browser.find_by_id("delete").first.click()
+        self.browser.find_by_id("delete").first.click()
+        self.browser.find_by_id("delete").first.click()
+        self.browser.find_by_id("1").first.click()
+        self.browser.find_by_id("graph").first.click()
+        self.assertTrue(self.browser.is_text_present("ERR: GRAPH SYNTAX"))
+
 if __name__ == '__main__':
     unittest.main()
