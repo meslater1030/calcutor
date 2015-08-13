@@ -21,8 +21,8 @@ def home_view(request):
             return {'output': output}
         try:
             input = clean_string.clean_string(input)
-        except SyntaxError:
-            return {'output': ERROR_MSG}
+        except SyntaxError as e:
+            return {'output': e.message}
         try:
             simple_math.BNF().parseString(input)
             try:
