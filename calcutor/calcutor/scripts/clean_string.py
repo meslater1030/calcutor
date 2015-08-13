@@ -60,8 +60,8 @@ def factorial(input):
 
 
 def checkParens(input):
-    input.replace("{", "[")
-    input.replace("}", "]")
+    input = input.replace("{", "[")
+    input = input.replace("}", "]")
     count = 0
     for x in input:
         if x == "(":
@@ -92,7 +92,7 @@ def parse_function(input):
         if function in input:
             index = input.index(function)
             if index > 0 and input[index - 1] not in operators:
-                raise SyntaxError
+                raise SyntaxError(b"ERR: SYNTAX")
             beginning = index + len(function)
             end = beginning + 1
             while end < (len(input) - 1):
@@ -109,7 +109,7 @@ def parse_function(input):
 def min_val(to_evaluate):
     if '[' in to_evaluate or ']' in to_evaluate:
         # come back to fix this to accept lists if time
-        raise SyntaxError
+        raise SyntaxError(b'ERR: SYNTAX')
     to_evaluate = to_evaluate.split(',')
     return str(min([float(x) for x in to_evaluate]))
 
@@ -117,54 +117,46 @@ def min_val(to_evaluate):
 def max_val(to_evaluate):
     if '[' in to_evaluate or ']' in to_evaluate:
         # come back to fix this to accept lists if time
-        raise SyntaxError
+        raise SyntaxError(b'ERR: SYNTAX')
     to_evaluate = to_evaluate.split(',')
     return str(max([float(x) for x in to_evaluate]))
 
 
 def ipart(to_evaluate):
-    return str(float(to_evaluate) // 1)
+    if "," in to_evaluate:
+        raise SyntaxError(b"ERR: ARGUMENT")
+    try:
+        return str(float(to_evaluate) // 1)
+    except ValueError:
+        raise SyntaxError(b"ERR: SYNTAX")
 
 
 def fpart(to_evaluate):
-    return str(float(to_evaluate) % 1)
+    if "," in to_evaluate:
+        raise SyntaxError(b"ERR: ARGUMENT")
+    try:
+        return str(float(to_evaluate) % 1)
+    except ValueError:
+        raise SyntaxError(b"ERR: SYNTAX")
 
 
 def gcd(to_evaluate):
-    to_evaluate = to_evaluate.split(',')
-    try:
-        x, y = to_evaluate
-        x = int(x)
-        y = int(y)
-        while(y):
-            x, y = y, x % y
-        return str(x)
-    except ValueError:
-        raise SyntaxError
+    x, y = two_integers(to_evaluate)
+    while(y):
+        x, y = y, x % y
+    return str(x)
 
 
 def lcm(to_evaluate):
-    to_evaluate = to_evaluate.split(',')
-    try:
-        x, y = to_evaluate
-        x = int(x)
-        y = int(y)
-        lcm = (x*y)//int(gcd(','.join(to_evaluate)))
-        return str(lcm)
-    except ValueError:
-        raise SyntaxError
+    x, y = two_integers(to_evaluate)
+    lcm = (x*y)//int(gcd(','.join(to_evaluate)))
+    return str(lcm)
 
 
 def randint(to_evaluate):
-    to_evaluate = to_evaluate.split(',')
-    try:
-        x, y = to_evaluate
-        x = int(x)
-        y = int(y)
-        rand = random.randint(x, y)
-        return str(rand)
-    except ValueError:
-        raise SyntaxError
+    x, y = two_integers(to_evaluate)
+    rand = random.randint(x, y)
+    return str(rand)
 
 functions = {
     "iPart(": ipart,
@@ -177,11 +169,34 @@ functions = {
 }
 
 
+def two_integers(to_evaluate):
+    """takes in string to evaluate and throws appropriate errors
+    if any value passed is not an integer and if more than two values
+    are passed.
+    """
+    to_evaluate = to_evaluate.split(',')
+    try:
+        x, y = to_evaluate
+        try:
+            x = float(x)
+            y = float(y)
+            if x.is_integer() and y.is_integer():
+                x = int(x)
+                y = int(y)
+            else:
+                raise ValueError
+        except ValueError:
+            raise SyntaxError(b"ERR: DOMAIN")
+    except ValueError:
+        raise SyntaxError(b"ERR: ARGUMENT")
+    return x, y
+
+
 def x_root(input):
     if 'x_root' in input:
         index = input.index('x_root')
         if input[index-1] in operators or input[index+6] in operators:
-            raise SyntaxError
+            raise SyntaxError(b"ERR: SYNTAX")
         left = index-1
         right = index + 6
         while left > 0:
