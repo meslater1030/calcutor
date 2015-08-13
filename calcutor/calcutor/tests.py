@@ -41,10 +41,6 @@ class ViewTests(unittest.TestCase):
         info = home_view(request)
         self.assertEqual(info['output'], 'ERR: SYNTAX')
 
-#        request = testing.DummyRequest(params={'input': '+'}, post={})
-#        info = home_view(request)
-#        self.assertEqual(info['output'], u'ERR: SYNTAX')
-
 
 class FrontEndTests(unittest.TestCase):
     browser = Browser()

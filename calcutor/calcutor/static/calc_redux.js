@@ -9,7 +9,8 @@ $(function(){
         if ($(menu + " .cursor").text() == ""){
             $(menu + " .cursor").text(" ")
         }
-        if ($(menu + " .cursor").css("background-color") == "transparent"){
+        if ($(menu + " .cursor").css("background-color") == "transparent" ||
+            $(menu + " .cursor").css("background-color") == "rgba(0, 0, 0, 0)"){
             $(menu + " .cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
         } else {
             $(menu + " .cursor").css("background-color", "rgba(0, 0, 0, 0)");
