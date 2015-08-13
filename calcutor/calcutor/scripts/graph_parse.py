@@ -7,6 +7,7 @@ import numpy as np
 import numexpr as ne
 import cStringIO
 import base64
+from numpy import pi as PI
 
 
 def graph_parse(equations, settingsdict):
