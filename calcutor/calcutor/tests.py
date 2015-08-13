@@ -2,8 +2,9 @@ from __future__ import unicode_literals
 
 import unittest
 from pyramid import testing
+import json
 
-from views import home_view
+from views import home_view, graph_view
 
 
 class ViewTests(unittest.TestCase):
@@ -44,6 +45,35 @@ class ViewTests(unittest.TestCase):
         request = testing.DummyRequest(params={'input': '+'}, post={})
         with self.assertRaises(IndexError):
             info = home_view(request)
+
+    def test_graph_view(self):
+        equations = {'\\Y1:': '2X+1'}
+        settings = {
+            'Xmin': '-10', 'Xmax': '10', 'Xscl': '1', 'Ymin': '-10',
+            'Ymax': '10', 'Yscl': '1'
+        }
+        input = {'equations': equations, 'settings': settings}
+        request = testing.DummyRequest(
+            path='/graph/', json_body=input, post={}
+        )
+        info = graph_view(request)
+        decoded = info['output'].decode('base64', 'strict')
+        self.assertEqual(
+            info['output'], decoded.encode('base64').replace('\n', '')
+        )
+
+    def test_graph_error(self):
+        equations = {'\\Y1:': '2X+1foo'}
+        settings = {
+            'Xmin': '-10', 'Xmax': '10', 'Xscl': '1', 'Ymin': '-10',
+            'Ymax': '10', 'Yscl': '1'
+        }
+        input = {'equations': equations, 'settings': settings}
+        request = testing.DummyRequest(
+            path='/graph/', json_body=input, post={}
+        )
+        info = graph_view(request)
+        self.assertEqual(info['error'], b"ERR: SYNTAX")
 
 
 class FrontEndTests(unittest.TestCase):
