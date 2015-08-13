@@ -2,6 +2,7 @@ $(function(){
     var last_input = "";
     var input = "";
     var output = "";
+    var tableinput = "";
     var menu = ".home";
 
     setInterval(function(){
@@ -39,7 +40,7 @@ $(function(){
             output = response.output;
             $(".home .output:last").text(output);
         }).fail(function(){
-            $(".home .output:last").text("Something Went Wrong");
+            $(".home .output:last").text("Your mother was a hamster and your father smelt of elderberries!");
         }).always(function(){
             $(".cursor").removeClass("cursor");
             $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
@@ -71,6 +72,16 @@ $(function(){
                 }
                 break;
         };
+    };
+
+    var hide_all = function(){
+        $(".home").hide();
+        $(".yequals").hide();
+        $(".math_menu").hide();
+        $(".graph").hide();
+
+        $(".windowmenu").hide();
+        $("#all_menus").show();
     };
 
     $("#buttons button").click(function(event) {
@@ -140,6 +151,7 @@ $(function(){
             case 'e':
             case '10^(':
             case 'log(':
+            case '^-1':
             case 'sin(':
             case 'tan(':
             case 'cos(':
@@ -212,6 +224,11 @@ $(function(){
                             cur.removeClass("cursor");
                             cur.parent().prev().find("ins:first").first().addClass("cursor");
                         };
+                    } else if (menu == ".table") {
+                        if (cur.parent().parent().prev().length != 0){
+                            cur.removeClass("cursor");
+                            cur.parent().parent().prev().find("ins:first").first().addClass("cursor");
+                        };
                     };
                 }
                 break;
@@ -241,6 +258,11 @@ $(function(){
                         if (cur.parent().next().length != 0){
                             cur.removeClass("cursor");
                             cur.parent().next().find("ins:first").first().addClass("cursor");
+                        };
+                    } else if (menu == ".table") {
+                        if (cur.parent().parent().next().length != 0){
+                            cur.removeClass("cursor");
+                            cur.parent().parent().next().find("ins:first").first().addClass("cursor");
                         };
                     };
                 }
@@ -287,10 +309,7 @@ $(function(){
                     $(".cursor").removeClass("cursor");
                     $(".yequals .y_func:first ins:first").addClass('cursor');
                     menu = ".yequals";
-                    $(".home").hide();
-                    $("#all_menus").show();
-                    $(".windowmenu").hide();
-                    $(".view").hide();
+                    hide_all();
                     $(".yequals").show();
                 }
                 break;
@@ -299,8 +318,7 @@ $(function(){
 
                     if (menu == ".table"){
                         update_table();
-                    };
-                    if ($(menu + " ins").hasClass("cursor")){
+                    } else if ($(menu + " ins").hasClass("cursor")){
                             if (menu == ".yequals"){
                                 $("#down").click();
                                 break;
@@ -379,8 +397,12 @@ $(function(){
                 break;
             case 'TABLE':
                 {
+                    $(".home").hide();
+                    $("#all_menus").show();
                     $(".view").hide();
+                    $(".table .cursor").removeClass("cursor")
                     $(".table").show();
+                    $(".table ins:first").addClass("cursor")
                     menu = ".table";
                 }
                 break;
@@ -429,6 +451,34 @@ $(function(){
         return win;
     };
 
+
+    function update_table(){
+        var table_row = $(".table .cursor").parent().parent();
+        equations = get_equations();
+        table_row.find("ins").each(function(idx, val){
+            tableinput += val.textContent;
+        })
+        equations['X'] = tableinput;
+        tableinput = "";
+        $.ajax({
+            type: "POST",
+            url: "/table/",
+            data: equations,
+        }).done(function(response){
+            output = response.output;
+            table_row.find(".output").each(function(idx, val){
+                var checker = idx;
+                val.textContent = output[idx+1];
+            });
+            table_row.find("#Y0").textContent = output[0]
+        }).fail(function(){
+            $(".home .output:last").text("ERR: TABLE SYNTAX");
+            $(".table").hide();
+            $(".home").show();
+            menu = ".home";
+        });
+
+    }
 
     $("body").keyup(function(event){
         switch (event.key) {

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import division
 from pyramid.view import view_config
 from scripts import simple_math, graph_parse
 from pyparsing import ParseException
@@ -27,8 +28,9 @@ def home_view(request):
                 return {'output': b"ERR: DOMAIN"}
         except ParseException:
             return {'output': ERROR_MSG}
-        if float.is_integer(output):
-            output = int(output)
+        if type(output) == float:
+            if float.is_integer(output):
+                output = int(output)
         if to_fraction:
             output = simple_math.decimal_to_fraction(output)
         else:
@@ -65,4 +67,44 @@ def graph_view(request):
         except (TypeError, ValueError) as e:
             request.response.status = 400
             return {'error': ERROR_MSG}
+        return {'output': output}
+
+
+@view_config(route_name='table', renderer='json')
+def table_view(request):
+    if request.method == 'POST':
+        output = {}
+        xvalue = request.params.get('X').strip()
+        if not xvalue:
+            for x in xrange(10):
+                output[str(x)] = ""
+            return {'output': output}
+        for x in xrange(10):
+            try:
+                output[str(x)] = request.params.get('\\Y{}:'.format(
+                    str(x))).strip()
+            except KeyError:
+                continue
+
+        for key in output:
+            if not output[key]:
+                continue
+            try:
+                output[key] = simple_math.clean_string(output[key])
+            except SyntaxError:
+                output[key] = 'ERR'
+
+            output[key] = output[key].replace('X', xvalue)
+
+            try:
+                simple_math.BNF().parseString(output[key])
+            except ParseException:
+                output[key] = 'ERR'
+            else:
+                try:
+                    output[key] = simple_math.evaluateStack()
+                except ValueError:
+                    output[key] = 'ERR'
+                if float.is_integer(output[key]):
+                    output[key] = int(output[key])
         return {'output': output}
