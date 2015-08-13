@@ -73,6 +73,15 @@ $(function(){
         };
     };
 
+    var hide_all = function(){
+        $(".home").hide();
+        $(".yequals").hide();
+        $(".math_menu").hide();
+        $(".graph").hide();
+
+        $("#all_menus").show();
+    };
+
     $("#buttons button").click(function(event) {
         $(".default").show();
         $(".alpha").hide();
@@ -287,9 +296,7 @@ $(function(){
                     $(".cursor").removeClass("cursor");
                     $(".yequals .y_func:first ins:first").addClass('cursor');
                     menu = ".yequals";
-                    $(".home").hide();
-                    $("#all_menus").show();
-                    $(".view").hide();
+                    hide_all();
                     $(".yequals").show();
                 }
                 break;
