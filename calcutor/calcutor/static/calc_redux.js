@@ -80,8 +80,8 @@ $(function(){
         $(".math_menu").hide();
         $(".graph").hide();
         $(".table").hide();
-
         $(".windowmenu").hide();
+
         $("#all_menus").show();
     };
 
@@ -402,10 +402,7 @@ $(function(){
                 break;
             case 'window':
                 {
-                    $("#all_menus").show();
-                    $(".math_menu").hide();
-                    $(".home").hide();
-                    $(".yequals").hide();
+                    hide_all();
                     $(".windowmenu").show();
                     menu = ".windowmenu";
                     $(".windowmenu ins:first").addClass("cursor");
