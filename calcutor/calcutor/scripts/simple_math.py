@@ -175,11 +175,27 @@ def clean_string(input):
                        (u'\u03c0', 'PI')]:
         input = input.replace(unic, byte)
     input = x_root(input)
+    input = ipart(input)
     for reg_ex in [r'(\d+)(X)', r'(X)(\d+)', r'(\d+)(\()', r'(\))(\d+)']:
         input = re.sub(reg_ex, r'\1 * \2', input)
     checkParens(input)
     input = fix_decimals(input)
     return input
+
+
+def ipart(input):
+    if 'iPart(' in input:
+        index = input.index('iPart(')
+        left = index
+        right = index + 6
+        while right < (len(input) - 1):
+            if input[right] == ")":
+                break
+            else:
+                right += 1
+        replacement = float(input[index+6: right]) // 1
+        input = input.replace(input[left: right+1], str(replacement))
+    return str(input)
 
 
 def x_root(input):
