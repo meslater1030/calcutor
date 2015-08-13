@@ -149,7 +149,7 @@ def gcd(to_evaluate):
 
 def lcm(to_evaluate):
     x, y = two_integers(to_evaluate)
-    lcm = (x*y)//int(gcd(','.join(to_evaluate)))
+    lcm = (x*y)//int(gcd(to_evaluate))
     return str(lcm)
 
 
@@ -201,6 +201,7 @@ def x_root(input):
         right = index + 6
         while left > 0:
             if input[left] in operators:
+                left += 1
                 break
             else:
                 left -= 1
@@ -211,9 +212,10 @@ def x_root(input):
                 right += 1
         if left == 0:
             replacement = (math.pow(float(input[index+6:right+1]),
-                           (1/float(input[:index]))))
+                           (1/float(input[left:index]))))
+            input = input.replace(input[left:right+1], str(replacement))
         else:
-            replacement = (math.pow(float(input[index+6:right+1]),
-                           (1/float(input[left:index-1]))))
-        input = input.replace(input[left:right+1], str(replacement))
+            replacement = (math.pow(float(input[index+6:right]),
+                           (1/float(input[left:index]))))
+            input = input.replace(input[left:right], str(replacement))
     return input
