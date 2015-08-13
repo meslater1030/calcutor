@@ -1,6 +1,6 @@
 $(function(){
+    /*************** GLOBALS ***************/
     var last_input = "";
-    var input = "";
     var output = "";
     var tableinput = "";
     var menu = ".home";
@@ -17,9 +17,31 @@ $(function(){
 
     }, 500);
 
+    /*************** HELPERS ***************/
+
+    /***** VISUAL *****/
     var update_scroller = function() {
         $("#screen").scrollTop($("#screen")[0].scrollHeight);
     };
+
+    var show_graph = function(graph) {
+        $(".graph").html('<img src="data:image/png;base64,' + graph + '" id="graphimg" />');
+        hide_all();
+        $(".graph").show();
+    };
+
+    var hide_all = function(){
+        $(".home").hide();
+        $(".yequals").hide();
+        $(".math_menu").hide();
+        $(".graph").hide();
+        $(".table").hide();
+        $(".windowmenu").hide();
+
+        $("#all_menus").show();
+    };
+
+    /***** SCREEN INTERACTION *****/
     var write_it = function(token){
         if ( $(menu + " .cursor").is("ins") ) {
             var cur = $(menu + " .cursor");
@@ -31,6 +53,8 @@ $(function(){
             cur.next().addClass('cursor');
         };
     };
+
+    /***** AJAX CALLS *****/
     var send_it = function(string){
         var output = "";
         $.ajax({
@@ -45,6 +69,55 @@ $(function(){
         });
         return output;
     };
+
+    var get_graph = function(equations, settings){
+        var output = "";
+        $.ajax({
+            type: "POST",
+            url: "/graph/",
+            data: JSON.stringify({equations: equations, settings: settings}),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function(response){
+            show_graph(response.output);
+        }).fail(function(){
+            $(".home .output:last").text("ERR: GRAPH SYNTAX");
+            hide_all();
+            $(".home").show();
+        }).always(function(){
+            menu = ".home";
+        });
+    };
+
+    function update_table(){
+        var table_row = $(".table .cursor").parent().parent();
+        equations = get_equations();
+        table_row.find("ins").each(function(idx, val){
+            tableinput += val.textContent;
+        })
+        equations['X'] = tableinput;
+        tableinput = "";
+        $.ajax({
+            type: "POST",
+            url: "/table/",
+            data: equations,
+        }).done(function(response){
+            output = response.output;
+            table_row.find(".output").each(function(idx, val){
+                var checker = idx;
+                val.textContent = output[idx+1];
+            });
+            table_row.find("#Y0").textContent = output[0]
+        }).fail(function(){
+            $(".home .output:last").text("ERR: TABLE SYNTAX");
+            $(".table").hide();
+            $(".home").show();
+            menu = ".home";
+        });
+    };
+
+
+    /***** PARSING *****/
     var get_input = function(){
         var input = "";
         $(".home .input:last ins").each(function(){
@@ -53,6 +126,35 @@ $(function(){
         return input.trim();
     };
 
+    function get_equations(){
+        var equations = {};
+        for (i=0; i<10; i++){
+            var yfn = "";
+            var $y = $($(".y_func")[i]);
+            $y.find("ins").each(function(){
+                yfn += this.innerHTML;
+            });
+            equations[$y.find("span").text()] = yfn;
+        };
+        return equations;
+    };
+
+    function get_graph_window(){
+        var win = {};
+        var names = ['Xmin', 'Xmax', 'Xscl', 'Ymin', 'Ymax', 'Yscl'];
+        for (clas in names){
+            var val = "";
+            var $setting = $("."+names[clas]);
+            $setting.find("ins").each(function(){
+                val += this.innerHTML;
+            });
+            win[names[clas]] = val;
+        };
+        return win;
+    };
+
+
+    /***** OTHER *****/
     var math_ans = function(eq){
         switch (eq) {
             case '>Frac':
@@ -64,7 +166,7 @@ $(function(){
             case 'nCr':
             case '!':
                 {
-                    if (input == ""){
+                    if (get_input() == ""){
                         write_it('Ans');
                     };
                 }
@@ -72,17 +174,11 @@ $(function(){
         };
     };
 
-    var hide_all = function(){
-        $(".home").hide();
-        $(".yequals").hide();
-        $(".math_menu").hide();
-        $(".graph").hide();
-        $(".table").hide();
-        $(".windowmenu").hide();
 
-        $("#all_menus").show();
-    };
 
+    /*************** FUNCTIONALITY ***************/
+
+    /***** BUTTONS *****/
     $("#buttons button").click(function(event) {
         $(".default").show();
         $(".alpha").hide();
@@ -288,7 +384,6 @@ $(function(){
                     $(".home").empty();
                     $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
                     $(".home").append("<p class='output'></p>");
-                    input = "";
                 }
                 break;
             case 'second_mode':
@@ -381,26 +476,7 @@ $(function(){
                     $.each(settings, function(index, val){
                         settings[index] = send_it(val);
                     });
-                    console.log(settings);
-                    $.ajax({
-                        type: "POST",
-                        url: "/graph/",
-                        data: JSON.stringify({equations: get_equations(), settings: settings}),
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json"
-                    }).done(function(response){
-                        output = response.output;
-                        $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
-                        hide_all();
-                        $(".graph").show();
-                        input = "";
-                        menu = ".home";
-                    }).fail(function(){
-                        $(".home .output:last").text("ERR: GRAPH SYNTAX");
-                        hide_all();
-                        $(".home").show();
-                        menu = ".home";
-                    });
+                    var graph = get_graph(get_equations(), settings);
                 }
                 break;
             case 'TABLE':
@@ -428,64 +504,7 @@ $(function(){
         $("button").blur();
     });
 
-    function get_equations(){
-        var equations = {};
-        for (i=0; i<10; i++){
-            var yfn = "";
-            var $y = $($(".y_func")[i]);
-            $y.find("ins").each(function(){
-                yfn += this.innerHTML;
-            });
-            equations[$y.find("span").text()] = yfn;
-        };
-        return equations;
-    };
-    function get_graph_window(){
-        var win = {};
-        var names = ['Xmin', 'Xmax', 'Xscl', 'Ymin', 'Ymax', 'Yscl'];
-        for (clas in names){
-            var val = "";
-            var $setting = $("."+names[clas]);
-            $setting.find("ins").each(function(){
-                val += this.innerHTML;
-            });
-            win[names[clas]] = val;
-        };
-        return win;
-    };
-
-
-    function update_table(){
-        var table_row = $(".table .cursor").parent().parent();
-        equations = get_equations();
-        table_row.find("ins").each(function(idx, val){
-            tableinput += val.textContent;
-        })
-        equations['X'] = tableinput;
-        tableinput = "";
-        $.ajax({
-            type: "POST",
-            url: "/table/",
-            data: equations,
-        }).done(function(response){
-            output = response.output;
-            table_row.find(".output").each(function(idx, val){
-                var checker = idx;
-                val.textContent = output[idx+1];
-            });
-            table_row.find("#Y0").textContent = output[0]
-        }).fail(function(){
-            $(".home .output:last").text("ERR: TABLE SYNTAX");
-            $(".table").hide();
-            $(".home").show();
-            menu = ".home";
-        });
-
-    }
-
-    /*
-    KEYBORD INPUT
-    */
+    /***** KEYBORD INPUT *****/
     $("body").keyup(function(event){
         switch (event.key) {
             case "Enter":
@@ -571,6 +590,16 @@ $(function(){
             case "n":
                 {
                     document.getElementById("\u02C9").click();
+                }
+                break;
+            case "a":
+                {
+                    document.getElementById("Ans").click();
+                }
+                break;
+            case "m":
+                {
+                    document.getElementById("math").click();
                 }
                 break;
             case "Esc":
