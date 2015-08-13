@@ -2,6 +2,7 @@ $(function(){
     var last_input = "";
     var input = "";
     var output = "";
+    var tableinput = "";
     var menu = ".home";
 
     setInterval(function(){
@@ -20,16 +21,15 @@ $(function(){
         $("#screen").scrollTop($("#screen")[0].scrollHeight);
     };
     var write_it = function(token){
-        var cur = $(menu + " .cursor");
-        cur.text(token);
-        cur.removeClass('cursor');
-        if (cur.next().length == 0){
-            cur.after("<ins></ins>")
-        }
-        cur.next().addClass('cursor');
-        if (menu == ".home") {
-            input += token;
-        }
+        if ( $(menu + " .cursor").is("ins") ) {
+            var cur = $(menu + " .cursor");
+            cur.text(token);
+            cur.removeClass('cursor');
+            if (cur.next().length == 0){
+                cur.after("<ins> </ins>")
+            }
+            cur.next().addClass('cursor');
+        };
     };
     var send_it = function(string){
         $.ajax({
@@ -40,15 +40,53 @@ $(function(){
             output = response.output;
             $(".home .output:last").text(output);
         }).fail(function(){
-            $(".home .output:last").text("Something Went Wrong");
+            $(".home .output:last").text("Your mother was a hamster and your father smelt of elderberries!");
         }).always(function(){
             $(".cursor").removeClass("cursor");
             $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
             $(".home").append("<p class='output'></p>");
         });
     };
+    var get_input = function(){
+        var input = "";
+        $(".home .input:last ins").each(function(){
+            input += this.innerHTML;
+        });
+        return input.trim();
+    };
+
+    var math_ans = function(eq){
+        switch (eq) {
+            case '>Frac':
+            case '>Dec':
+            case '\u00B3':
+            case '>Rect':
+            case '>Polar':
+            case 'nPr':
+            case 'nCr':
+            case '!':
+                {
+                    if (input == ""){
+                        write_it('Ans');
+                    };
+                }
+                break;
+        };
+    };
+
+    var hide_all = function(){
+        $(".home").hide();
+        $(".yequals").hide();
+        $(".math_menu").hide();
+        $(".graph").hide();
+
+        $("#all_menus").show();
+    };
 
     $("#buttons button").click(function(event) {
+        $(".default").show();
+        $(".alpha").hide();
+        $(".second").hide();
         switch ($(this).attr('id')) {
             case '+':
             case '-':
@@ -57,11 +95,12 @@ $(function(){
             case '^':
             case '\u00B2':
                 {
-                    if (menu == ".home" && input == ""){
+                    if (menu == ".home" && get_input() == ""){
                         write_it('Ans');
                     };
                 }
             case 'A':
+            case '.':
             case 'B':
             case 'C':
             case 'D':
@@ -99,6 +138,7 @@ $(function(){
             case '7':
             case '8':
             case '9':
+            case '.':
             case "\u03C0":
             case "\u02C9":
             case "\u2148":
@@ -110,6 +150,7 @@ $(function(){
             case 'e':
             case '10^(':
             case 'log(':
+            case '^-1':
             case 'sin(':
             case 'tan(':
             case 'cos(':
@@ -131,10 +172,12 @@ $(function(){
                 break;
             case 'right':
                 {
-                    if ($(".cursor").next().length == 0){
+                    if ($(menu + " .cursor").next().length == 0){
                         break;
-                    }
-                    var cur = $(".cursor");
+                    } else if ($("p").hasClass("cursor")) {
+                        break;
+                    };
+                    var cur = $(menu + " .cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
                     cur.next().addClass("cursor");
@@ -142,10 +185,12 @@ $(function(){
                 break;
             case 'left':
                 {
-                    if ($(".cursor").prev().length == 0){
+                    if ($(menu + " .cursor").prev().length == 0){
                         break;
-                    }
-                    var cur = $(".cursor");
+                    } else if ($("p").hasClass("cursor")) {
+                        break;
+                    };
+                    var cur = $(menu + " .cursor");
                     cur.css("background-color", "rgba(0, 0, 0, 0)")
                     cur.removeClass("cursor");
                     cur.prev().addClass("cursor");
@@ -153,8 +198,20 @@ $(function(){
                 break;
             case 'up':
                 {
+                    var cur = $(menu + " .cursor");
+                    cur.css("background-color", "rgba(0, 0, 0, 0)");
+                    if ($("p").hasClass("cursor")) {
+                        var previous = cur.prev().filter(":visible");
+                        if ((previous.text() != "") && (previous.is("ul") == false)) {
+                            cur.prev().addClass("cursor");
+                            cur.removeClass("cursor");
+                        } else {
+                            $(".submenu:first").addClass("cursor");
+                        }
+                    } else if ($("li").hasClass("cursor")) {
+                        break;
+                    }
                     if (menu == ".home") {
-                        var cur = $(".cursor");
                         cur.removeClass("cursor");
                         if($(cur.prevAll()[35]).length == 0){
                             $(".home .input:last ins:first").addClass("cursor");
@@ -162,18 +219,34 @@ $(function(){
                         };
                         $(cur.prevAll()[35]).addClass("cursor");
                     } else if (menu == ".yequals") {
-                        var cur = $(".cursor");
                         if (cur.parent().prev().length != 0){
                             cur.removeClass("cursor");
-                            cur.parent().prev().find("ins:not(ins:first)").first().addClass("cursor");
+                            cur.parent().prev().find("ins:first").first().addClass("cursor");
+                        };
+                    } else if (menu == ".table") {
+                        if (cur.parent().parent().prev().length != 0){
+                            cur.removeClass("cursor");
+                            cur.parent().parent().prev().find("ins:first").first().addClass("cursor");
                         };
                     };
                 }
                 break;
             case 'down':
                 {
+                    var cur = $(menu + " .cursor");
+                    cur.css("background-color", "rgba(0, 0, 0, 0)")
+                    if ($("p").hasClass("cursor")) {
+                        if (cur.attr('class').indexOf(cur.next().attr('class')) > -1) {
+                            cur.next().addClass("cursor");
+                            cur.removeClass("cursor");
+                        } else {
+                            break;
+                        }
+                    } else if ($("li").hasClass("cursor")){
+                        $(".submenu_options:visible:first").addClass("cursor");
+                        cur.removeClass("cursor");
+                    }
                     if (menu == ".home") {
-                        var cur = $(".cursor");
                         cur.removeClass("cursor");
                         if($(cur.nextAll()[35]).length == 0){
                             $(".home .input:last ins:last").addClass("cursor");
@@ -181,18 +254,22 @@ $(function(){
                         };
                         $(cur.nextAll()[35]).addClass("cursor");
                     } else if (menu == ".yequals") {
-                        var cur = $(".cursor");
                         if (cur.parent().next().length != 0){
                             cur.removeClass("cursor");
-                            cur.parent().next().find("ins:not(ins:first)").first().addClass("cursor");
+                            cur.parent().next().find("ins:first").first().addClass("cursor");
+                        };
+                    } else if (menu == ".table") {
+                        if (cur.parent().parent().next().length != 0){
+                            cur.removeClass("cursor");
+                            cur.parent().parent().next().find("ins:first").first().addClass("cursor");
                         };
                     };
                 }
                 break;
             case 'delete':
                 {
-                    var cur = $(".cursor");
-                    if (cur.next().length != 0){
+                    var cur = $(menu + " .cursor");
+                    if (cur.next().length != 0 && cur.is("ins")){
                         cur.next().addClass('cursor');
                         cur.remove()
                     };
@@ -200,9 +277,12 @@ $(function(){
                 break;
             case 'clear':
                 {
+                    $(".cursor").removeClass('cursor');
                     menu = ".home";
                     $(".yequals").hide();
+                    $(".math_menu").hide();
                     $(".graph").hide();
+                    $(".table").hide();
                     $(".home").show();
                     $(".home").empty();
                     $(".home").append("<p class='input'><ins class='cursor'></ins></p>");
@@ -212,85 +292,99 @@ $(function(){
                 break;
             case 'second_mode':
                 {
-                    $(".default").toggle();
-                    $(".second").toggle();
+                    $(".default").hide();
+                    $(".second").show();
                 }
                 break;
             case 'alpha_mode':
                 {
-                    $(".default").toggle();
-                    $(".alpha").toggle();
+                    $(".default").hide();
+                    $(".alpha").show();
                 }
                 break;
             case 'y_equals':
                 {
+                    $(".cursor").removeClass("cursor");
+                    $(".yequals .y_func:first ins:first").addClass('cursor');
                     menu = ".yequals";
-                    $(".home").hide();
+                    hide_all();
                     $(".yequals").show();
-                    $(".graph").hide();
                 }
                 break;
             case 'ENTER':
                 {
-                    if (input == ""){
-                        input = last_input;
+
+                    if (menu == ".table"){
+                        update_table();
+                    } else if ($(menu + " ins").hasClass("cursor")){
+                            if (menu == ".yequals"){
+                                $("#down").click();
+                                break;
+                            };
+                            input = get_input()
+                            if (input == ""){
+                                input = last_input;
+                            };
+                            last_input = input;
+                            input = input.split("Ans").join(output);
+                            send_it(input);
+                            input = "";
+                    } else if ($(menu + ".submenu").hasClass("cursor")){
+                        var cur_id = "." + $(menu + ".cursor").attr('id');
+                        $(".submenu_options").hide();
+                        $(cur_id).show();
+                    } else if ($("p" + menu).hasClass("cursor")){
+                        var cur = $(menu + ".cursor");
+                        cur.css("background-color", "rgba(0, 0, 0, 0)")
+                        var cur_id = $(menu + ".cursor").attr('id');
+                        $("#all_menus").hide();
+                        $(".home").show();
+                        menu = ".home"
+                        math_ans(cur_id);
+                        write_it(cur_id);
                     };
-                    last_input = input;
-                    input = input.split("Ans").join(output);
-                    send_it(input);
-                    input = "";
                 }
                 break;
             case 'math':
                 {
-                    var cur = $(".cursor");
-                    cur.removeClass("cursor");
-                    var $math_submenu = $("#math_submenu");
+                    menu = ".math_menu";
+                    var $math_submenu = $(".submenu:first");
                     $math_submenu.addClass("cursor");
-                    $("#math_menu").show();
+                    $(".math_menu").show();
+                    $("#all_menus").show();
+                    $(".math_submenu").show();
+                    $(".graph").hide();
                     $(".num_submenu").hide();
                     $(".cpx_submenu").hide();
                     $(".prb_submenu").hide();
-                    $(".input").hide();
-                    $(".output").hide();
+                    $(".home").hide();
+                    $(".yequals").hide();
                 }
                 break;
             case 'quit':
                 {
                     menu = ".home";
-                    var cur = $(".cursor");
-                    cur.removeClass("cursor");
-                    $("#math_menu").hide();
-                    $(".input").show();
-                    $(".output").show();
-                    $(".input").append("<ins class='cursor'></ins>");
+                    $("#all_menus").hide();
+                    $(".yequals").hide();
+                    $(".home").show()
                 }
                 break;
             case 'graph':
                 {
-                    var equations = {};
-                    for (i=0; i<10; i++){
-                        var yfn = "";
-                        var $y = $($(".y_func")[i]);
-                        $y.find("ins:not(ins:first)").each(function(){
-                            yfn += this.innerHTML;
-                        });
-                        equations[$y.find("ins:first").text()] = yfn;
-                    };
                     $.ajax({
                         type: "POST",
                         url: "/graph/",
-                        data: equations,
+                        data: get_equations(),
                     }).done(function(response){
                         output = response.output;
                         $(".graph").html('<img src="data:image/png;base64,' + output + '" id="graphimg" />');
                         $(".home").hide();
-                        $(".yequals").hide();
+                        $(".view").hide();
                         $(".graph").show();
                         input = "";
                         menu = ".home";
                     }).fail(function(){
-                        $(".home .output:last").text("Something Went Wrong");
+                        $(".home .output:last").text("ERR: GRAPH SYNTAX");
                         $(".yequals").hide();
                         $(".home").show();
                         menu = ".home";
@@ -300,13 +394,166 @@ $(function(){
             case 'TABLE':
                 {
                     $(".home").hide();
+                    $("#all_menus").show();
+                    $(".view").hide();
+                    $(".table .cursor").removeClass("cursor")
                     $(".table").show();
+                    $(".table ins:first").addClass("cursor")
+                    menu = ".table";
                 }
                 break;
             default: break;
         };
         update_scroller();
+        $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
         $("ins:not(.cursor)").css("background-color", "rgba(0, 0, 0, 0)");
+        $("button").blur();
     });
-    $("#math_menu").hide();
+
+    function get_equations(){
+        var equations = {};
+        for (i=0; i<10; i++){
+            var yfn = "";
+            var $y = $($(".y_func")[i]);
+            $y.find("ins").each(function(){
+                yfn += this.innerHTML;
+            });
+            equations[$y.find("span").text()] = yfn;
+        };
+        return equations;
+    }
+
+    function update_table(){
+        var table_row = $(".table .cursor").parent().parent();
+        equations = get_equations();
+        table_row.find("ins").each(function(idx, val){
+            tableinput += val.textContent;
+        })
+        equations['X'] = tableinput;
+        tableinput = "";
+        $.ajax({
+            type: "POST",
+            url: "/table/",
+            data: equations,
+        }).done(function(response){
+            output = response.output;
+            table_row.find(".output").each(function(idx, val){
+                var checker = idx;
+                val.textContent = output[idx+1];
+            });
+            table_row.find("#Y0").textContent = output[0]
+        }).fail(function(){
+            $(".home .output:last").text("ERR: TABLE SYNTAX");
+            $(".table").hide();
+            $(".home").show();
+            menu = ".home";
+        });
+
+    }
+
+    $("body").keyup(function(event){
+        switch (event.key) {
+            case "Enter":
+                {
+                    $("#ENTER").click();
+                }
+                break;
+            case "Up":
+            case "ArrowUp":
+                {
+                    $("#up").click();
+                }
+                break;
+            case "Down":
+            case "ArrowDown":
+                {
+                    $("#down").click();
+                }
+                break;
+            case "Left":
+            case "ArrowLeft":
+                {
+                    $("#left").click();
+                }
+                break;
+            case "Right":
+            case "ArrowRight":
+                {
+                    $("#right").click();
+                }
+                break;
+            case "Del":
+            case "Delete":
+                {
+                    $("#delete").click();
+                }
+                break;
+            case "s":
+                {
+                    document.getElementById("sin(").click();
+                }
+                break;
+            case "c":
+                {
+                    document.getElementById("cos(").click();
+                }
+                break;
+            case "t":
+                {
+                    document.getElementById("tan(").click();
+                }
+                break;
+            case "i":
+                {
+                    document.getElementById("\u2148").click();
+                }
+                break;
+            case " ":
+                {
+                    document.getElementById("\u2423").click();
+                }
+                break;
+            case "x":
+                {
+                    document.getElementById("X").click();
+                }
+                break;
+            case "p":
+                {
+                    document.getElementById("\u03C0").click();
+                }
+                break;
+            case "g":
+                {
+                    document.getElementById("graph").click();
+                }
+                break;
+            case "y":
+                {
+                    document.getElementById("y_equals").click();
+                }
+                break;
+            case "Esc":
+            case "Escape":
+                {
+                    $("#clear").click();
+                }
+                break;
+            case "Backspace":
+                {
+                    $("#left").click();
+                    $("#delete").click();
+                }
+                break;
+            default:
+                {
+                    if (document.getElementById(event.key) != null) {
+                        document.getElementById(event.key).click();
+                    };
+                }
+                break;
+        };
+    });
+
+    $("#all_menus").hide();
 });
