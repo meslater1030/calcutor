@@ -181,9 +181,9 @@ $(function(){
 
     /***** BUTTONS *****/
     $("#buttons button").click(function(event) {
-        $(".default").show();
         $(".alpha").hide();
         $(".second").hide();
+        $(".default").show();
         switch ($(this).attr('id')) {
             case '+':
             case '-':
@@ -265,6 +265,11 @@ $(function(){
             case 'Ans':
                 {
                     write_it(this.id);
+                }
+                break;
+            case 'XT':
+                {
+                    write_it('X');
                 }
                 break;
             case 'right':
@@ -570,7 +575,7 @@ $(function(){
                 break;
             case "x":
                 {
-                    document.getElementById("X").click();
+                    document.getElementById("XT").click();
                 }
                 break;
             case "p":
