@@ -447,6 +447,10 @@ $(function(){
                         $(".submenu_options").hide();
                         $(cur_id).show();
                     } else if ($("p" + menu).hasClass("cursor")){
+                        if ( $(".yequals ins").hasClass("cursor") ){
+                            $(".yequals .cursor").removeClass("cursor");
+                            $(".home .input:last ins:last").addClass("cursor");
+                        };
                         var cur = $(menu + " .cursor");
                         cur.css("background-color", "rgba(0, 0, 0, 0)")
                         var cur_id = $(menu + " .cursor").attr('id');
