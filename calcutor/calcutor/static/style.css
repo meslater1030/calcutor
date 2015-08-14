@@ -1,8 +1,9 @@
 #screen {
     overflow-y: hidden;
     overflow-x: hidden;
-    width: 23em;
-    height: 12em;
+    margin-left: auto;
+    margin-right: auto;
+    height: 13em;
     border: 2px solid;
     -webkit-border-radius:10px;
     -moz-border-radius:10px;
@@ -11,7 +12,6 @@
     font-family: 'Droid Sans Mono';
     box-shadow: inset 0 0 10px black;
     padding: 1em;
-    padding-bottom: 2em;
     background: linear-gradient(to bottom, rgba(127,154,101,0.7) 0%,rgba(127,154,101,0.7) 100%), url(https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Icon_robot.svg/1280px-Icon_robot.svg.png) repeat 0 0;
     background-size: 100%;
 }
@@ -38,7 +38,7 @@
 
 #buttons button {
     display: inline-block;
-    width: 5em;
+    width: 17%;
     height: 2.5em;
     font: 1em;
     margin: 0.3em;
@@ -56,14 +56,29 @@
     margin-top: 0em;
 }
 
+.secondary_options,
+.row {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#top-row {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #buttons {
-    padding-left: 0.6em;
+    width: 95%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 #calcutor {
     margin-right: auto;
     margin-left: auto;
-    width: 25em;
+    width: 27em;
     border: 2px solid black;
     padding: 1em;
     -webkit-border-radius:20px;
@@ -116,7 +131,7 @@
 .yellow {
     display: inline-block;
     font-size: 0.6em;
-    width: 6.5em;
+    width: 16%;
     height: 1em;
     text-align: left;
     padding-left: 0.7em;
