@@ -77,8 +77,8 @@ def fix_decimals(input):
         input = '0' + input
     for item in [('+.', '+0.'),
                  ('*.', '*0.'),
-                 ('/.', '0/.'),
-                 ('-.', '0-.'),
+                 ('/.', '/0.'),
+                 ('-.', '-0.'),
                  ('(.', '(0.'),
                  (').', ')0.')]:
         input = input.replace(item[0], item[1])

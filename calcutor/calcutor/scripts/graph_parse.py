@@ -7,6 +7,7 @@ import numpy as np
 import numexpr as ne
 import cStringIO
 import base64
+from numpy import pi as PI
 
 
 def graph_parse(equations, settingsdict):
@@ -22,13 +23,15 @@ def graph_parse(equations, settingsdict):
     xmax = float(settingsdict['Xmax'])
     ymin = float(settingsdict['Ymin'])
     ymax = float(settingsdict['Ymax'])
+    xscl = float(settingsdict['Xscl'])
+    yscl = float(settingsdict['Yscl'])
     for idx, eq in enumerate(equations):
         for calc, gval in replacevals:
             eq = eq.replace(calc, gval)
         equations[idx] = eq
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    X = np.arange(-10, 11, .1)
+    X = np.arange(xmin, xmax + xscl, .1)
     for eq in equations:
         if 'X' not in eq:
             ax.axhline(y=ne.evaluate(eq), color='k')
@@ -39,8 +42,8 @@ def graph_parse(equations, settingsdict):
     ax.axvline(x=0, color='k')
     ax.set_xlim(xmin, xmax)
     ax.set_ylim(ymin, ymax)
-    ax.xaxis.set_ticks(np.arange(xmin, xmax + 1, float(settingsdict['Xscl'])))
-    ax.yaxis.set_ticks(np.arange(ymin, ymax + 1, float(settingsdict['Yscl'])))
+    ax.xaxis.set_ticks(np.arange(xmin, xmax + xscl, xscl))
+    ax.yaxis.set_ticks(np.arange(ymin, ymax + yscl, yscl))
     buf = cStringIO.StringIO()
     fig.savefig(buf, format='png', transparent=True)
     encoded = base64.b64encode(buf.getvalue())

@@ -9,13 +9,16 @@ $(function(){
         if ($(menu + " .cursor").text() == ""){
             $(menu + " .cursor").text(" ")
         }
-        if ($(menu + " .cursor").css("background-color") == "transparent"){
+        if ($(menu + " .cursor").css("background-color") == "transparent" ||
+            $(menu + " .cursor").css("background-color") == "rgba(0, 0, 0, 0)"){
             $(menu + " .cursor").css("background-color", "rgba(0, 0, 0, 0.6)");
         } else {
             $(menu + " .cursor").css("background-color", "rgba(0, 0, 0, 0)");
         };
 
     }, 500);
+
+    $(".tablewrapper").scrollLeft(0);
 
     /*************** HELPERS ***************/
 
@@ -104,10 +107,9 @@ $(function(){
         }).done(function(response){
             output = response.output;
             table_row.find(".output").each(function(idx, val){
-                var checker = idx;
                 val.textContent = output[idx+1];
             });
-            table_row.find("#Y0").textContent = output[0]
+            table_row.find(".Y0")[0].textContent = output[0];
         }).fail(function(){
             $(".home .output:last").text("ERR: TABLE SYNTAX");
             $(".table").hide();
@@ -307,6 +309,7 @@ $(function(){
                             cur.prev().addClass("cursor");
                             cur.removeClass("cursor");
                         } else {
+                            cur.removeClass("cursor");
                             $(".submenu:first").addClass("cursor");
                         }
                     } else if ($("li").hasClass("cursor")) {
@@ -444,11 +447,16 @@ $(function(){
                         $(".submenu_options").hide();
                         $(cur_id).show();
                     } else if ($("p" + menu).hasClass("cursor")){
-                        var cur = $(menu + ".cursor");
+                        if ( $(".yequals ins").hasClass("cursor") ){
+                            $(".yequals .cursor").removeClass("cursor");
+                            $(".home .input:last ins:last").addClass("cursor");
+                        };
+                        var cur = $(menu + " .cursor");
                         cur.css("background-color", "rgba(0, 0, 0, 0)")
-                        var cur_id = $(menu + ".cursor").attr('id');
+                        var cur_id = $(menu + " .cursor").attr('id');
                         $("#all_menus").hide();
                         $(".home").show();
+                        $("p.cursor").removeClass("cursor");
                         menu = ".home"
                         math_ans(cur_id);
                         write_it(cur_id);

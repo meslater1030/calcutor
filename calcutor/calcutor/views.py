@@ -52,7 +52,7 @@ def graph_view(request):
         for x in xrange(10):
             try:
                 result = eqdict.get('\\Y{}:'.format(str(x))).strip()
-            except KeyError:
+            except (KeyError, AttributeError):
                 continue
             if result:
                 equations.append(result)
@@ -67,7 +67,7 @@ def graph_view(request):
             return {'error': ERROR_MSG}
         try:
             output = graph_parse.graph_parse(equations, settingsdict)
-        except (TypeError, ValueError) as e:
+        except (TypeError, ValueError, SyntaxError) as e:
             request.response.status = 400
             return {'error': ERROR_MSG}
         return {'output': output}
@@ -105,7 +105,7 @@ def table_view(request):
                 output[key] = 'ERR'
             else:
                 try:
-                    output[key] = clean_string.evaluateStack()
+                    output[key] = simple_math.evaluateStack()
                 except ValueError:
                     output[key] = 'ERR'
                 if float.is_integer(output[key]):

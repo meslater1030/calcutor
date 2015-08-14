@@ -152,22 +152,53 @@
     margin: 0;
 }
 
+.table {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.table .tablewrapper {
+    width: 100%;
+    height: 12em;
+    overflow: scroll;
+    padding: 0 25px 25px 0;
+    margin: 0 -25px -25px 0;
+    direction: ltr;
+}
+
 .table table {
     border: none;
     border-collapse: collapse;
-    width: 100%;
+    width: 800px;
+    height: 12em;
+    table-layout: fixed;
 }
 
-.table table th{
+.table table th {
     border-bottom: 1px solid #000;
+    height: 1em;
+}
+
+.table table td {
+    min-height: 1em;
 }
 
 .table table td, .table table th {
     border-left: 1px solid #000;
+    word-wrap: break-word;
+    word-break: break-all;
+    vertical-align: top;
 }
 
 .table table td:first-child, .table table th:first-child{
     border-left: none;
+}
+
+.table #xytable td p {
+    vertical-align: top;
+    display: block;
+    height: auto;
 }
 
 
