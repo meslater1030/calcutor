@@ -31,6 +31,7 @@ $(function(){
         $(".graph").html('<img src="data:image/png;base64,' + graph + '" id="graphimg" />');
         hide_all();
         $(".graph").show();
+        $(".cursor").removeClass("cursor");
     };
 
     var hide_all = function(){
