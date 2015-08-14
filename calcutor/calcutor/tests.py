@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import unittest
 from pyramid import testing
 
-from views import home_view, graph_view
+from views import home_view, graph_view, table_view
 
 
 class ViewTests(unittest.TestCase):
@@ -73,6 +73,39 @@ class ViewTests(unittest.TestCase):
         )
         info = graph_view(request)
         self.assertEqual(info['error'], b"ERR: SYNTAX")
+
+    def test_table_basic(self):
+        equations = {'\\Y1:': '2X+1', 'X': '3'}
+        request = testing.DummyRequest(
+            path='/table/', params=equations, post={}
+        )
+        info = table_view(request)
+        self.assertEqual(info['output']['1'], 7)
+
+    def test_table_func(self):
+        equations = {'\\Y1:': 'abs(X)', 'X': '-10'}
+        request = testing.DummyRequest(
+            path='/table/', params=equations, post={}
+        )
+        info = table_view(request)
+        self.assertEqual(info['output']['1'], 10)
+
+    def test_table_err(self):
+        equations = {'\\Y1:': 'fooo', 'X': '-10'}
+        request = testing.DummyRequest(
+            path='/table/', params=equations, post={}
+        )
+        info = table_view(request)
+        self.assertEqual(info['output']['1'], 'ERR')
+
+    def test_table_multiple_eq(self):
+        equations = {'\\Y1:': '2X+1', '\\Y2:': '12/X', 'X': '3'}
+        request = testing.DummyRequest(
+            path='/table/', params=equations, post={}
+        )
+        info = table_view(request)
+        self.assertEqual(info['output']['1'], 7)
+        self.assertEqual(info['output']['2'], 4)
 
 
 class FrontEndTests(unittest.TestCase):

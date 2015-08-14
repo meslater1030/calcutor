@@ -49,7 +49,7 @@ def graph_view(request):
                 return {'error': ERROR_MSG}
         try:
             output = graph_parse.graph_parse(equations, settingsdict)
-        except (TypeError, ValueError, SyntaxError) as e:
+        except (TypeError, ValueError, SyntaxError):
             request.response.status = 400
             return {'error': ERROR_MSG}
         return {'output': output}
@@ -68,7 +68,7 @@ def table_view(request):
             try:
                 output[str(x)] = request.params.get('\\Y{}:'.format(
                     str(x))).strip()
-            except KeyError:
+            except (KeyError, AttributeError):
                 continue
 
         for key in output:
