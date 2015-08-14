@@ -330,7 +330,7 @@ $(function(){
                             cur.parent().prev().find("ins:first").first().addClass("cursor");
                         };
                     } else if (menu == ".table") {
-                        if (cur.parent().parent().prev().length != 0){
+                        if (cur.parent().parent().prev().find("ins").length != 0){
                             cur.removeClass("cursor");
                             cur.parent().parent().prev().find("ins:first").first().addClass("cursor");
                         };
