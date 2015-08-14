@@ -185,6 +185,7 @@ $(function(){
         $(".alpha").hide();
         $(".second").hide();
         $(".default").show();
+        $(".python").remove();
         switch ($(this).attr('id')) {
             case '+':
             case '-':
@@ -509,7 +510,16 @@ $(function(){
                     $(".windowmenu ins:first").addClass("cursor");
                 }
                 break;
-            default: break;
+            default: {
+                var pythonArray = ["QqreRufrkxM", "523uxFMUTGA", "S3I5XcsReT0", "AAW6D21ICdg", "xzYO0joolR0", "H_Mgx8Ytjag", "qry9IeJnbNU", "M_eYSuPKP3Y", "U0kJHQpvgB8"];
+                var rand = pythonArray[Math.floor(Math.random() * pythonArray.length)];
+                $("#screen").append("<iframe class='python' width='100%' height='100%' src='https://www.youtube.com/embed/" + rand + "?autoplay=1&controls=0&showinfo=0' frameborder='0'></iframe>");
+                setTimeout(function(){
+                    $(".python").remove();
+                }, 35000)
+            }
+
+            break;
         };
         update_scroller();
         $(".home .input ins:not(.input:last .cursor)").css("background-color", "rgba(0, 0, 0, 0)");
