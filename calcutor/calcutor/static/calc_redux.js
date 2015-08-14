@@ -162,6 +162,7 @@ $(function(){
             case '>Frac':
             case '>Dec':
             case '\u00B3':
+            case 'x\u221a':
             case '>Rect':
             case '>Polar':
             case 'nPr':
@@ -193,6 +194,7 @@ $(function(){
             case '*':
             case '^':
             case '\u00B2':
+            case '^-1':
                 {
                     if (menu == ".home" && get_input() == ""){
                         write_it('Ans');
@@ -249,7 +251,6 @@ $(function(){
             case 'e':
             case '10^(':
             case 'log(':
-            case '^-1':
             case 'sin(':
             case 'tan(':
             case 'cos(':
@@ -511,12 +512,9 @@ $(function(){
                 }
                 break;
             default: {
-                var pythonArray = ["QqreRufrkxM", "523uxFMUTGA", "S3I5XcsReT0", "AAW6D21ICdg", "xzYO0joolR0", "H_Mgx8Ytjag", "qry9IeJnbNU", "M_eYSuPKP3Y", "U0kJHQpvgB8"];
+                var pythonArray = ["wshyX6Hw52I", "QqreRufrkxM", "523uxFMUTGA", "S3I5XcsReT0", "AAW6D21ICdg", "xzYO0joolR0", "H_Mgx8Ytjag", "qry9IeJnbNU", "M_eYSuPKP3Y", "U0kJHQpvgB8"];
                 var rand = pythonArray[Math.floor(Math.random() * pythonArray.length)];
                 $("#screen").append("<iframe class='python' width='100%' height='100%' src='https://www.youtube.com/embed/" + rand + "?autoplay=1&controls=0&showinfo=0' frameborder='0'></iframe>");
-                setTimeout(function(){
-                    $(".python").remove();
-                }, 35000)
             }
 
             break;
