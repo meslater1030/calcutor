@@ -86,7 +86,7 @@ def table_view(request):
             try:
                 output[str(x)] = request.params.get('\\Y{}:'.format(
                     str(x))).strip()
-            except KeyError:
+            except (KeyError, AttributeError):
                 continue
 
         for key in output:
