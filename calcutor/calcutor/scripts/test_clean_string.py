@@ -88,3 +88,28 @@ def test_fix_decimals():
     assert decimal == "(0.2)"
     decimal = clean_string.fix_decimals(").2")
     assert decimal == ")0.2"
+
+
+def test_check_parens():
+    with pytest.raises(SyntaxError):
+        clean_string.checkParens("())")
+    parens = clean_string.checkParens("({1,2},5)")
+    assert parens == "([1,2],5)"
+
+
+def test_factorial():
+    factorial = clean_string.factorial("3!")
+    assert factorial == "6"
+    factorial = clean_string.factorial("(3,5,9)!")
+    assert factorial == "(6,120,362880)"
+    factorial = clean_string.factorial("2*3!+5")
+    assert factorial == "2*6+5"
+    with pytest.raises(SyntaxError):
+        clean_string.factorial("4.3!")
+
+
+def test_parse_function():
+    parse = clean_string.parse_function("4*20+min(2,4)-3")
+    assert parse == "4*20+2.0-3"
+    with pytest.raises(SyntaxError):
+        clean_string.parse_function("4max(2,5)9")

@@ -7,8 +7,14 @@ import random
 
 
 def clean_string(input):
-    checkParens(input)
-    if re.search(r'[+\-*/=!]{2,}', input):
+    """
+    Replaces a number of known inputs with values
+    that can later be evaluated from within the stack.
+    adds a multiplier to any input that doesn't have one
+    outside off a parens.
+    """
+    input = checkParens(input)
+    if re.search(r'[+\-*/=]{2,}', input):
         raise SyntaxError
     input = parse_function(input)
     for unic, byte in [(u'\u02c9', '-'),
@@ -32,6 +38,11 @@ def clean_string(input):
 
 
 def factorial(input):
+    """Accepts either one argument or any number of arguments
+    within a set of parens and returns the factorial of each.
+    If a number of arguments within parens are passed then they
+    are returned in parens.
+    """
     if "!" in input:
         index = input.index("!")
         if index > 0 and input[index-1] in operators:
@@ -40,6 +51,7 @@ def factorial(input):
         right = index
         while left > 0:
             if input[left] in operators:
+                left += 1
                 break
             else:
                 left -= 1
@@ -50,16 +62,27 @@ def factorial(input):
             to_evaluate = to_evaluate.split(",")
             output = ""
             for x in to_evaluate:
-                output += str(math.factorial(float(x))) + ","
+                try:
+                    output += str(math.factorial(int(x))) + ","
+                except ValueError:
+                    raise SyntaxError("ERR: DOMAIN")
             output = output[:-1]
             output = "({})".format(output)
         else:
-            output = str(math.factorial(float(to_evaluate)))
+            try:
+                output = str(math.factorial(int(to_evaluate)))
+            except ValueError:
+                raise SyntaxError("ERR: DOMAIN")
         input = input.replace(input[left:index+1], output)
     return input
 
 
 def checkParens(input):
+    """Pyparsing will generally catch errors in parens except
+    in the case of too many close parens.  This function closes that
+    gap and also allows for future functionality surrounding
+    accepting input that's meant to be converted into a list.
+    """
     input = input.replace("{", "[")
     input = input.replace("}", "]")
     count = 0
@@ -70,9 +93,13 @@ def checkParens(input):
             count -= 1
         if count == -1:
             raise SyntaxError
+    return input
 
 
 def fix_decimals(input):
+    """Pyparsing will not accept floats that do not
+    have a placeholder in the ones spot so we add one.
+    """
     if input[0] == '.':
         input = '0' + input
     for item in [('+.', '+0.'),
@@ -88,6 +115,11 @@ operators = ['*', '+', '-', '/', '!']
 
 
 def parse_function(input):
+    """If the function that's passed is in the functions dictionary this
+    will pull the function from the string, evaluate it and return
+    a string where the original function is replaced with a string that
+    represents the appropriate numeric output.
+    """
     for function in functions:
         if function in input:
             index = input.index(function)
@@ -107,6 +139,9 @@ def parse_function(input):
 
 
 def min_val(to_evaluate):
+    """Accepts any number of inputs and returns the one number that
+    has the lowest value.
+    """
     if '[' in to_evaluate or ']' in to_evaluate:
         # come back to fix this to accept lists if time
         raise SyntaxError(b'ERR: SYNTAX')
@@ -115,6 +150,9 @@ def min_val(to_evaluate):
 
 
 def max_val(to_evaluate):
+    """Accepts any number of inputs and returns the one number that
+    has the highest value.
+    """
     if '[' in to_evaluate or ']' in to_evaluate:
         # come back to fix this to accept lists if time
         raise SyntaxError(b'ERR: SYNTAX')
@@ -123,6 +161,9 @@ def max_val(to_evaluate):
 
 
 def ipart(to_evaluate):
+    """Takes in one float as argument and returns just
+    the integer part.
+    """
     if "," in to_evaluate:
         raise SyntaxError(b"ERR: ARGUMENT")
     try:
@@ -132,6 +173,9 @@ def ipart(to_evaluate):
 
 
 def fpart(to_evaluate):
+    """Takes in one float as argument and returns just the fractional
+    part.
+    """
     if "," in to_evaluate:
         raise SyntaxError(b"ERR: ARGUMENT")
     try:
@@ -141,6 +185,9 @@ def fpart(to_evaluate):
 
 
 def gcd(to_evaluate):
+    """Takes in two integers and returns the greatest common
+    denominator.
+    """
     x, y = two_integers(to_evaluate)
     while(y):
         x, y = y, x % y
@@ -148,12 +195,17 @@ def gcd(to_evaluate):
 
 
 def lcm(to_evaluate):
+    """Takes in two integers and returns the lowest common multiplier.
+    """
     x, y = two_integers(to_evaluate)
     lcm = (x*y)//int(gcd(to_evaluate))
     return str(lcm)
 
 
 def randint(to_evaluate):
+    """Takes in two integers and returns a random integer in between
+    or equal to the integers passed.
+    """
     x, y = two_integers(to_evaluate)
     rand = random.randint(x, y)
     return str(rand)
@@ -193,6 +245,10 @@ def two_integers(to_evaluate):
 
 
 def x_root(input):
+    """Takes in the entire user input, parses out the arguments
+    immediately before and after x_root and returns the result of that
+    evaluation.  For instance 3x_root8 will evaluate as 8**(1/3).
+    """
     if 'x_root' in input:
         index = input.index('x_root')
         if input[index-1] in operators or input[index+6] in operators:
