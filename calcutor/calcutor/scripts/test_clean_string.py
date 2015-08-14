@@ -79,3 +79,12 @@ def test_x_root():
         clean_string.x_root("3x_root*")
     x_root = clean_string.x_root("2*3x_root8+6")
     assert x_root == "2*2.0+6"
+
+
+def test_fix_decimals():
+    decimal = clean_string.fix_decimals(".2")
+    assert decimal == "0.2"
+    decimal = clean_string.fix_decimals("(.2)")
+    assert decimal == "(0.2)"
+    decimal = clean_string.fix_decimals(").2")
+    assert decimal == ")0.2"
