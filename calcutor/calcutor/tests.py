@@ -43,7 +43,7 @@ class ViewTests(unittest.TestCase):
     def test_next_syntax_error(self):
         request = testing.DummyRequest(params={'input': '+'}, post={})
         with self.assertRaises(IndexError):
-            info = home_view(request)
+            home_view(request)
 
     def test_graph_view(self):
         equations = {'\\Y1:': '2X+1'}
