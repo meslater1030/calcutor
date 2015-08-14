@@ -69,7 +69,7 @@ $(function(){
         }).done(function(response){
             output = response.output;
         }).fail(function(){
-            output = "Your mother was a hamster and your father smelt of elderberries!";
+            output = "I fart in your general direction!";
         });
         return output;
     };
