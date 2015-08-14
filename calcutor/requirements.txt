@@ -9,9 +9,8 @@ WebOb==1.4.1
 argparse==1.2.1
 boto==2.38.0
 calcutor==0.0
-funcsigs==0.4
 gunicorn==19.3.0
-matplotlib==1.4.3
+funcsigs==0.4
 mock==1.3.0
 nose==1.3.7
 numexpr==2.4.3
