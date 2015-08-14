@@ -40,11 +40,6 @@ class ViewTests(unittest.TestCase):
         info = home_view(request)
         self.assertEqual(info['output'], 'ERR: SYNTAX')
 
-    def test_next_syntax_error(self):
-        request = testing.DummyRequest(params={'input': '+'}, post={})
-        with self.assertRaises(IndexError):
-            home_view(request)
-
     def test_graph_view(self):
         equations = {'\\Y1:': '2X+1'}
         settings = {
