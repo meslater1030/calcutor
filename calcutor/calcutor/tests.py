@@ -90,6 +90,23 @@ class ViewTests(unittest.TestCase):
         info = table_view(request)
         self.assertEqual(info['output']['1'], 10)
 
+    def test_table_err(self):
+        equations = {'\\Y1:': 'fooo', 'X': '-10'}
+        request = testing.DummyRequest(
+            path='/table/', params=equations, post={}
+        )
+        info = table_view(request)
+        self.assertEqual(info['output']['1'], 'ERR')
+
+    def test_table_multiple_eq(self):
+        equations = {'\\Y1:': '2X+1', '\\Y2:': '12/X', 'X': '3'}
+        request = testing.DummyRequest(
+            path='/table/', params=equations, post={}
+        )
+        info = table_view(request)
+        self.assertEqual(info['output']['1'], 7)
+        self.assertEqual(info['output']['2'], 4)
+
 
 class FrontEndTests(unittest.TestCase):
     from splinter import Browser
