@@ -49,6 +49,13 @@ def clean_string(input):
     if re.search(r'[+\-*/=]{2,}', input):
         raise SyntaxError
     input = parse_function(input)
+    for operator in operators:
+        if operator in input:
+            index = input.index(operator)
+            try:
+                input[index+1]
+            except IndexError:
+                raise SyntaxError("ERR: SYNTAX")
     for unic, byte in [(u'\u02c9', '-'),
                        (u'\u00B2', '^2'),
                        (u'3\u221a', 'cube_root'),
