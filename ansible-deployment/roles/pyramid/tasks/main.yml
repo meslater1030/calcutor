@@ -13,8 +13,6 @@
     - binutils
     - libproj-dev
     - gdal-bin
-    - python-matplotlib
-    - libpng-dev
 
 - name: Clone Pyramid Repository
   git: repo=https://github.com/meslater1030/calcutor.git dest={{ home }} force=yes
