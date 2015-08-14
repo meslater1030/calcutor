@@ -191,7 +191,6 @@ class FrontEndTests(unittest.TestCase):
         self.browser.find_by_id("math").first.click()
         self.assertTrue(self.browser.is_text_present("MATH"))
         self.assertTrue(self.browser.is_text_present("NUM"))
-        self.assertTrue(self.browser.is_text_present("CPX"))
         self.assertTrue(self.browser.is_text_present("PRB"))
 
     def test_math_menu_traversing(self):
@@ -202,9 +201,6 @@ class FrontEndTests(unittest.TestCase):
         self.assertTrue(self.browser.is_text_present("abs("))
         self.browser.find_by_id("right").first.click()
         self.browser.find_by_id("ENTER").first.click()
-        self.assertTrue(self.browser.is_text_present("conj("))
-        self.browser.find_by_id("right").first.click()
-        self.browser.find_by_id("ENTER").first.click()
         self.assertTrue(self.browser.is_text_present("rand"))
 
     def test_window_menu(self):
@@ -213,6 +209,7 @@ class FrontEndTests(unittest.TestCase):
         self.browser.find_by_id("delete").first.click()
         self.browser.find_by_id("delete").first.click()
         self.browser.find_by_id("delete").first.click()
+        self.browser.find_by_id("1").first.click()
         self.browser.find_by_id("1").first.click()
         self.browser.find_by_id("graph").first.click()
         self.assertTrue(self.browser.is_text_present("ERR: GRAPH SYNTAX"))

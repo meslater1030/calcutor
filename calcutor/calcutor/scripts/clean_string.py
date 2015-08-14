@@ -133,6 +133,8 @@ def checkParens(input):
             count -= 1
         if count == -1:
             raise SyntaxError
+    if count != 0:
+        raise SyntaxError
     return input
 
 
@@ -291,8 +293,13 @@ def x_root(input):
     """
     if 'x_root' in input:
         index = input.index('x_root')
-        if input[index-1] in operators or input[index+6] in operators:
-            raise SyntaxError(b"ERR: SYNTAX")
+        try:
+            if (input[index-1] in operators
+               or input[index+6] in operators
+               or index == 0):
+                raise SyntaxError(b"ERR: SYNTAX")
+        except IndexError:
+            raise SyntaxError("ERR: SYNTAX")
         left = index-1
         right = index + 6
         while left > 0:

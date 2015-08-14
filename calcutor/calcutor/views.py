@@ -18,7 +18,10 @@ def home_view(request):
             return {'output': output}
         try:
             output = clean_string.parse_string(input)
-        except (ParseException, ValueError, SyntaxError) as e:
+        except (ParseException,
+                ValueError,
+                SyntaxError,
+                ZeroDivisionError) as e:
             if e.message == "":
                 output = ERROR_MSG
             else:
