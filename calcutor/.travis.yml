@@ -15,7 +15,7 @@ install:
 # command to run tests
 script: nosetests
 
-notificaionts:
+notifications:
     email: false
 
 # Copyright 2012-2015 splinter authors. All rights reserved.
