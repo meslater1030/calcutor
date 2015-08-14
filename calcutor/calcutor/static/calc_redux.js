@@ -31,6 +31,7 @@ $(function(){
         $(".graph").html('<img src="data:image/png;base64,' + graph + '" id="graphimg" />');
         hide_all();
         $(".graph").show();
+        $(".cursor").removeClass("cursor");
     };
 
     var hide_all = function(){
@@ -319,18 +320,18 @@ $(function(){
                     }
                     if (menu == ".home") {
                         cur.removeClass("cursor");
-                        if($(cur.prevAll()[35]).length == 0){
+                        if($(cur.prevAll()[42]).length == 0){
                             $(".home .input:last ins:first").addClass("cursor");
                             break;
                         };
-                        $(cur.prevAll()[35]).addClass("cursor");
+                        $(cur.prevAll()[42]).addClass("cursor");
                     } else if (menu == ".yequals" || menu == ".windowmenu") {
                         if (cur.parent().prev().length != 0){
                             cur.removeClass("cursor");
                             cur.parent().prev().find("ins:first").first().addClass("cursor");
                         };
                     } else if (menu == ".table") {
-                        if (cur.parent().parent().prev().length != 0){
+                        if (cur.parent().parent().prev().find("ins").length != 0){
                             cur.removeClass("cursor");
                             cur.parent().parent().prev().find("ins:first").first().addClass("cursor");
                         };
@@ -354,11 +355,11 @@ $(function(){
                     }
                     if (menu == ".home") {
                         cur.removeClass("cursor");
-                        if($(cur.nextAll()[35]).length == 0){
+                        if($(cur.nextAll()[42]).length == 0){
                             $(".home .input:last ins:last").addClass("cursor");
                             break;
                         };
-                        $(cur.nextAll()[35]).addClass("cursor");
+                        $(cur.nextAll()[42]).addClass("cursor");
                     } else if (menu == ".yequals" || menu == ".windowmenu") {
                         if (cur.parent().next().length != 0){
                             cur.removeClass("cursor");
