@@ -25,6 +25,8 @@ def graph_parse(equations, settingsdict):
     ymax = float(settingsdict['Ymax'])
     xscl = float(settingsdict['Xscl'])
     yscl = float(settingsdict['Yscl'])
+    if xmin >= xmax or ymin >= ymax:
+        raise ValueError
     for idx, eq in enumerate(equations):
         for calc, gval in replacevals:
             eq = eq.replace(calc, gval)

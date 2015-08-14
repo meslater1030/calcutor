@@ -18,7 +18,10 @@ def home_view(request):
             return {'output': output}
         try:
             output = clean_string.parse_string(input)
-        except (ParseException, ValueError, SyntaxError) as e:
+        except (ParseException,
+                ValueError,
+                SyntaxError,
+                ZeroDivisionError) as e:
             if e.message == "":
                 output = ERROR_MSG
             else:
@@ -40,18 +43,16 @@ def graph_view(request):
                 continue
             if result:
                 equations.append(result)
-        if not equations:
-            request.response.status = 400
-            return {'error': 'No equations to graph.'}
-        try:
-            for idx, eq in enumerate(equations):
-                equations[idx] = clean_string.clean_string(eq)
-        except SyntaxError:
-            request.response.status = 400
-            return {'error': ERROR_MSG}
+        if equations:
+            try:
+                for idx, eq in enumerate(equations):
+                    equations[idx] = clean_string.clean_string(eq)
+            except SyntaxError:
+                request.response.status = 400
+                return {'error': ERROR_MSG}
         try:
             output = graph_parse.graph_parse(equations, settingsdict)
-        except (TypeError, ValueError, SyntaxError) as e:
+        except (TypeError, ValueError, SyntaxError):
             request.response.status = 400
             return {'error': ERROR_MSG}
         return {'output': output}
@@ -70,7 +71,7 @@ def table_view(request):
             try:
                 output[str(x)] = request.params.get('\\Y{}:'.format(
                     str(x))).strip()
-            except KeyError:
+            except (KeyError, AttributeError):
                 continue
 
         for key in output:

@@ -2,9 +2,8 @@ from __future__ import unicode_literals
 
 import unittest
 from pyramid import testing
-import json
 
-from views import home_view, graph_view
+from views import home_view, graph_view, table_view
 
 
 class ViewTests(unittest.TestCase):
@@ -44,7 +43,7 @@ class ViewTests(unittest.TestCase):
     def test_next_syntax_error(self):
         request = testing.DummyRequest(params={'input': '+'}, post={})
         with self.assertRaises(IndexError):
-            info = home_view(request)
+            home_view(request)
 
     def test_graph_view(self):
         equations = {'\\Y1:': '2X+1'}
@@ -74,6 +73,39 @@ class ViewTests(unittest.TestCase):
         )
         info = graph_view(request)
         self.assertEqual(info['error'], b"ERR: SYNTAX")
+
+    def test_table_basic(self):
+        equations = {'\\Y1:': '2X+1', 'X': '3'}
+        request = testing.DummyRequest(
+            path='/table/', params=equations, post={}
+        )
+        info = table_view(request)
+        self.assertEqual(info['output']['1'], 7)
+
+    def test_table_func(self):
+        equations = {'\\Y1:': 'abs(X)', 'X': '-10'}
+        request = testing.DummyRequest(
+            path='/table/', params=equations, post={}
+        )
+        info = table_view(request)
+        self.assertEqual(info['output']['1'], 10)
+
+    def test_table_err(self):
+        equations = {'\\Y1:': 'fooo', 'X': '-10'}
+        request = testing.DummyRequest(
+            path='/table/', params=equations, post={}
+        )
+        info = table_view(request)
+        self.assertEqual(info['output']['1'], 'ERR')
+
+    def test_table_multiple_eq(self):
+        equations = {'\\Y1:': '2X+1', '\\Y2:': '12/X', 'X': '3'}
+        request = testing.DummyRequest(
+            path='/table/', params=equations, post={}
+        )
+        info = table_view(request)
+        self.assertEqual(info['output']['1'], 7)
+        self.assertEqual(info['output']['2'], 4)
 
 
 class FrontEndTests(unittest.TestCase):
@@ -159,7 +191,6 @@ class FrontEndTests(unittest.TestCase):
         self.browser.find_by_id("math").first.click()
         self.assertTrue(self.browser.is_text_present("MATH"))
         self.assertTrue(self.browser.is_text_present("NUM"))
-        self.assertTrue(self.browser.is_text_present("CPX"))
         self.assertTrue(self.browser.is_text_present("PRB"))
 
     def test_math_menu_traversing(self):
@@ -170,9 +201,6 @@ class FrontEndTests(unittest.TestCase):
         self.assertTrue(self.browser.is_text_present("abs("))
         self.browser.find_by_id("right").first.click()
         self.browser.find_by_id("ENTER").first.click()
-        self.assertTrue(self.browser.is_text_present("conj("))
-        self.browser.find_by_id("right").first.click()
-        self.browser.find_by_id("ENTER").first.click()
         self.assertTrue(self.browser.is_text_present("rand"))
 
     def test_window_menu(self):
@@ -181,6 +209,7 @@ class FrontEndTests(unittest.TestCase):
         self.browser.find_by_id("delete").first.click()
         self.browser.find_by_id("delete").first.click()
         self.browser.find_by_id("delete").first.click()
+        self.browser.find_by_id("1").first.click()
         self.browser.find_by_id("1").first.click()
         self.browser.find_by_id("graph").first.click()
         self.assertTrue(self.browser.is_text_present("ERR: GRAPH SYNTAX"))
