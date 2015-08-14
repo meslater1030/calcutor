@@ -527,6 +527,10 @@ $(function(){
         $("button").blur();
     });
 
+    $("#guide").click(function(event){
+        $("#instructionscontent").toggle();
+    });
+
     /***** KEYBORD INPUT *****/
     $("body").keyup(function(event){
         switch (event.key) {
