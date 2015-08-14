@@ -125,7 +125,10 @@ def evaluateStack():
     if op in "+-*/^":
         op2 = evaluateStack()
         op1 = evaluateStack()
-        return opn[op](op1, op2)
+        try:
+            return opn[op](op1, op2)
+        except ZeroDivisionError:
+            raise ZeroDivisionError("ERR: DIVIDE BY 0")
     elif op == "PI":
         return math.pi  # 3.1415926535
     elif op == "E":
