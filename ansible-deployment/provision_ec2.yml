@@ -1,0 +1,6 @@
+---
+
+- name: Deploy Pyramid Site
+  hosts: local
+  roles:
+    - ec2_provisioning
