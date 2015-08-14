@@ -479,9 +479,11 @@ $(function(){
                 break;
             case 'quit':
                 {
+                    $(".cursor").removeClass("cursor");
                     menu = ".home";
                     hide_all();
-                    $(".home").show()
+                    $(".home").show();
+                    $(".home .input:last ins:last").addClass("cursor");
                 }
                 break;
             case 'graph':
