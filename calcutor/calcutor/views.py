@@ -13,32 +13,16 @@ ERROR_MSG = b"ERR: SYNTAX"
 def home_view(request):
     if request.method == 'POST':
         input = request.params.get('input')
-        to_fraction = False
-        if '>Frac' in input:
-            to_fraction = True
-        if '!' in input:
+        if '!' in input and '(' in input:
             output = clean_string.factorial(input)
             return {'output': output}
         try:
-            input = clean_string.clean_string(input)
-        except SyntaxError as e:
-            return {'output': e.message}
-        try:
-            simple_math.BNF().parseString(input)
-            try:
-                output = simple_math.evaluateStack()
-            except ValueError:
-                return {'output': b"ERR: DOMAIN"}
-        except ParseException:
-            return {'output': ERROR_MSG}
-        if type(output) == float:
-            if float.is_integer(output):
-                output = int(output)
-        if to_fraction:
-            output = simple_math.decimal_to_fraction(output)
-        else:
-            output = simple_math.sci_notation(output)
-        output = unicode(output).encode('utf-8')
+            output = clean_string.parse_string(input)
+        except (ParseException, ValueError, SyntaxError) as e:
+            if e.message == "":
+                output = ERROR_MSG
+            else:
+                output = e.message
         return {'output': output}
     return {}
 

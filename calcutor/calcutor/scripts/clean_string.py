@@ -4,6 +4,38 @@ from __future__ import division
 import re
 import math
 import random
+import simple_math
+
+
+def parse_string(input):
+    """Checks for special case of to fraction and otherwise sends
+    the input to be cleaned in this module and processed with Pyparsing.
+    """
+    to_fraction = False
+    if '&gt;Frac' in input:
+        to_fraction = True
+    input = clean_string(input)
+    simple_math.BNF().parseString(input)
+    output = clean_output(to_fraction)
+    return output
+
+
+def clean_output(to_fraction):
+    """Checks for special cases of returning a fraction or needing
+    to return scientific notation and returns utf-8 encoded string
+    in any case.  Returns a float when a float and an integer when
+    an integer.
+    """
+    output = simple_math.evaluateStack()
+    if type(output) == float:
+        if float.is_integer(output):
+            output = int(output)
+    if to_fraction:
+        output = simple_math.decimal_to_fraction(output)
+    else:
+        output = simple_math.sci_notation(output)
+    output = unicode(output).encode('utf-8')
+    return output
 
 
 def clean_string(input):
@@ -46,7 +78,7 @@ def factorial(input):
     if "!" in input:
         index = input.index("!")
         if index > 0 and input[index-1] in operators:
-            raise SyntaxError
+            raise SyntaxError("ERR: SYNTAX")
         left = index - 1
         right = index
         while left > 0:
@@ -57,17 +89,7 @@ def factorial(input):
                 left -= 1
         to_evaluate = input[left:right]
         if "(" in to_evaluate:
-            to_evaluate = to_evaluate.strip("(")
-            to_evaluate = to_evaluate.strip(")")
-            to_evaluate = to_evaluate.split(",")
-            output = ""
-            for x in to_evaluate:
-                try:
-                    output += str(math.factorial(int(x))) + ","
-                except ValueError:
-                    raise SyntaxError("ERR: DOMAIN")
-            output = output[:-1]
-            output = "({})".format(output)
+            output = evaluate_parens_factorial(to_evaluate)
         else:
             try:
                 output = str(math.factorial(int(to_evaluate)))
@@ -75,6 +97,24 @@ def factorial(input):
                 raise SyntaxError("ERR: DOMAIN")
         input = input.replace(input[left:index+1], output)
     return input
+
+
+def evaluate_parens_factorial(to_evaluate):
+    """helper function to evaluate the special case of each
+    item within a set of parens.
+    """
+    to_evaluate = to_evaluate.strip("(")
+    to_evaluate = to_evaluate.strip(")")
+    to_evaluate = to_evaluate.split(",")
+    output = ""
+    for x in to_evaluate:
+        try:
+            output += str(math.factorial(int(x))) + ","
+        except ValueError:
+            raise SyntaxError("ERR: DOMAIN")
+    output = output[:-1]
+    output = "({})".format(output)
+    return output
 
 
 def checkParens(input):
