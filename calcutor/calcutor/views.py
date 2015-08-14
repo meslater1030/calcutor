@@ -36,7 +36,6 @@ def graph_view(request):
         eqdict = request.json_body.get('equations')
         settingsdict = request.json_body.get('settings')
         equations = []
-        import pdb; pdb.set_trace()
         for x in xrange(10):
             try:
                 result = eqdict.get('\\Y{}:'.format(str(x))).strip()
